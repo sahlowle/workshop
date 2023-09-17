@@ -7,7 +7,10 @@
   <span class="text-muted fw-light"> @lang("Users") /</span> @lang('List')
 </h4>
 
-
+<a class="btn btn-outline-primary m-2" href="{{ route('users.create') }}">
+  <i class='bx bx-plus' style="font-size: 1.5rem"></i>
+  @lang("Add New") 
+</a>
 
 <!-- Hoverable Table rows -->
 <div class="card">

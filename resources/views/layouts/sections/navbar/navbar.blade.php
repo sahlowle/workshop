@@ -120,7 +120,9 @@ $navbarDetached = ($navbarDetached ?? '');
                   @csrf
                   <button type="submit" class="dropdown-item" href="javascript:void(0);">
                     <i class='bx bx-power-off me-2'></i>
-                    <span class="align-middle">Log Out</span>
+                    <span class="align-middle">
+                      @lang("Log Out")
+                    </span>
                   </button>
                 </form>
               </li>

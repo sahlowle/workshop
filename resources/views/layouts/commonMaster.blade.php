@@ -6,7 +6,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
 
-  <title>@yield('title') | Sneat - HTML Laravel Free Admin Template </title>
+  <title>@yield('title') | Global Reparaturservice Ingenieurbetrieb  </title>
   <meta name="description" content="{{ config('variables.templateDescription') ? config('variables.templateDescription') : '' }}" />
   <meta name="keywords" content="{{ config('variables.templateKeyword') ? config('variables.templateKeyword') : '' }}">
   <!-- laravel CRUD token -->
@@ -18,12 +18,15 @@
 
   <!-- Include Styles -->
   @include('layouts/sections/styles')
+  
 
   <!-- Include Scripts for customizer, helper, analytics, config -->
   @include('layouts/sections/scriptsIncludes')
 </head>
 
 <body>
+<x-notify::notify />
+
   <!-- Layout Content -->
   @yield('layoutContent')
   <!--/ Layout Content -->

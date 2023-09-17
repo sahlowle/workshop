@@ -29,7 +29,11 @@ class UserController extends Controller
      */
     public function create()
     {
-        //
+        $data['users'] = User::paginate(10);
+
+        $data['title'] = __('Add New User');
+
+        return view('admin.users.create',$data);
     }
 
     /**
@@ -40,7 +44,20 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'name' => 'required|string|min:3',
+            'email' => 'required|email|unique:users,email',
+            'password' => 'required|string|min:6',
+        ]);
+
+        User::create($validated);
+
+        $message = trans('Successful Added');
+
+        notify()->success($message);
+
+
+        return redirect()->route('users.index');
     }
 
     /**
@@ -62,7 +79,11 @@ class UserController extends Controller
      */
     public function edit($id)
     {
-        //
+        $data['user'] = User::findOrFail($id);
+
+        $data['title'] = __('Edit User');
+
+        return view('admin.users.edit',$data);
     }
 
     /**
@@ -74,7 +95,22 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $validated = $request->validate([
+            'name' => 'nullable|string|min:3',
+            'email' => 'nullable|email|unique:users,email',
+            'password' => 'nullable|string|min:6',
+        ]);
+
+        $user = User::findOrFail($id);
+
+        $user->updated($validated);
+
+        $message = trans('Successful Updated');
+
+        notify()->success($message);
+
+
+        return redirect()->route('users.index');
     }
 
     /**

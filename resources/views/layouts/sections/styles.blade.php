@@ -19,3 +19,11 @@
 
 <!-- Page Styles -->
 @yield('page-style')
+
+@notifyCss
+
+<style>
+    .notify {
+        z-index: 9999;
+    }
+</style>

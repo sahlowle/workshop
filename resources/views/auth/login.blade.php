@@ -17,8 +17,11 @@
           <!-- Logo -->
           <div class="app-brand justify-content-center">
             <a href="{{url('/')}}" class="app-brand-link gap-2">
-              <span class="app-brand-logo demo">@include('_partials.macros',["width"=>25,"withbg"=>'#696cff'])</span>
-              <span class="app-brand-text demo text-body fw-bolder">{{config('variables.templateName')}}</span>
+              <span class="app-brand-logo demo">
+                <img src="{{ asset('assets/img/logo.png') }}" style="max-height: 55px">
+                {{-- @include('_partials.macros',["width"=>25,"withbg"=>'#696cff']) --}}
+              </span>
+              {{-- <span class="app-brand-text demo text-body fw-bolder">{{config('variables.templateName')}}</span> --}}
             </a>
           </div>
           <!-- /Logo -->
@@ -67,12 +70,7 @@
             </div>
           </form>
 
-          <p class="text-center">
-            <span>New on our platform?</span>
-            <a href="{{route('register')}}">
-              <span>Create an account</span>
-            </a>
-          </p>
+          <br>
         </div>
       </div>
     </div>
