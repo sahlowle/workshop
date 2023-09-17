@@ -95,15 +95,16 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $user = User::findOrFail($id);
+
         $validated = $request->validate([
             'name' => 'nullable|string|min:3',
-            'email' => 'nullable|email|unique:users,email',
+            'email' => 'nullable|email|unique:users,email,'.$id,
             'password' => 'nullable|string|min:6',
         ]);
 
-        $user = User::findOrFail($id);
 
-        $user->updated($validated);
+        $user->update($validated);
 
         $message = trans('Successful Updated');
 
@@ -121,6 +122,14 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $user = User::findOrFail($id);
+
+        $user->delete();
+
+        $message = trans('Successful Delete');
+
+        notify()->success($message);
+
+        return redirect()->route('users.index');
     }
 }

@@ -43,8 +43,8 @@
                 <button  class="dropdown-item" onclick="deleteForm()">
                     <i class="bx bx-trash me-1"></i>
                     @lang('Delete')
-                    <form id="deleteForm" action="{{ route('users.destroy',$item->id) }}" method="DELETE">
-                      <input type="hidden" name="_method" value="DELETE" />
+                    <form id="deleteForm" action="{{ route('users.destroy',$item->id) }}" method="POST">
+                      @method("DELETE")
                       @csrf
                   </form>
                 </button>
@@ -55,6 +55,9 @@
         @endforeach
       </tbody>
     </table>
+  </div>
+  <div class="m-3">
+    {{ $users ->links() }}
   </div>
 </div>
 <!--/ Hoverable Table rows -->
