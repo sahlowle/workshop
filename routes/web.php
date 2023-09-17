@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\Route;
 $controller_path = 'App\Http\Controllers';
 
 // Main Page Route
-Route::get('/', 'App\Http\Controllers\dashboard\Analytics@index')->name('dashboard-analytics');
+// Route::get('/', 'App\Http\Controllers\dashboard\Analytics@index')->name('dashboard-analytics');
 
 // layout
 Route::get('/layouts/without-menu', $controller_path . '\layouts\WithoutMenu@index')->name('layouts-without-menu');
@@ -82,7 +82,7 @@ Route::get('/tables/basic', $controller_path . '\tables\Basic@index')->name('tab
 
 Auth::routes();
 
-Route::get('/home',$controller_path . '\dashboard\Analytics@index')->name('home');
+// Route::get('/home',$controller_path . '\dashboard\Analytics@index')->name('home');
 
 Auth::routes();
 

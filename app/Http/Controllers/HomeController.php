@@ -23,7 +23,7 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('admin.home.index');
+        return view('content.dashboard.dashboards-analytics');
     }
 
     public function changeLang($locale)
