@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
 
-class UserController extends Controller
+class DriverController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,11 +15,11 @@ class UserController extends Controller
      */
     public function index()
     {
-        $data['users'] = User::admins()->paginate(10);
+        $data['users'] = User::drivers()->paginate(10);
 
-        $data['title'] = __('Users');
+        $data['title'] = trans('Drivers');
 
-        return view('admin.users.index',$data);
+        return view('admin.drivers.index',$data);
     }
 
     /**
@@ -29,9 +29,9 @@ class UserController extends Controller
      */
     public function create()
     {
-        $data['title'] = __('Add New User');
+        $data['title'] = trans('Add New Driver');
 
-        return view('admin.users.create',$data);
+        return view('admin.drivers.create',$data);
     }
 
     /**
@@ -46,9 +46,12 @@ class UserController extends Controller
             'name' => 'required|string|min:3',
             'email' => 'required|email|unique:users,email',
             'password' => 'required|string|min:6',
+            'phone' => 'required|string|min:9|max:10',
+            'address' => 'required|string|min:6',
+            'national_id' => 'required|string|min:10',
         ]);
 
-        $validated['type'] = 1;
+        $validated['type'] = 2;
 
         User::create($validated);
 
@@ -57,7 +60,7 @@ class UserController extends Controller
         notify()->success($message);
 
 
-        return redirect()->route('users.index');
+        return redirect()->route('drivers.index');
     }
 
     /**
@@ -81,9 +84,9 @@ class UserController extends Controller
     {
         $data['user'] = User::findOrFail($id);
 
-        $data['title'] = __('Edit User');
+        $data['title'] = trans('Edit Driver');
 
-        return view('admin.users.edit',$data);
+        return view('admin.drivers.edit',$data);
     }
 
     /**
@@ -101,6 +104,9 @@ class UserController extends Controller
             'name' => 'nullable|string|min:3',
             'email' => 'nullable|email|unique:users,email,'.$id,
             'password' => 'nullable|string|min:6',
+            'phone' => 'nullable|string|min:9|max:10',
+            'address' => 'nullable|string|min:6',
+            'national_id' => 'nullable|string|min:10',
         ]);
 
 
@@ -111,7 +117,7 @@ class UserController extends Controller
         notify()->success($message);
 
 
-        return redirect()->route('users.index');
+        return redirect()->route('drivers.index');
     }
 
     /**
@@ -130,6 +136,6 @@ class UserController extends Controller
 
         notify()->success($message);
 
-        return redirect()->route('users.index');
+        return redirect()->route('drivers.index');
     }
 }

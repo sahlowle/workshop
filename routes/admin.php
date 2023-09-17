@@ -1,9 +1,12 @@
 <?php
 
+use App\Http\Controllers\Admin\CustomerController;
+use App\Http\Controllers\Admin\DriverController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\HomeController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use SebastianBergmann\CodeCoverage\Driver\Driver;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,6 +24,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::resource('users', UserController::class);
+Route::resource('drivers', DriverController::class);
+Route::resource('customers', CustomerController::class);
 
 Route::get('/', [App\Http\Controllers\HomeController::class, 'index']);
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

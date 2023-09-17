@@ -10,9 +10,9 @@
 <script src="{{ asset(mix('assets/js/main.js')) }}"></script>
 
 <script>
-    function deleteForm() {
+    function deleteForm(id) {
       if (confirm('Sure?')) {
-        document.getElementById('deleteForm').submit();
+        document.getElementById(id).submit();
       }
     }
 </script>

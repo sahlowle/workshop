@@ -28,6 +28,24 @@
       </a>      
     </li>
 
+    <li @class(['menu-item', 'active' => request()->routeIs('customers*') ])>
+      <a href="{{ route('customers.index') }}" class="menu-link" >
+        
+        <i class='menu-icon bx bx-happy'></i>
+        
+        <div> @lang('Customers') </div>
+      </a>      
+    </li>
+
+    <li @class(['menu-item', 'active' => request()->routeIs('drivers*') ])>
+      <a href="{{ route('drivers.index') }}" class="menu-link" >
+        
+        <i class='menu-icon bx bxs-car'></i>
+        
+        <div> @lang('Drivers') </div>
+      </a>      
+    </li>
+
     <li @class(['menu-item', 'active' => request()->routeIs('users*') ])>
       <a href="{{ route('users.index') }}" class="menu-link" >
         

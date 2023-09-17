@@ -19,10 +19,8 @@ class User extends Authenticatable
      *
      * @var array<int, string>
      */
-    protected $fillable = [
-        'name',
-        'email',
-        'password',
+    protected $guarded = [
+        'id'
     ];
 
     /**
@@ -44,10 +42,15 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    protected function password(): Attribute
+    public function scopeAdmins($query)
     {
-        return Attribute::make(
-            set: fn ($value) => Hash::make($value),
-        );
+        return $query->where('type',1);
     }
+
+    public function scopeDrivers($query)
+    {
+        return $query->where('type',2);
+    }
+
+    
 }

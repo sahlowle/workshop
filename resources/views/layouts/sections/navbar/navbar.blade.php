@@ -103,15 +103,7 @@ $navbarDetached = ($navbarDetached ?? '');
                   <span class="align-middle">Settings</span>
                 </a>
               </li>
-              <li>
-                <a class="dropdown-item" href="javascript:void(0);">
-                  <span class="d-flex align-items-center align-middle">
-                    <i class="flex-shrink-0 bx bx-credit-card me-2 pe-1"></i>
-                    <span class="flex-grow-1 align-middle">Billing</span>
-                    <span class="flex-shrink-0 badge badge-center rounded-pill bg-danger w-px-20 h-px-20">4</span>
-                  </span>
-                </a>
-              </li>
+              
               <li>
                 <div class="dropdown-divider"></div>
               </li>
