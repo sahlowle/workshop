@@ -28,6 +28,24 @@
       </a>      
     </li>
 
+    <li @class(['menu-item', 'active' => request()->routeIs('roads*') ])>
+      <a href="{{ route('roads.index') }}" class="menu-link" >
+        
+        <i class='menu-icon bx bx-map-alt'></i>
+        
+        <div> @lang('Routes') </div>
+      </a>      
+    </li>
+
+    <li @class(['menu-item', 'active' => request()->routeIs('orders*') ])>
+      <a href="{{ route('orders.index') }}" class="menu-link" >
+        
+        <i class='menu-icon bx bxs-calendar-check'></i>
+        
+        <div> @lang('Orders') </div>
+      </a>      
+    </li>
+
     <li @class(['menu-item', 'active' => request()->routeIs('customers*') ])>
       <a href="{{ route('customers.index') }}" class="menu-link" >
         
