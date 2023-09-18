@@ -112,11 +112,7 @@ class RoadController extends Controller
 
         $validated = $request->validate([
             'name' => 'nullable|string|min:3',
-            'email' => 'nullable|email|unique:users,email,'.$id,
-            'password' => 'nullable|string|min:6',
-            'phone' => 'nullable|string|min:9|max:10',
-            'address' => 'nullable|string|min:6',
-            'national_id' => 'nullable|string|min:10',
+            'driver_id' => 'nullable|exists:users,id',
         ]);
 
 

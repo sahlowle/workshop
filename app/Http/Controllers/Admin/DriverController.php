@@ -46,7 +46,7 @@ class DriverController extends Controller
             'name' => 'required|string|min:3',
             'email' => 'required|email|unique:users,email',
             'password' => 'required|string|min:6',
-            'phone' => 'required|string|min:9|max:10',
+            'phone' => 'required|unique:users',
             'address' => 'required|string|min:6',
             'national_id' => 'required|string|min:10',
         ]);
@@ -104,7 +104,7 @@ class DriverController extends Controller
             'name' => 'nullable|string|min:3',
             'email' => 'nullable|email|unique:users,email,'.$id,
             'password' => 'nullable|string|min:6',
-            'phone' => 'nullable|string|min:9|max:10',
+            'phone' => 'nullable|unique:users',
             'address' => 'nullable|string|min:6',
             'national_id' => 'nullable|string|min:10',
         ]);
