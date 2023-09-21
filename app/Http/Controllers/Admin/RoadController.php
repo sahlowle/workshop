@@ -23,7 +23,7 @@ class RoadController extends Controller
             $query->where('reference_no',$request->reference_no);
         }
 
-        $data['data'] = $query->with('driver')->latest('id')->paginate(10);
+        $data['data'] = $query->with('driver')->latest('id')->paginate(4);
 
         $data['title'] = trans('Routes');
 
