@@ -8,9 +8,9 @@
     <div class="col-6">
 
       <div class="mb-3">
-        <label class=" col-form-label" for="basic-default-company">@lang("Route")</label>
+        <label class=" col-form-label" for="basic-default-name">@lang("Address")</label>
         <div class="col-sm-10">
-          {!! Form::select('road_id',$roads, null, ['required','class' => 'select2 form-control']) !!}
+          {!! Form::text('address', null, ['required','class' => 'form-control','placeholder'=> trans("Address")]) !!}
         </div>
       </div>
 
@@ -20,26 +20,34 @@
           {!! Form::select('customer_id',$customers, null, ['required','class' => 'select2 form-control']) !!}
         </div>
       </div>
-      
-    </div>
-
-    <div class="col-6">
 
       <div class="mb-3">
-        <label class=" col-form-label" for="basic-default-name">@lang("Address")</label>
+        <label class=" col-form-label" for="basic-default-company">@lang("Status")</label>
         <div class="col-sm-10">
-          {!! Form::text('address', null, ['required','class' => 'form-control','placeholder'=> trans("Address")]) !!}
+          {!! Form::select('status',orderStatus(), null, ['required','class' => 'select2 form-control']) !!}
         </div>
       </div>
+
+
+    </div>
+    
+    <div class="col-6">
+
+      {{-- <div class="mb-3">
+        <label class=" col-form-label" for="basic-default-company">@lang("Route")</label>
+        <div class="col-sm-10">
+          {!! Form::select('road_id',$roads, null, ['required','class' => 'select2 form-control']) !!}
+        </div>
+      </div> --}}
 
       <div class="mb-3">
         <label class=" col-form-label" for="basic-default-name">@lang("Description")</label>
         <div class="col-sm-10">
-          {!! Form::textarea('description', null, ['required','class' => 'form-control','placeholder'=> trans("Description")]) !!}
+          {!! Form::textarea('description', null, ['required','rows'=>8,'class' => 'form-control','placeholder'=> trans("Description")]) !!}
         </div>
       </div>
-
-
+      
+      
     </div>
     
 

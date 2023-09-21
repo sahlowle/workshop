@@ -17,7 +17,7 @@ class UserController extends Controller
     {
         $data['users'] = User::admins()->paginate(10);
 
-        $data['title'] = __('Users');
+        $data['title'] = __('Admins');
 
         return view('admin.users.index',$data);
     }
@@ -29,7 +29,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        $data['title'] = __('Add New User');
+        $data['title'] = __('Add New Admin');
 
         return view('admin.users.create',$data);
     }
@@ -81,7 +81,7 @@ class UserController extends Controller
     {
         $data['user'] = User::findOrFail($id);
 
-        $data['title'] = __('Edit User');
+        $data['title'] = __('Edit Admin');
 
         return view('admin.users.edit',$data);
     }

@@ -1,5 +1,10 @@
 {
     "x": "",
+    "Description": "Description",
+    "Technician": "Technician",
+    "Edit Admin": "Edit Admin",
+    "Add New Admin": "Add New Admin",
+    "Admins": "Admins",
     "Pending": "Pending",
     "On Progress": "On Progress",
     "Finished": "Finished",

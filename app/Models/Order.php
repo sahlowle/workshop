@@ -13,12 +13,18 @@ class Order extends Model
         'id'
     ];
 
+    protected $appends = [
+        'stats_name'
+    ];
+
     protected $casts = [
         'is_paid' => 'boolean',
     ];
 
-    public function getStatusAttribute($value)
+    public function getStatusNameAttribute()
     {
+        $value = $this->status;
+        
         return match ((int)$value) {
              1 => trans("Pending") ,
              2 => trans("On Progress") ,
@@ -38,9 +44,10 @@ class Order extends Model
 
     protected static function booted()
     {
-        static::creating(function ($road) {
-            $road->reference_no = 'OF-' . date("Ymd") . '-' . date("his");
-            $road->create_by = auth()->user()->id; 
+        static::creating(function ($order) {
+            // $order->reference_no = 'OF-' . date("Ymd") . '-' . date("his");
+            $order->reference_no = referenceNo('OF');
+            $order->create_by = auth()->user()->id; 
         });
     }
 }

@@ -44,7 +44,7 @@ class DriverController extends Controller
     {
         $validated = $request->validate([
             'name' => 'required|string|min:3',
-            'email' => 'required|email|unique:users,email',
+            'email' => 'nullable|email|unique:users,email',
             'password' => 'required|string|min:6',
             'phone' => 'required|unique:users',
             'address' => 'required|string|min:6',

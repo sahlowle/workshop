@@ -16,6 +16,8 @@ use Illuminate\Support\Facades\Route;
 
 $controller_path = 'App\Http\Controllers';
 
+Route::redirect('/', '/admin');
+
 // Main Page Route
 // Route::get('/', 'App\Http\Controllers\dashboard\Analytics@index')->name('dashboard-analytics');
 

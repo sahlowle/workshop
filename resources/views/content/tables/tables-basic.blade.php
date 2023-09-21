@@ -1202,7 +1202,7 @@
 <div class="card">
   <h5 class="card-header">Hoverable rows</h5>
   <div class="table-responsive text-nowrap">
-    <table class="table table-hover">
+    <table class="table table-hover datatable">
       <thead>
         <tr>
           <th>Project</th>

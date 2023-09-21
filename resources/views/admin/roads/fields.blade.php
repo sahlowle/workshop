@@ -1,21 +1,21 @@
 <div class="col-xxl">
     <div class="card mb-4">
       <div class="card-header d-flex align-items-center justify-content-between">
-        <h5 class="mb-0">{{ $title }} </h5>
+        <h5 class="mb-0"> @lang('Route Details') </h5>
       </div>
       <div class="card-body">
-    
-          <div class="row mb-3">
-            <label class="col-sm-2 col-form-label" for="basic-default-name">@lang("Name")</label>
-            <div class="col-sm-10">
-                {!! Form::text('name', null,  ['required','class' => 'form-control','placeholder'=>  trans("Name")]) !!}
-            </div>
-          </div>
 
-          <div class="row mb-3">
+          <div class="row mb-3 mt-3">
             <label class="col-sm-2 col-form-label" for="basic-default-company">@lang("Driver")</label>
             <div class="col-sm-10">
                 {!! Form::select('driver_id',$drivers, null, ['required','class' => 'select2 form-control']) !!}
+          </div>
+
+          <div class="row mt-4">
+            <label class="col-sm-2 col-form-label" for="basic-default-name">@lang("Description")</label>
+            <div class="col-sm-10">
+                {!! Form::textarea('description', null,  ['required','rows'=>3,'class' => 'form-control','placeholder'=>  trans("Description")]) !!}
+            </div>
           </div>
           
           <div class="row justify-content-end">

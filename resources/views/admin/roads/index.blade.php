@@ -15,13 +15,12 @@
 <!-- Hoverable Table rows -->
 <div class="card">
   <h5 class="card-header"> @lang('Users') </h5>
-  <div class="table-responsive text-nowrap">
-    <table class="table table-hover">
+  <div class="table-responsive text-nowrap p-4">
+    <table class="table table-hover datatable">
       <thead>
         <tr>
           <th>#</th>
           <th> @lang("Refrence No") </th>
-          <th> @lang("Name") </th>
           <th> @lang("Driver") </th>
           <th> @lang("Actions") </th>
         </tr>
@@ -31,7 +30,6 @@
         <tr>
           <td> {{ $loop->index + 1 }}  </td>
           <td> {{ $item->reference_no }}  </td>
-          <td> {{ $item->name }}  </td>
           <td> {{ $item->driver->name }}  </td>
           <td>
             <a class="btn btn-outline-primary pl-1" href="{{ route('roads.show',$item->id) }}">

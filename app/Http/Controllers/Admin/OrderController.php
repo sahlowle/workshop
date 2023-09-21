@@ -40,7 +40,7 @@ class OrderController extends Controller
     {
         $data['title'] = trans('Add New Order');
 
-        $data['customers'] = Customer::pluck('name','id');
+        $data['customers'] = Customer::select('name','id')->pluck('name','id');
 
         $data['customers']->prepend(trans('Select..'),'');
 
@@ -60,15 +60,16 @@ class OrderController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'description' => 'required|string|min:5',
+            'status' => 'required|numeric|max:4',
+            'description' => 'required|string|min:5|max:250',
             'address' => 'required|string|min:3',
             'customer_id' => 'required|exists:customers,id',
-            'road_id' => 'required|exists:roads,id',
-            'lat' => 'required',
-            'lng' => 'required',
+            // 'road_id' => 'required|exists:roads,id',
+            'lat' => 'required|string|max:100',
+            'lng' => 'required|string|max:100',
         ]);
 
-        // return $request->all();
+        return $request->all();
 
         Order::create($validated);
 
@@ -102,7 +103,7 @@ class OrderController extends Controller
 
         $data['title'] = trans('Edit Order');
 
-        $data['customers'] = Customer::pluck('name','id');
+        $data['customers'] = Customer::select('name','id')->pluck('name','id');
 
         $data['customers']->prepend(trans('Select..'),'');
 
@@ -125,14 +126,16 @@ class OrderController extends Controller
         $order = Order::findOrFail($id);
 
         $validated = $request->validate([
-            'description' => 'nullable|string|min:5',
+            'status' => 'nullable|numeric|max:4',
+            'description' => 'nullable|string|min:5|max:250',
             'address' => 'nullable|string|min:3',
             'customer_id' => 'nullable|exists:customers,id',
-            'road_id' => 'nullable|exists:roads,id',
-            'lat' => 'nullable',
-            'lng' => 'nullable',
+            // 'road_id' => 'required|exists:roads,id',
+            'lat' => 'nullable|string|max:100',
+            'lng' => 'nullable|string|max:100',
         ]);
 
+        // return $validated;
 
         $order->update($validated);
 

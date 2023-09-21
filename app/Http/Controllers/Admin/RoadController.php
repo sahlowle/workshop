@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Order;
 use App\Models\Road;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -38,7 +39,9 @@ class RoadController extends Controller
     {
         $data['title'] = trans('Add New Route');
 
-        $data['drivers'] = User::drivers()->pluck('name','id');
+        $data['orders'] = Order::latest('id')->whereNull('road_id')->get();
+
+        $data['drivers'] = User::drivers()->select('name','id')->pluck('name','id');
 
         $data['drivers']->prepend(trans('Select..'),'');
 
@@ -54,12 +57,14 @@ class RoadController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'name' => 'required|string|min:3',
+            'description' => 'required|string|min:3|max:250',
             'driver_id' => 'required|exists:users,id',
+            'orders' => 'required|array',
         ]);
 
+        $road = Road::create($validated);
 
-        Road::create($validated);
+        Order::whereIn('id',$request->orders)->update(['road_id' => $road->id]);
 
         $message = trans('Successful Added');
 
@@ -90,9 +95,15 @@ class RoadController extends Controller
     {
         $data['road'] = Road::findOrFail($id);
 
+        $myOrders = $data['road']->orders()->pluck('id');
+
+        $data['myOrders'] = $myOrders;
+
+        $data['orders'] = Order::latest('id')->whereNull('road_id')->orWhere('road_id',$id)->get();
+
         $data['title'] = trans('Edit Route');
 
-        $data['drivers'] = User::drivers()->pluck('name','id');
+        $data['drivers'] = User::drivers()->select('name','id')->pluck('name','id');
 
         $data['drivers']->prepend(trans('Select..'),'');
 
@@ -111,12 +122,19 @@ class RoadController extends Controller
         $road = Road::findOrFail($id);
 
         $validated = $request->validate([
-            'name' => 'nullable|string|min:3',
+            'description' => 'nullable|string|min:3|max:250',
             'driver_id' => 'nullable|exists:users,id',
+            'orders' => 'nullable|array',
         ]);
 
+        $road->orders()->update(['road_id'=>null]);
 
         $road->update($validated);
+
+        if ($request->filled('orders')) {
+            Order::whereIn('id',$request->orders)->update(['road_id' => $road->id]);
+        }
+
 
         $message = trans('Successful Updated');
 
@@ -134,9 +152,11 @@ class RoadController extends Controller
      */
     public function destroy($id)
     {
-        $user = Road::findOrFail($id);
+        $road = Road::findOrFail($id);
 
-        $user->delete();
+        $road->orders()->update(['road_id'=>null]);
+        
+        $road->delete();
 
         $message = trans('Successful Delete');
 

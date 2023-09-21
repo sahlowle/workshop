@@ -15,8 +15,8 @@
 <!-- Hoverable Table rows -->
 <div class="card">
   <h5 class="card-header"> @lang('Users') </h5>
-  <div class="table-responsive text-nowrap">
-    <table class="table table-hover">
+  <div class="table-responsive text-nowrap p-4">
+    <table class="table table-hover datatable">
       <thead>
         <tr>
           <th>#</th>
@@ -32,7 +32,7 @@
           <td> {{ $loop->index + 1 }}  </td>
           <td> {{ $item->reference_no }}  </td>
           <td> {{ $item->customer->name }}  </td>
-          <td> {{ $item->status }}  </td>
+          <td> {{ $item->status_name }}  </td>
           <td>
             <a class="btn btn-outline-primary pl-1" href="{{ route('orders.show',$item->id) }}">
               <i class='bx bx-show' style="font-size: 1.2rem"></i>

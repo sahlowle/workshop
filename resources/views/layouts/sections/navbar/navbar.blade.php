@@ -44,11 +44,34 @@ $navbarDetached = ($navbarDetached ?? '');
         </div>
         <!-- /Search -->
         <ul class="navbar-nav flex-row align-items-center ms-auto">
-
-          <li class="nav-item navbar-dropdown dropdown-user dropdown p-4">
+          <li class="nav-item navbar-dropdown dropdown-language dropdown me-2 me-xl-0 p-4">
             <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown">
-              <i class='bx bxs-message-square-dots'></i> @lang("EN")
+              <i class="bx bx-globe bx-sm"></i>
+              {{ str()->upper(app()->getLocale()) }}
             </a>
+            
+            <ul class="dropdown-menu dropdown-menu-end">
+              
+              <li>
+                <a class="dropdown-item" href="{{ route('change-lang','en') }}">
+                  <span class="align-middle"> @lang("English")</span>
+                </a>
+              </li>
+              <li>
+                <a class="dropdown-item" href="{{ route('change-lang','de') }}">
+                  <span class="align-middle"> @lang("German")</span>
+                </a>
+              </li>
+            </ul>
+           
+          </li>
+
+          <li class="nav-item navbar-dropdown dropdown-language dropdown me-2 me-xl-0 ">
+            <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown">
+              <i class="bx bx-bell bx-sm"></i>
+              <span class="badge bg-danger rounded-pill badge-notifications"> 5 </span>
+            </a>
+            
             <ul class="dropdown-menu dropdown-menu-end">
               
               <li>

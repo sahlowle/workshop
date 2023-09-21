@@ -1,7 +1,7 @@
 <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
 
   <!-- ! Hide app brand if navbar-full -->
-  <div class="app-brand demo">
+  <div class="app-brand demo mb-4">
     <a href="{{url('/')}}" class="app-brand-link">
       <span class="app-brand-logo demo">
         <img src="{{ asset('assets/img/logo.png') }}" style="max-height: 55px">
@@ -19,7 +19,7 @@
 
   <ul class="menu-inner py-1">
     
-    <li @class(['menu-item', 'active' => request()->routeIs('home') ])>
+    <li @class(['menu-item', 'active' => (request()->routeIs('home') || request()->routeIs('index')) ])>
       <a href="{{ route('home') }}" class="menu-link" >
         
         <i class="menu-icon tf-icons bx bx-home-circle"></i>
@@ -60,7 +60,7 @@
         
         <i class='menu-icon bx bxs-car'></i>
         
-        <div> @lang('Drivers') </div>
+        <div> @lang('Technician') </div>
       </a>      
     </li>
 
@@ -69,7 +69,7 @@
         
         <i class="menu-icon tf-icons bx bx-user-circle"></i>
         
-        <div> @lang('Users') </div>
+        <div> @lang('Admins') </div>
       </a>      
     </li>
   

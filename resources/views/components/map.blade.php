@@ -61,8 +61,8 @@
          <input id="pac-input" class="controls form-control" type="text" placeholder="Search Here...">
         <div id="googleMap" style="border: solid 3px black; width:100%;height:400px;"></div>
 
-        <input name="lng" type="hidden" id="lng">
-        <input name="lat" type="hidden" id="lat">
+        <input name="lng" type="hidden" id="lng" value="{{ $lat }}">
+        <input name="lat" type="hidden" id="lat" value="{{ $lat }}">
         
     </div>
 </div>

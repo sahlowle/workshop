@@ -14,6 +14,12 @@ class Road extends Model
     ];
 
     
+    public function orders()
+    {
+        return $this->hasMany(Order::class, 'road_id');
+    }
+
+    
     public function driver()
     {
         return $this->belongsTo(User::class, 'driver_id')->withDefault([
@@ -24,7 +30,8 @@ class Road extends Model
     protected static function booted()
     {
         static::creating(function ($road) {
-            $road->reference_no = 'RF-' . date("Ymd") . '-' . date("his");
+            // $road->reference_no = 'RF-' . date("Ymd") . '-' . date("his");
+            $road->reference_no = referenceNo('RF');
             $road->create_by = auth()->user()->id; 
         });
     }

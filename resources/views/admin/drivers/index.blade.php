@@ -15,14 +15,14 @@
 <!-- Hoverable Table rows -->
 <div class="card">
   <h5 class="card-header"> @lang('Users') </h5>
-  <div class="table-responsive text-nowrap">
-    <table class="table table-hover">
+  <div class="table-responsive text-nowrap p-4">
+    <table class="table table-hover datatable">
       <thead>
         <tr>
           <th>#</th>
-          <th> @lang("Image") </th>
+          {{-- <th> @lang("Image") </th> --}}
           <th> @lang("Name") </th>
-          <th> @lang("Email") </th>
+          <th> @lang("Phone") </th>
           <th> @lang("Actions") </th>
         </tr>
       </thead>
@@ -30,13 +30,13 @@
         @foreach ($users as $item)
         <tr>
           <td> {{ $loop->index + 1 }}  </td>
-          <td>
+          {{-- <td>
             <div class="avatar">
               <img src="https://demos.themeselection.com/sneat-bootstrap-html-laravel-admin-template/demo/assets/img/avatars/1.png" alt="Avatar">
             </div>
-          </td>
+          </td> --}}
           <td> {{ $item->name }}  </td>
-          <td> {{ $item->email }}  </td>
+          <td> {{ $item->phone }}  </td>
           <td>
             <div class="dropdown">
               <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown"><i class="bx bx-dots-vertical-rounded"></i></button>
