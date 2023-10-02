@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Api\ApiAdminController;
+use App\Http\Controllers\Api\ApiDriverController;
 use App\Http\Controllers\Api\AuthController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -16,7 +18,7 @@ Route::post('login',[AuthController::class,'login']);
 | Application Routes
 |--------------------------------------------------------------------------
 */
-Route::middleware(['auth:sanctum'])->group(function () {
+Route::middleware(['auth:sanctum','role:admin'])->group(function () {
     //admins routes
     Route::apiResource('admins',ApiAdminController::class);
 
