@@ -69,13 +69,13 @@ class OrderController extends Controller
             'lng' => 'required|string|max:100',
         ]);
 
-        return $request->all();
+        // return $request->all();
 
         Order::create($validated);
 
         $message = trans('Successful Added');
 
-        notify()->success($message);
+       notify()->success($message); 
 
         return redirect()->route('orders.index');
     }
