@@ -35,7 +35,15 @@ class ApiAdminController extends Controller
     */
     public function store(StoreAdminRequest $request)
     {
-        //
+        $data = $request->validated();
+
+        $data['type'] = 1;
+
+        $user = User::create($data);
+
+        $message = trans('Successful Added');
+
+        return $this->sendResponse(true,$user,$message,200);
     }
 
     /*
@@ -50,6 +58,10 @@ class ApiAdminController extends Controller
         if (is_null($data)) {
             return $this->sendResponse(false,[],trans('Not Found'),404);
         }
+
+        $message = trans('Successful Retrieved');
+
+        return $this->sendResponse(true,$data,$message,200);
     }
 
     /*
@@ -59,11 +71,19 @@ class ApiAdminController extends Controller
     */
     public function update(UpdateAdminRequest $request, $id)
     {
-        $data =  User::admins()->find($id);
+        $user =  User::admins()->find($id);
         
-        if (is_null($data)) {
+        if (is_null($user)) {
             return $this->sendResponse(false,[],trans('Not Found'),404);
         }
+
+        $data = $request->validated();
+
+        $user->update($data);
+    
+        $message = trans('Successful Updated');
+
+        return $this->sendResponse(true,$user,$message,200);
     }
 
     /*
@@ -73,11 +93,17 @@ class ApiAdminController extends Controller
     */
     public function destroy($id)
     {
-        $data =  User::admins()->find($id);
+        $user =  User::admins()->find($id);
         
-        if (is_null($data)) {
+        if (is_null($user)) {
             return $this->sendResponse(false,[],trans('Not Found'),404);
         }
-        
+
+        $user->delete();
+    
+        $message = trans('Successful Delete');
+
+        return $this->sendResponse(true,$user,$message,200);
+
     }
 }

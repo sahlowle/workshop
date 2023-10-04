@@ -52,5 +52,14 @@ class User extends Authenticatable
         return $query->where('type',2);
     }
 
+    public function setPasswordAttribute($password)
+    {
+        if (Hash::needsRehash($password)) {
+            $this->attributes['password'] = Hash::make($password);
+        } else {
+            $this->attributes['password'] = $password;
+        }
+    }
+
     
 }

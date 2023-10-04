@@ -3,6 +3,8 @@
 namespace App\Http\Requests\Api;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Contracts\Validation\Validator;
+use Illuminate\Http\Exceptions\HttpResponseException;
 
 class UpdateAdminRequest extends FormRequest
 {
@@ -13,7 +15,7 @@ class UpdateAdminRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +26,25 @@ class UpdateAdminRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'name' => ['nullable', 'string','min:3','max:80'],
+            // 'email' => ['nullable','email','unique:users,email','string','max:120'],
+            'password' => ['nullable','string','min:6','max:30'],
         ];
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Customize Failed Response 
+    |--------------------------------------------------------------------------
+    */
+    public function failedValidation(Validator $validator)
+    {
+        throw new HttpResponseException(response()->json([
+            'status' => false,
+            'message' => "The given data was invalid.",
+            'data' => $validator->errors(),
+            'code' => 422,
+        ], 
+        422));
     }
 }
