@@ -3,62 +3,107 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Api\StoreDriverRequest;
+use App\Http\Requests\Api\UpdateDriverRequest;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class ApiDriverController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+    /*
+    |--------------------------------------------------------------------------
+    | get list
+    |--------------------------------------------------------------------------
+    */
+    public function index(Request $request)
     {
-        //
+        $query = User::query()->drivers();
+
+        $per_page = $request->filled('per_page') ? $request->per_page : 10;
+        
+        $data = $query->paginate($per_page);
+
+        $message = trans('Successful Retrieved');
+        
+        return $this->paginationResponse(true,$data,$message,200);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+    /*
+    |--------------------------------------------------------------------------
+    | add new
+    |--------------------------------------------------------------------------
+    */
+    public function store(StoreDriverRequest $request)
     {
-        //
+        $data = $request->validated();
+
+        $data['type'] = 2;
+
+        $user = User::create($data);
+
+        $message = trans('Successful Added');
+
+        return $this->sendResponse(true,$user,$message,200);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+    /*
+    |--------------------------------------------------------------------------
+    | show item
+    |--------------------------------------------------------------------------
+    */
     public function show($id)
     {
-        //
+        $data =  User::drivers()->find($id);
+        
+        if (is_null($data)) {
+            return $this->sendResponse(false,[],trans('Not Found'),404);
+        }
+
+        $message = trans('Successful Retrieved');
+
+        return $this->sendResponse(true,$data,$message,200);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
+    /*
+    |--------------------------------------------------------------------------
+    | update item
+    |--------------------------------------------------------------------------
+    */
+    public function update(UpdateDriverRequest $request, $id)
     {
-        //
+        $user =  User::drivers()->find($id);
+        
+        if (is_null($user)) {
+            return $this->sendResponse(false,[],trans('Not Found'),404);
+        }
+
+        $data = $request->validated();
+
+        $user->update($data);
+    
+        $message = trans('Successful Updated');
+
+        return $this->sendResponse(true,$user,$message,200);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+    /*
+    |--------------------------------------------------------------------------
+    | delete item
+    |--------------------------------------------------------------------------
+    */
     public function destroy($id)
     {
-        //
+        $user =  User::drivers()->find($id);
+        
+        if (is_null($user)) {
+            return $this->sendResponse(false,[],trans('Not Found'),404);
+        }
+
+        $user->delete();
+    
+        $message = trans('Successful Delete');
+
+        return $this->sendResponse(true,$user,$message,200);
+
     }
 }
