@@ -1,10 +1,20 @@
 <?php
 
 use App\Http\Controllers\Api\ApiAdminController;
+use App\Http\Controllers\Api\ApiCustomerController;
 use App\Http\Controllers\Api\ApiDriverController;
 use App\Http\Controllers\Api\AuthController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+
+/*
+|--------------------------------------------------------------------------
+| API DOCS:
+|--------------------------------------------------------------------------
+| https://documenter.getpostman.com/view/4438633/2s9YJaYj19
+|--------------------------------------------------------------------------
+*/
+
 
 /*
 |--------------------------------------------------------------------------
@@ -24,6 +34,9 @@ Route::middleware(['auth:sanctum','role:admin'])->group(function () {
 
     //drivers routes
     Route::apiResource('drivers',ApiDriverController::class);
+
+    //customers routes
+    Route::apiResource('customers',ApiCustomerController::class);
 });
 
 
