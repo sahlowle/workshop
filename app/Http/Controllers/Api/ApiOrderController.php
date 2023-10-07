@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Api\StoreCustomerRequest;
-use App\Http\Requests\Api\UpdateCustomerRequest;
+use App\Http\Requests\Api\StoreOrderRequest;
+use App\Http\Requests\Api\UpdateOrderRequest;
 use App\Models\Customer;
 use App\Models\Order;
 use Illuminate\Http\Request;
@@ -34,11 +34,13 @@ class ApiOrderController extends Controller
     | add new
     |--------------------------------------------------------------------------
     */
-    public function store(StoreCustomerRequest $request)
+    public function store(StoreOrderRequest $request)
     {
         $data = $request->validated();
 
-        $user = Customer::create($data);
+        $data['status'] = 1; // pending
+
+        $user = Order::create($data);
 
         $message = trans('Successful Added');
 
@@ -52,7 +54,7 @@ class ApiOrderController extends Controller
     */
     public function show($id)
     {
-        $data =  Customer::find($id);
+        $data =  Order::with('customer')->find($id);
         
         if (is_null($data)) {
             return $this->sendResponse(false,[],trans('Not Found'),404);
@@ -68,21 +70,21 @@ class ApiOrderController extends Controller
     | update item
     |--------------------------------------------------------------------------
     */
-    public function update(UpdateCustomerRequest $request, $id)
+    public function update(UpdateOrderRequest $request, $id)
     {
-        $user =  Customer::find($id);
+        $order =  Order::find($id);
         
-        if (is_null($user)) {
+        if (is_null($order)) {
             return $this->sendResponse(false,[],trans('Not Found'),404);
         }
 
         $data = $request->validated();
 
-        $user->update($data);
+        $order->update($data);
     
         $message = trans('Successful Updated');
 
-        return $this->sendResponse(true,$user,$message,200);
+        return $this->sendResponse(true,$order,$message,200);
     }
 
     /*
@@ -92,17 +94,17 @@ class ApiOrderController extends Controller
     */
     public function destroy($id)
     {
-        $user =  Customer::find($id);
+        $order =  Order::find($id);
         
-        if (is_null($user)) {
+        if (is_null($order)) {
             return $this->sendResponse(false,[],trans('Not Found'),404);
         }
 
-        $user->delete();
+        $order->delete();
     
         $message = trans('Successful Delete');
 
-        return $this->sendResponse(true,$user,$message,200);
+        return $this->sendResponse(true,$order,$message,200);
 
     }
 }
