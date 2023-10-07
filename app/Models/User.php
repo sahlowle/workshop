@@ -23,6 +23,10 @@ class User extends Authenticatable
         'id'
     ];
 
+    protected $appends = [
+        'role'
+    ];
+
     /**
      * The attributes that should be hidden for serialization.
      *
@@ -59,6 +63,21 @@ class User extends Authenticatable
         } else {
             $this->attributes['password'] = $password;
         }
+    }
+
+    public function getRoleAttribute()
+    {
+        $type = (int)$this->type;
+
+        if ($type == 1) {
+            return 'admin';
+        }
+
+        if ($type == 2) {
+            return 'driver';
+        }
+
+        return 'other';
     }
 
     

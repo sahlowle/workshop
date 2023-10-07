@@ -16,18 +16,18 @@ class HasRole
      */
     public function handle($request, Closure $next, $role)
     {
-        $type = 0;
+        // $type = 0;
 
-        switch ($role) {
-            case 'admin':
-                $type = 1;
-            break;
-            case 'driver':
-                $type = 2;
-            break;
-        }
+        // switch ($role) {
+        //     case 'admin':
+        //         $type = 1;
+        //     break;
+        //     case 'driver':
+        //         $type = 2;
+        //     break;
+        // }
 
-        if ($request->user()->type == $type) { 
+        if ($request->user()->role == $role) { 
             return $next($request);
         }
 

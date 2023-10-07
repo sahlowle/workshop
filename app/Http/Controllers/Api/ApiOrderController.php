@@ -6,9 +6,10 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\StoreCustomerRequest;
 use App\Http\Requests\Api\UpdateCustomerRequest;
 use App\Models\Customer;
+use App\Models\Order;
 use Illuminate\Http\Request;
 
-class ApiCustomerController extends Controller
+class ApiOrderController extends Controller
 {
     /*
     |--------------------------------------------------------------------------
@@ -17,11 +18,11 @@ class ApiCustomerController extends Controller
     */
     public function index(Request $request)
     {
-        $query = Customer::query();
+        $query = Order::query();
 
         $per_page = $request->filled('per_page') ? $request->per_page : 10;
         
-        $data = $query->paginate($per_page);
+        $data = $query->latest('id')->paginate($per_page);
 
         $message = trans('Successful Retrieved');
         

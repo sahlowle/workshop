@@ -14,7 +14,7 @@ class Order extends Model
     ];
 
     protected $appends = [
-        'stats_name'
+        'status_name'
     ];
 
     protected $casts = [

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\UserController;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,6 +14,13 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
+
+Route::get('optimize',function() {
+    
+    Artisan::call('optimize');
+    return "<h1> Cached Successful </h1>";
+    
+});
 
 $controller_path = 'App\Http\Controllers';
 
