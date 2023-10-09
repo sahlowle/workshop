@@ -28,7 +28,7 @@ class ApiRoadController extends Controller
 
         $per_page = $request->filled('per_page') ? $request->per_page : 10;
         
-        $data = $query->latest('id')->paginate($per_page);
+        $data = $query->with(['driver'])->latest('id')->paginate($per_page);
 
         $message = trans('Successful Retrieved');
         
@@ -60,7 +60,7 @@ class ApiRoadController extends Controller
     */
     public function show($id)
     {
-        $data = Road::with(['orders'])->find($id);
+        $data = Road::with(['driver','orders'])->find($id);
         
         if (is_null($data)) {
             return $this->sendResponse(false,[],trans('Not Found'),404);

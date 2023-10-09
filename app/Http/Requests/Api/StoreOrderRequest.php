@@ -33,7 +33,7 @@ class StoreOrderRequest extends FormRequest
             'customer_id' => ['required','exists:customers,id'],
             'amount' => ['nullable','numeric'],
             'is_visit' => ['nullable','boolean'],
-            'order_id' => ['required_if:is_visit,true','exists:orders,id'],
+            'first_visit_id' => ['required_if:is_visit,true','exists:orders,id'],
         ];
     }
 

@@ -13,6 +13,22 @@ class Road extends Model
         'id'
     ];
 
+    protected $appends = [
+        'status_name'
+    ];
+
+    public function getStatusNameAttribute()
+    {
+        $value = $this->status;
+        
+        return match ((int)$value) {
+             1 => trans("Pending") ,
+             2 => trans("Assigned To Driver") ,
+             3 => trans("Finished") ,
+             default => trans("Pending") ,
+        };
+    }
+
     
     public function orders()
     {
