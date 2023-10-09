@@ -3,12 +3,13 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Api\StoreDriverRequest;
-use App\Http\Requests\Api\UpdateDriverRequest;
-use App\Models\User;
+use App\Http\Requests\Api\StoreRoadRequest;
+use App\Http\Requests\Api\UpdateRoadRequest;
+use App\Models\Order;
+use App\Models\Road;
 use Illuminate\Http\Request;
 
-class ApiDriverController extends Controller
+class ApiRoadController extends Controller
 {
     /*
     |--------------------------------------------------------------------------
@@ -17,7 +18,13 @@ class ApiDriverController extends Controller
     */
     public function index(Request $request)
     {
-        $query = User::query()->drivers();
+        $query = Road::query();
+
+        $user = $request->user();
+
+        if ($user->hasRole('driver')) {
+            $query->where('driver_id',$user->id);
+        }
 
         $per_page = $request->filled('per_page') ? $request->per_page : 10;
         
@@ -33,17 +40,17 @@ class ApiDriverController extends Controller
     | add new
     |--------------------------------------------------------------------------
     */
-    public function store(StoreDriverRequest $request)
+    public function store(StoreRoadRequest $request)
     {
         $data = $request->validated();
 
-        $data['type'] = 2;
+        $road = Road::create($data);
 
-        $user = User::create($data);
+        Order::whereIn('id',$request->orders_ids)->update(['road_id' => $road->id]);
 
         $message = trans('Successful Added');
 
-        return $this->sendResponse(true,$user,$message,200);
+        return $this->sendResponse(true,$road,$message,200);
     }
 
     /*
@@ -53,7 +60,7 @@ class ApiDriverController extends Controller
     */
     public function show($id)
     {
-        $data =  User::drivers()->find($id);
+        $data = Road::with(['orders'])->find($id);
         
         if (is_null($data)) {
             return $this->sendResponse(false,[],trans('Not Found'),404);
@@ -69,21 +76,28 @@ class ApiDriverController extends Controller
     | update item
     |--------------------------------------------------------------------------
     */
-    public function update(UpdateDriverRequest $request, $id)
+    public function update(UpdateRoadRequest $request, $id)
     {
-        $user =  User::drivers()->find($id);
+        $road = Road::find($id);
         
-        if (is_null($user)) {
+        if (is_null($road)) {
             return $this->sendResponse(false,[],trans('Not Found'),404);
         }
 
         $data = $request->validated();
 
-        $user->update($data);
+        $road->update($data);
+
+        if ($request->filled('orders_ids')) {
+
+            $road->orders()->update([ 'road_id' => null ]);
+
+            Order::whereIn('id',$request->orders_ids)->update(['road_id' => $road->id]);
+        }
     
         $message = trans('Successful Updated');
 
-        return $this->sendResponse(true,$user,$message,200);
+        return $this->sendResponse(true,$road,$message,200);
     }
 
     /*
@@ -93,17 +107,17 @@ class ApiDriverController extends Controller
     */
     public function destroy($id)
     {
-        $user =  User::drivers()->find($id);
+        $road = Road::find($id);
         
-        if (is_null($user)) {
+        if (is_null($road)) {
             return $this->sendResponse(false,[],trans('Not Found'),404);
         }
 
-        $user->delete();
+        $road->delete();
     
         $message = trans('Successful Delete');
 
-        return $this->sendResponse(true,$user,$message,200);
+        return $this->sendResponse(true,$road,$message,200);
 
     }
 }

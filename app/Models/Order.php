@@ -13,12 +13,17 @@ class Order extends Model
         'id'
     ];
 
+    protected $hidden = [
+        'created_at','updated_at','deleted_at'
+    ];
+
     protected $appends = [
         'status_name'
     ];
 
     protected $casts = [
         'is_paid' => 'boolean',
+        'is_visit' => 'boolean',
     ];
 
     public function getStatusNameAttribute()

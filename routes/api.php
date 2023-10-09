@@ -4,6 +4,7 @@ use App\Http\Controllers\Api\ApiAdminController;
 use App\Http\Controllers\Api\ApiCustomerController;
 use App\Http\Controllers\Api\ApiDriverController;
 use App\Http\Controllers\Api\ApiOrderController;
+use App\Http\Controllers\Api\ApiRoadController;
 use App\Http\Controllers\Api\AuthController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -39,10 +40,7 @@ Route::middleware(['auth:sanctum','role:admin'])->group(function () {
     //customers routes
     Route::apiResource('customers',ApiCustomerController::class);
 
-    //orders routes
-    Route::apiResource('orders',ApiOrderController::class)->except([
-        'show'
-    ]);
+    
 });
 
 /*
@@ -51,9 +49,13 @@ Route::middleware(['auth:sanctum','role:admin'])->group(function () {
 |--------------------------------------------------------------------------
 */
 Route::middleware(['auth:sanctum'])->group(function () {
+    //orders routes
+    Route::apiResource('orders',ApiOrderController::class);
     //orders files
     Route::post('orders/add-files/{id}',[ApiOrderController::class,'addFiles']);
-    Route::post('orders/delete-files/{id}',[ApiOrderController::class,'deleteOrderFile']);
+    Route::delete('orders/delete-files/{id}',[ApiOrderController::class,'deleteOrderFile']);
+
+    Route::apiResource('roads',ApiRoadController::class);
 
 });
 

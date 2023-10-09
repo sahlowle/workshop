@@ -6,7 +6,7 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
-class UpdateOrderRequest extends FormRequest
+class UpdateRoadRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -27,13 +27,9 @@ class UpdateOrderRequest extends FormRequest
     {
         return [
             'description' => ['nullable', 'string','min:3','max:250'],
-            'address' => ['nullable', 'string','min:3','max:250'],
-            'lat' => ['nullable','string','min:3','max:100'],
-            'lng' => ['nullable','string','min:3','max:100'],
-            'customer_id' => ['nullable','exists:customers,id'],
-            'amount' => ['nullable','numeric'],
-            'is_visit' => ['nullable','boolean'],
-            'order_id' => ['required_if:is_visit,true','exists:orders,id'],
+            'driver_id' => ['nullable','exists:users,id'],
+            'orders_ids' => ['nullable','array'],
+            'orders_ids.*' => ['exists:orders,id']
         ];
     }
 

@@ -32,6 +32,8 @@ class StoreOrderRequest extends FormRequest
             'lng' => ['required','string','min:3','max:100'],
             'customer_id' => ['required','exists:customers,id'],
             'amount' => ['nullable','numeric'],
+            'is_visit' => ['nullable','boolean'],
+            'order_id' => ['required_if:is_visit,true','exists:orders,id'],
         ];
     }
 

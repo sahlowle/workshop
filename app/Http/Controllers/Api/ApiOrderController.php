@@ -25,6 +25,10 @@ class ApiOrderController extends Controller
     {
         $query = Order::query();
 
+        // if ($request->user()->hasRole('driver')) {
+        //     # code...
+        // }
+
         $per_page = $request->filled('per_page') ? $request->per_page : 10;
         
         $data = $query->latest('id')->paginate($per_page);
@@ -59,7 +63,7 @@ class ApiOrderController extends Controller
     */
     public function show($id)
     {
-        $data =  Order::with('customer')->find($id);
+        $data =  Order::with(['files','customer'])->find($id);
         
         if (is_null($data)) {
             return $this->sendResponse(false,[],trans('Not Found'),404);
@@ -104,6 +108,8 @@ class ApiOrderController extends Controller
         if (is_null($order)) {
             return $this->sendResponse(false,[],trans('Not Found'),404);
         }
+        
+        // $order->files()->delete();
 
         $order->delete();
     
@@ -122,22 +128,26 @@ class ApiOrderController extends Controller
     {
         $order =  Order::find($id);
         
-        if (is_null($order)) {
+        if (is_null($order) || ! $request->hasFile('files') ) {
             return $this->sendResponse(false,[],trans('Not Found'),404);
         }
 
         if ($request->hasFile('files')) {
+            
             $files = $request->file('files');
 
             foreach ($files as $file) {
-               $path = $this->uploadFile('meeting_files',$file);
-               $order->files()->create([ 'path_name'=>$path ]);
-            }
-        } else {
-            return $this->sendResponse(false,[],trans('Not Found'),404);
-        }
+                $path = $this->uploadFile('order_files',$file);
+                
+                $order->files()->create([
+                    'file_name' => basename($path),
+                    'path_name' => $path,
+                ]);
 
-        return $this->sendResponse(true,$order,trans("Files Added Successfully"),200);
+            }
+        } 
+
+        return $this->sendResponse(true,$order->files,trans("Files Added Successfully"),200);
     }
 
     /*

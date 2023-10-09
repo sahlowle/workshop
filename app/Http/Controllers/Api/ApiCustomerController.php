@@ -21,7 +21,7 @@ class ApiCustomerController extends Controller
 
         $per_page = $request->filled('per_page') ? $request->per_page : 10;
         
-        $data = $query->paginate($per_page);
+        $data = $query->latest('id')->paginate($per_page);
 
         $message = trans('Successful Retrieved');
         

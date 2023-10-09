@@ -10,7 +10,7 @@ class File extends Model
     use HasFactory;
 
     protected $guarded = ['id'];
-    protected $appends = ['full_path','file_name'];
+    protected $appends = ['full_path'];
     protected $visible = ['id','full_path','path_name','file_name'];
 
     public function getFullPathAttribute()
