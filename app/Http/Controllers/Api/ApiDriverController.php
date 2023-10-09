@@ -25,7 +25,7 @@ class ApiDriverController extends Controller
 
         $message = trans('Successful Retrieved');
         
-        return $this->paginationResponse(true,$data,$message,200);
+        return $this->sendResponse(true,$data,$message,200);
     }
 
     /*

@@ -26,7 +26,7 @@ Route::post('login',[AuthController::class,'login']);
 
 /*
 |--------------------------------------------------------------------------
-| Application Routes
+| Application Routes for admin
 |--------------------------------------------------------------------------
 */
 Route::middleware(['auth:sanctum','role:admin'])->group(function () {
@@ -40,7 +40,21 @@ Route::middleware(['auth:sanctum','role:admin'])->group(function () {
     Route::apiResource('customers',ApiCustomerController::class);
 
     //orders routes
-    Route::apiResource('orders',ApiOrderController::class);
+    Route::apiResource('orders',ApiOrderController::class)->except([
+        'show'
+    ]);
+});
+
+/*
+|--------------------------------------------------------------------------
+|  Routes for all
+|--------------------------------------------------------------------------
+*/
+Route::middleware(['auth:sanctum'])->group(function () {
+    //orders files
+    Route::post('orders/add-files/{id}',[ApiOrderController::class,'addFiles']);
+    Route::post('orders/delete-files/{id}',[ApiOrderController::class,'deleteOrderFile']);
+
 });
 
 

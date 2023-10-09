@@ -28,22 +28,23 @@ public function sendResponse($success, $result, $message, $code)
    
     return response()->json($response, $code);
 }
+
 /*
 |--------------------------------------------------------------------------
 | Json Format For Pagination
 |--------------------------------------------------------------------------
 */
-public function paginationResponse($success, $result, $message, $code)
-{
-    $response = collect($result);
+// public function paginationResponse($success, $result, $message, $code)
+// {
+//     $response = collect($result);
 
-    $response->prepend($message,"message"); // add item in first
-    $response->prepend($success,"success"); // add item in first
+//     $response->prepend($message,"message"); // add item in first
+//     $response->prepend($success,"success"); // add item in first
 
-    $response->put('code', $code); // add item in last
+//     $response->put('code', $code); // add item in last
 
-    return response()->json($response, $code);
-}
+//     return response()->json($response, $code);
+// }
 
 /*
 |--------------------------------------------------------------------------

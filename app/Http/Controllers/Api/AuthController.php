@@ -18,13 +18,13 @@ class AuthController extends Controller
     {
         if(Auth::attempt($request->only(['email', 'password']))){
             
-            $user = Auth::user();
+            $data['user'] = $user = Auth::user();
 
-            $user["token"] = $user->createToken("API-TOKEN")->plainTextToken;
+            $data["token"] = $user->createToken("API-TOKEN")->plainTextToken;
 
             $message = trans('Successful Login');
 
-            return $this->sendResponse(true ,$user ,$message,200);
+            return $this->sendResponse(true ,$data ,$message,200);
 
         }
 

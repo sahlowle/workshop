@@ -3,14 +3,19 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Api\AddFilesRequest;
+use App\Http\Requests\Api\DeleteFilesRequest;
 use App\Http\Requests\Api\StoreOrderRequest;
 use App\Http\Requests\Api\UpdateOrderRequest;
 use App\Models\Customer;
 use App\Models\Order;
+use App\Traits\FileSaveTrait;
 use Illuminate\Http\Request;
 
 class ApiOrderController extends Controller
 {
+    use FileSaveTrait;
+    
     /*
     |--------------------------------------------------------------------------
     | get list
@@ -26,7 +31,7 @@ class ApiOrderController extends Controller
 
         $message = trans('Successful Retrieved');
         
-        return $this->paginationResponse(true,$data,$message,200);
+        return $this->sendResponse(true,$data,$message,200);
     }
 
     /*
@@ -106,5 +111,54 @@ class ApiOrderController extends Controller
 
         return $this->sendResponse(true,$order,$message,200);
 
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Add Files
+    |--------------------------------------------------------------------------
+    */
+    public function addFiles(AddFilesRequest $request,$id)
+    {
+        $order =  Order::find($id);
+        
+        if (is_null($order)) {
+            return $this->sendResponse(false,[],trans('Not Found'),404);
+        }
+
+        if ($request->hasFile('files')) {
+            $files = $request->file('files');
+
+            foreach ($files as $file) {
+               $path = $this->uploadFile('meeting_files',$file);
+               $order->files()->create([ 'path_name'=>$path ]);
+            }
+        } else {
+            return $this->sendResponse(false,[],trans('Not Found'),404);
+        }
+
+        return $this->sendResponse(true,$order,trans("Files Added Successfully"),200);
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Delete Files
+    |--------------------------------------------------------------------------
+    */
+    public function deleteOrderFile(DeleteFilesRequest $request,$id)
+    {
+        $order =  Order::find($id);
+        
+        if (is_null($order)) {
+            return $this->sendResponse(false,[],trans('Not Found'),404);
+        }
+
+        $file = $order->files()->find($request->file_id);
+
+        $this->deleteFile($file->path_name);
+
+        $file->delete();
+
+        return $this->sendResponse(true,$file,"Files Deleted Successfully",200);
     }
 }
