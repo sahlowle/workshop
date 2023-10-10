@@ -18,12 +18,16 @@ class AuthController extends Controller
     {
         if(Auth::attempt($request->only(['email', 'password']))){
             
-            $data['user'] = $user = Auth::user();
+            $user = Auth::user();
 
+            $data['user'] = $user ;
             $data["token"] = $user->createToken("API-TOKEN")->plainTextToken;
 
-            $message = trans('Successful Login');
+            if ($request->filled('fcm_token')) {
+                $user->update($request->only(['fcm_token','device_type']));
+            }
 
+            $message = trans('Successful Login');
             return $this->sendResponse(true ,$data ,$message,200);
 
         }
