@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Api;
 
+use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Http\Exceptions\HttpResponseException;
@@ -29,6 +30,12 @@ class UpdateAdminRequest extends FormRequest
             'name' => ['nullable', 'string','min:3','max:80'],
             // 'email' => ['nullable','email','unique:users,email','string','max:120'],
             'password' => ['nullable','string','min:6','max:30'],
+
+            'email' => [
+                'nullable','email',
+                Rule::unique('users')->ignore($this->route('admin'), 'id'),
+                'string','max:120'
+            ],
         ];
     }
 

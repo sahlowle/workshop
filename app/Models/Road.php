@@ -38,9 +38,7 @@ class Road extends Model
     
     public function driver()
     {
-        return $this->belongsTo(User::class, 'driver_id')->withDefault([
-            'name' => trans('No Driver'),
-        ]);
+        return $this->belongsTo(User::class, 'driver_id');
     }
 
     protected static function booted()
@@ -49,6 +47,17 @@ class Road extends Model
             // $road->reference_no = 'RF-' . date("Ymd") . '-' . date("his");
             $road->reference_no = referenceNo('RF');
             $road->create_by = auth()->user()->id; 
+
+            if (! is_null($road->driver_id)) {
+                $road->status = 2; // on progress
+            }
+        });
+
+        static::updating(function ($road) {
+            $status = (int)$road->status;
+            if ($status == 1 && ! is_null($road->driver_id)) {
+                $road->status = 2; // on progress
+            }
         });
     }
 }
