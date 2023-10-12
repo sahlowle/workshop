@@ -27,7 +27,7 @@ class StoreRoadRequest extends FormRequest
     {
         return [
             'description' => ['required', 'string','min:3','max:250'],
-            'driver_id' => ['required','exists:users,id'],
+            'driver_id' => ['nullable','exists:users,id'],
             'status' => ['nullable','in:1,2,3'],
             'orders_ids' => ['required','array'],
             'orders_ids.*' => ['exists:orders,id']

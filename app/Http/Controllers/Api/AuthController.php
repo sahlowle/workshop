@@ -3,9 +3,14 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Api\ForgerPasswordRequest;
 use App\Http\Requests\Api\LoginRequest;
+use App\Http\Requests\Api\UpdateProfileRequest;
+use App\Models\User;
+use App\Notifications\NewPassword;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 
 class AuthController extends Controller
 {
@@ -37,6 +42,48 @@ class AuthController extends Controller
         return $this->sendResponse(false,[],$message ,401);    
     }
     // End Function
+
+    /*
+    |--------------------------------------------------------------------------
+    | Update Profile
+    |--------------------------------------------------------------------------
+    */
+    public function updateProfile(UpdateProfileRequest $request)
+    {
+        $data = $request->validated();
+
+        $user = $request->user();
+
+        $user->update($data);
+
+        $message = trans('Successful Successful Updated');
+
+        return $this->sendResponse(true,$user,$message,200);
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    |  Forger Password
+    |--------------------------------------------------------------------------
+    */
+    public function forgerPassword(ForgerPasswordRequest $request)
+    {
+        $user = User::where('email',$request->email)->first();
+
+        if (is_null($user)) {
+            return $this->sendResponse(false,[],trans('Email Not Found'),404);
+        }
+
+        $password = Str::random(8);
+
+        $user->update([ 'password' => $password ]);
+
+        $user->notify(new NewPassword($password));
+
+        $message = trans('New Password Successful Send');
+
+        return $this->sendResponse(true,$user,$message,200);
+    }
 
     /*
     |--------------------------------------------------------------------------

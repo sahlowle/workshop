@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\StoreDriverRequest;
 use App\Http\Requests\Api\UpdateDriverRequest;
 use App\Models\User;
+use App\Notifications\NewPassword;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 
 class ApiDriverController extends Controller
@@ -37,9 +39,16 @@ class ApiDriverController extends Controller
     {
         $data = $request->validated();
 
+        // $password = Str::password(8); // this feature in laravel 10
+        
+        $password = Str::random(8);
+
         $data['type'] = 2;
+        $data['password'] = $password;
 
         $user = User::create($data);
+
+        $user->notify(new NewPassword($password));
 
         $message = trans('Successful Added');
 

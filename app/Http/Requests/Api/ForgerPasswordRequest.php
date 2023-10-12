@@ -2,12 +2,11 @@
 
 namespace App\Http\Requests\Api;
 
-use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
-class UpdateDriverRequest extends FormRequest
+class ForgerPasswordRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -27,21 +26,7 @@ class UpdateDriverRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => ['nullable', 'string','min:3','max:80'],
-            'password' => ['nullable','string','min:6','max:30'],
-            'address' => ['nullable','string','min:3','max:190'],
-            'zone_area' => ['nullable','string','min:3','max:30'],
-
-            'email' => [
-                'nullable','email',
-                Rule::unique('users')->ignore($this->route('driver'), 'id'),
-                'string','max:120'
-            ],
-            'phone' => [
-                'nullable',
-                Rule::unique('users')->ignore($this->route('driver'), 'id'),
-                'string','min:9','max:20'
-            ],
+            'email' => ['required','email:filter','string','max:120']
         ];
     }
 

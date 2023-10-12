@@ -18,12 +18,11 @@ use Illuminate\Support\Facades\Route;
 */
 
 
-/*
-|--------------------------------------------------------------------------
-| Login Routes
-|--------------------------------------------------------------------------
-*/
+/* |------ Login Routes ---------| */
 Route::post('login',[AuthController::class,'login']);
+
+/* |------ Login Routes ---------| */
+Route::post('forget-password',[AuthController::class,'forgerPassword']);
 
 /*
 |--------------------------------------------------------------------------
@@ -31,13 +30,13 @@ Route::post('login',[AuthController::class,'login']);
 |--------------------------------------------------------------------------
 */
 Route::middleware(['auth:sanctum','role:admin'])->group(function () {
-    //admins routes
+    /* |------ admins routes ---------| */
     Route::apiResource('admins',ApiAdminController::class);
 
-    //drivers routes
+    /* |------ drivers routes ---------| */
     Route::apiResource('drivers',ApiDriverController::class);
 
-    //customers routes
+    /* |------ customers routes ---------| */
     Route::apiResource('customers',ApiCustomerController::class);
 
     
@@ -49,13 +48,18 @@ Route::middleware(['auth:sanctum','role:admin'])->group(function () {
 |--------------------------------------------------------------------------
 */
 Route::middleware(['auth:sanctum'])->group(function () {
-    //orders routes
+    /* |------ orders routes ---------| */
     Route::apiResource('orders',ApiOrderController::class);
-    //orders files
+
+    /* |------ orders files routes ---------| */
     Route::post('orders/add-files/{id}',[ApiOrderController::class,'addFiles']);
     Route::delete('orders/delete-files/{id}',[ApiOrderController::class,'deleteOrderFile']);
 
+    /* |------ roads routes ---------| */
     Route::apiResource('roads',ApiRoadController::class);
+
+    /* |------ update profile routes ---------| */
+    Route::post('update-profile',[AuthController::class,'updateProfile']);
 
 });
 

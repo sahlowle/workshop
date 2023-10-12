@@ -28,7 +28,7 @@ class StoreDriverRequest extends FormRequest
         return [
             'name' => ['required', 'string','min:3','max:80'],
             'email' => ['required','email','unique:users,email','string','max:120'],
-            'password' => ['required','string','min:6','max:30'],
+            // 'password' => ['required','string','min:6','max:30'],
             'phone' => ['required','unique:users,phone','string','min:9','max:20'],
             'address' => ['required','string','min:3','max:190'],
             'zone_area' => ['required','string','min:3','max:30'],
