@@ -44,6 +44,8 @@ class UpdateOrderRequest extends FormRequest
             'first_visit_id' => ['required_if:is_visit,true','exists:orders,id'],
             'report' => ['nullable'],
             'status' => ['nullable','in:1,2,3,4'],
+            'payment_way' => ['nullable','in:1,2'],
+            'payment_id' => ['nullable','string','max:1024'],
         ];
     }
 

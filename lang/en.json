@@ -1,5 +1,10 @@
 {
     "x": "",
+    "All Orders": "All Orders",
+    "All Customer": "All Customer",
+    "All Technician": "All Technician",
+    "All Sales": "All Sales",
+    "Sales": "Sales",
     "Routes Count": "Routes Count",
     "Add New Technician": "Add New Technician",
     "Edit Technician": "Edit Technician",

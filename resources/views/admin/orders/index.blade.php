@@ -14,7 +14,10 @@
 
 <!-- Hoverable Table rows -->
 <div class="card">
-  <h5 class="card-header"> @lang('Users') </h5>
+  <h5 class="card-header">
+    <i class="bx bxs-calendar-check"></i>
+    @lang('Orders')
+  </h5>
   <div class="table-responsive text-nowrap p-4">
     <table class="table table-hover datatable">
       <thead>

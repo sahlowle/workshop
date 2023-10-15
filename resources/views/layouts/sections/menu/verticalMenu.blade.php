@@ -58,7 +58,7 @@
     <li @class(['menu-item', 'active' => request()->routeIs('drivers*') ])>
       <a href="{{ route('drivers.index') }}" class="menu-link" >
         
-        <i class='menu-icon bx bxs-car'></i>
+        <i class='menu-icon bx bx-wrench'></i>
         
         <div> @lang('Technician') </div>
       </a>      

@@ -14,7 +14,10 @@
 
 <!-- Hoverable Table rows -->
 <div class="card">
-  <h5 class="card-header"> @lang('Users') </h5>
+  <h5 class="card-header">
+    <i class="bx bx-happy"></i>
+    @lang('Customers')
+  </h5>
   <div class="table-responsive text-nowrap p-4">
     <table class="table table-hover datatable">
       <thead>
