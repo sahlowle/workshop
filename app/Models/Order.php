@@ -39,6 +39,11 @@ class Order extends Model
         };
     }
 
+    public function getPaymentFileAttribute($value)
+    {
+        return url("")."/".$value;
+    }
+
     
     public function customer()
     {

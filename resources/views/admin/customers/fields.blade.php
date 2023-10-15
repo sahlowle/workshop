@@ -38,9 +38,9 @@
           </div>
 
           <div class="row mb-3">
-            <label class="col-sm-2 col-form-label" for="basic-default-company">@lang("National Id")</label>
+            <label class="col-sm-2 col-form-label" for="basic-default-company">@lang("Zone Area")</label>
             <div class="col-sm-10">
-                {!! Form::text('national_id', null,  ['class' => 'form-control','placeholder'=>  trans("National Id")]) !!}
+                {!! Form::text('zone_area', null,  ['class' => 'form-control','placeholder'=>  trans("Zone Area")]) !!}
             </div>
           </div>
                     

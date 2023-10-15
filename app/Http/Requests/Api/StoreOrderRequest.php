@@ -28,6 +28,13 @@ class StoreOrderRequest extends FormRequest
         return [
             'description' => ['required', 'string','min:3','max:250'],
             'address' => ['required', 'string','min:3','max:250'],
+            'maintenance_device' => ['required', 'string','max:250'],
+            'brand' => ['required', 'string','max:250'],
+            'additional_info' => ['nullable', 'string','min:3','max:250'],
+            'block_no' => ['nullable', 'string','max:250'],
+            'order_phone_number' => ['required', 'string','min:9','max:250'],
+            'floor_number' => ['nullable', 'string','min:1','max:250'],
+            'apartment_number' => ['nullable', 'string','max:250'],
             'lat' => ['required','string','min:3','max:100'],
             'lng' => ['required','string','min:3','max:100'],
             'customer_id' => ['required','exists:customers,id'],

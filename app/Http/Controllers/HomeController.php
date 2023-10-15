@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Artisan;
 
 class HomeController extends Controller
 {
@@ -29,7 +30,9 @@ class HomeController extends Controller
     public function changeLang($locale)
     {
         app()->setLocale($locale);
+        
         session()->put('locale', $locale);
+
         return redirect()->back();
     }
 }

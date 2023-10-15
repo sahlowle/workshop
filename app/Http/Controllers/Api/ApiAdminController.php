@@ -19,6 +19,8 @@ class ApiAdminController extends Controller
     {
         $query = User::query()->admins();
 
+        $query->whereNotIn('id',[$request->user()->id]);
+
         $per_page = $request->filled('per_page') ? $request->per_page : 10;
         
         $data = $query->latest('id')->paginate($per_page);

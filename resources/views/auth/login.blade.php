@@ -1,6 +1,6 @@
 @extends('admin.layouts.blankLayout')
 
-@section('title', 'Login Basic - Pages')
+@section('title', 'Login')
 
 @section('page-style')
 <!-- Page -->

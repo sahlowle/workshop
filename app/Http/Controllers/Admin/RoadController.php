@@ -58,7 +58,7 @@ class RoadController extends Controller
     {
         $validated = $request->validate([
             'description' => 'required|string|min:3|max:250',
-            'driver_id' => 'required|exists:users,id',
+            'driver_id' => 'nullable|exists:users,id',
             'orders' => 'required|array',
         ]);
 
@@ -66,10 +66,14 @@ class RoadController extends Controller
 
         Order::whereIn('id',$request->orders)->update(['road_id' => $road->id]);
 
+        $status = (int)$road->status;
+        if ($status == 2) {
+            changeOrderStatus($road->id,2);
+        }
+
         $message = trans('Successful Added');
 
         notify()->success($message);
-
 
         return redirect()->route('roads.index');
     }
@@ -133,6 +137,11 @@ class RoadController extends Controller
 
         if ($request->filled('orders')) {
             Order::whereIn('id',$request->orders)->update(['road_id' => $road->id]);
+        }
+        
+        $status = (int)$road->status;
+        if ($status == 2) {
+            changeOrderStatus($road->id,2);
         }
 
 

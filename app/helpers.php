@@ -1,5 +1,13 @@
 <?php
 
+use App\Models\Order;
+
+if (! function_exists('changeOrderStatus')) {
+    function changeOrderStatus($road_id,$status) {
+        Order::where('road_id',$road_id)->update([ 'status' => $status]);
+    }
+}
+
 if (! function_exists('loginBackground')) {
     function loginBackground() {
         return asset('assets/img/backgrounds/login-background.png');

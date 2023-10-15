@@ -8,7 +8,7 @@
           <div class="row mb-3 mt-3">
             <label class="col-sm-2 col-form-label" for="basic-default-company">@lang("Driver")</label>
             <div class="col-sm-10">
-                {!! Form::select('driver_id',$drivers, null, ['required','class' => 'select2 form-control']) !!}
+                {!! Form::select('driver_id',$drivers, null, ['class' => 'select2 form-control']) !!}
           </div>
 
           <div class="row mt-4">

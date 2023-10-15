@@ -6,6 +6,7 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
+use Illuminate\Support\HtmlString;
 
 class NewPassword extends Notification
 {
@@ -45,13 +46,13 @@ class NewPassword extends Notification
         return (new MailMessage)
                 ->subject('New Password')
                 ->greeting('Hello!')
-                ->line('your new password is')
-                ->greeting($this->password)
+                ->line(new HtmlString('your new password is <b>'.$this->password.'</b>'))
+                // ->greeting($this->password)
                 ->line('you can change your password from App in any time,')
                 // ->lineIf($this->amount > 0, "Amount paid: {$this->amount}")
                 // ->action('View Invoice', $url)
                 ->line('Thank you for using our application!')
-                ->greeting('Regards,');
+                ->line('Regards,');
     }
 
     /**

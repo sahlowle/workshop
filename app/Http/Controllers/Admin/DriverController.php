@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Notifications\NewPassword;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class DriverController extends Controller
 {
@@ -15,9 +17,9 @@ class DriverController extends Controller
      */
     public function index()
     {
-        $data['users'] = User::drivers()->paginate(10);
+        $data['users'] = User::drivers()->withCount('roads')->paginate(10);
 
-        $data['title'] = trans('Drivers');
+        $data['title'] = trans('Technician');
 
         return view('admin.drivers.index',$data);
     }
@@ -29,7 +31,7 @@ class DriverController extends Controller
      */
     public function create()
     {
-        $data['title'] = trans('Add New Driver');
+        $data['title'] = trans('Add New Technician');
 
         return view('admin.drivers.create',$data);
     }
@@ -45,15 +47,20 @@ class DriverController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|min:3',
             'email' => 'nullable|email|unique:users,email',
-            'password' => 'required|string|min:6',
+            // 'password' => 'required|string|min:6',
             'phone' => 'required|unique:users',
             'address' => 'required|string|min:6',
-            'national_id' => 'required|string|min:10',
+            'zone_area' => 'required|string|max:30',
         ]);
 
-        $validated['type'] = 2;
+        $password = Str::random(8);
 
-        User::create($validated);
+        $validated['type'] = 2;
+        $validated['password'] = $password;
+
+        $user = User::create($validated);
+
+        $user->notify(new NewPassword($password));
 
         $message = trans('Successful Added');
 
@@ -84,7 +91,7 @@ class DriverController extends Controller
     {
         $data['user'] = User::findOrFail($id);
 
-        $data['title'] = trans('Edit Driver');
+        $data['title'] = trans('Edit Technician');
 
         return view('admin.drivers.edit',$data);
     }
@@ -103,10 +110,10 @@ class DriverController extends Controller
         $validated = $request->validate([
             'name' => 'nullable|string|min:3',
             'email' => 'nullable|email|unique:users,email,'.$id,
-            'password' => 'nullable|string|min:6',
+            // 'password' => 'nullable|string|min:6',
             'phone' => 'nullable|unique:users,phone,'.$id,
             'address' => 'nullable|string|min:6',
-            'national_id' => 'nullable|string|min:10',
+            'zone_area' => 'nullable|string|max:30',
         ]);
 
 

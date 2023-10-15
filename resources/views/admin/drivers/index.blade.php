@@ -4,7 +4,7 @@
 
 @section('content')
 <h4 class="fw-bold py-3 mb-4">
-  <span class="text-muted fw-light"> @lang("Drivers") /</span> @lang('List')
+  <span class="text-muted fw-light"> {{ $title }}  /</span> @lang('List')
 </h4>
 
 <a class="btn btn-outline-primary m-2" href="{{ route('drivers.create') }}">
@@ -14,7 +14,7 @@
 
 <!-- Hoverable Table rows -->
 <div class="card">
-  <h5 class="card-header"> @lang('Users') </h5>
+  <h5 class="card-header"> {{ $title }} </h5>
   <div class="table-responsive text-nowrap p-4">
     <table class="table table-hover datatable">
       <thead>
@@ -23,6 +23,7 @@
           {{-- <th> @lang("Image") </th> --}}
           <th> @lang("Name") </th>
           <th> @lang("Phone") </th>
+          <th> @lang("Routes Count") </th>
           <th> @lang("Actions") </th>
         </tr>
       </thead>
@@ -37,25 +38,33 @@
           </td> --}}
           <td> {{ $item->name }}  </td>
           <td> {{ $item->phone }}  </td>
+          <td> {{ $item->roads_count }} </td>
+
+
           <td>
-            <div class="dropdown">
-              <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown"><i class="bx bx-dots-vertical-rounded"></i></button>
-              <div class="dropdown-menu">
-                <a class="dropdown-item" href="{{ route('drivers.edit',$item->id) }}">
-                    <i class="bx bx-edit-alt me-1"></i>
-                    @lang('Edit')
-                </a>
-                
-                <button  class="dropdown-item" onclick="deleteForm('deleteForm{{ $item->id }}')">
-                  <i class="bx bx-trash me-1"></i>
-                  @lang('Delete')
-                  <form id="deleteForm{{ $item->id }}" action="{{ route('drivers.destroy',$item->id) }}" method="POST">
-                    @method("DELETE")
-                    @csrf
+            <a class="btn btn-outline-primary btn-sm pl-1"
+              href="{{ route('drivers.show',$item->id) }}">
+              <i class='bx bx-show' style="font-size: 1.2rem"></i>
+              @lang('Show')
+            </a>
+
+            <a class="btn btn-outline-success btn-sm pl-1"
+              href="{{ route('drivers.edit',$item->id) }}">
+              <i class='bx bx-edit' style="font-size: 1.2rem"></i>
+              @lang('Edit')
+            </a>
+
+            <button class="btn btn-outline-danger btn-sm pl-1" onclick="deleteForm('deleteForm{{ $item->id }}')">
+              <i class="bx bx-trash me-1"></i>
+              @lang('Delete')
+                <form id="deleteForm{{ $item->id }}"
+                  action="{{ route('drivers.destroy',$item->id) }}" method="POST">
+                  @method("DELETE")
+                  @csrf
                 </form>
-              </button>
-              </div>
-            </div>
+            </button>
+
+
           </td>
         </tr>
         @endforeach

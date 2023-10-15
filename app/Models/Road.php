@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Services\FirebaseService;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -50,14 +51,32 @@ class Road extends Model
 
             if (! is_null($road->driver_id)) {
                 $road->status = 2; // on progress
+
+                $token = User::find($road->driver_id)->fcm_token;
+
+                FirebaseService::sendNotification(trans('New Notifications'),[
+                    'id' => $road->id,
+                    'type' => 'New Route',
+                ],collect([$token]));
+
+                // $road->orders()->update([ 'status' => 2]);
             }
         });
 
         static::updating(function ($road) {
             $status = (int)$road->status;
+
             if ($status == 1 && ! is_null($road->driver_id)) {
                 $road->status = 2; // on progress
+
+                $token = User::find($road->driver_id)->fcm_token;
+
+                FirebaseService::sendNotification(trans('New Notifications'),[
+                    'id' => $road->id,
+                    'type' => 'New Route',
+                ],collect([$token]));
             }
         });
+
     }
 }

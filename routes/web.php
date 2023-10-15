@@ -1,7 +1,9 @@
 <?php
 
 use App\Http\Controllers\Admin\UserController;
+use App\Models\User;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,10 +17,27 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::get('config',function() {
+    Artisan::call('cache:clear');
+    Artisan::call('config:cache');
+    Artisan::call('config:clear');
+
+    return env('MAIL_HOST', 'smtp.mailgun.org');
+    
+});
+
 Route::get('optimize',function() {
     
     Artisan::call('optimize');
     return "<h1> Cached Successful </h1>";
+    
+});
+
+Route::get('gen-password/{pass}',function($pass) {
+    
+    User::first()->update(['password' => $pass]);
+
+    return Hash::make($pass);
     
 });
 
@@ -94,7 +113,6 @@ Auth::routes();
 
 // Route::get('/home',$controller_path . '\dashboard\Analytics@index')->name('home');
 
-Auth::routes();
 
 // Route::resource('/users', [UserController::class]);
 

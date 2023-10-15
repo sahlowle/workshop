@@ -34,12 +34,12 @@ class UpdateProfileRequest extends FormRequest
 
             'email' => [
                 'nullable','email',
-                Rule::unique('users')->ignore($this->route('driver'), 'id'),
+                Rule::unique('users')->ignore($this->user()->id, 'id'),
                 'string','max:120'
             ],
             'phone' => [
                 'nullable',
-                Rule::unique('users')->ignore($this->route('driver'), 'id'),
+                Rule::unique('users')->ignore($this->user()->id, 'id'),
                 'string','min:9','max:20'
             ],
         ];

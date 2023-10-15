@@ -28,12 +28,22 @@ class UpdateOrderRequest extends FormRequest
         return [
             'description' => ['nullable', 'string','min:3','max:250'],
             'address' => ['nullable', 'string','min:3','max:250'],
+            'maintenance_device' => ['nullable', 'string','max:250'],
+            'brand' => ['nullable', 'string','max:250'],
+            'additional_info' => ['nullable', 'string','max:250'],
+            'block_no' => ['nullable', 'string','max:250'],
+            'order_phone_number' => ['nullable', 'string','min:9','max:250'],
+            'floor_number' => ['nullable', 'string','min:1','max:250'],
+            'apartment_number' => ['nullable', 'string','max:250'],
             'lat' => ['nullable','string','min:3','max:100'],
             'lng' => ['nullable','string','min:3','max:100'],
             'customer_id' => ['nullable','exists:customers,id'],
             'amount' => ['nullable','numeric'],
             'is_visit' => ['nullable','boolean'],
+            'is_paid' => ['nullable','boolean'],
             'first_visit_id' => ['required_if:is_visit,true','exists:orders,id'],
+            'report' => ['nullable'],
+            'status' => ['nullable','in:1,2,3,4'],
         ];
     }
 

@@ -24,6 +24,7 @@
           <th>#</th>
           <th> @lang("Refrence No") </th>
           <th> @lang("Driver") </th>
+          <th> @lang("Status") </th>
           <th> @lang("Actions") </th>
         </tr>
       </thead>
@@ -32,7 +33,8 @@
         <tr>
           <td> {{ $loop->index + 1 }}  </td>
           <td> {{ $item->reference_no }}  </td>
-          <td> {{ $item->driver->name }}  </td>
+          <td> {{ $item->driver ? $item->driver->name: trans('No Technician') }}  </td>
+          <td> {{ $item->status_name }}  </td>
           <td>
             <a class="btn btn-outline-success btn-sm  pl-1" href="{{ route('roads.show',$item->id) }}">
               <i class='bx bx-show' style="font-size: 1.2rem"></i>

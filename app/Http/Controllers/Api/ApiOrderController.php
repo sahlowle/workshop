@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\AddFilesRequest;
+use App\Http\Requests\Api\AddPaymentFileRequest;
 use App\Http\Requests\Api\DeleteFilesRequest;
 use App\Http\Requests\Api\StoreOrderRequest;
 use App\Http\Requests\Api\UpdateOrderRequest;
@@ -25,9 +26,9 @@ class ApiOrderController extends Controller
     {
         $query = Order::query();
 
-        // if ($request->user()->hasRole('driver')) {
-        //     # code...
-        // }
+        if ($request->filled('without_route')) {
+            $query->whereNull('road_id');
+        }
 
         $per_page = $request->filled('per_page') ? $request->per_page : 10;
         
@@ -49,11 +50,11 @@ class ApiOrderController extends Controller
 
         $data['status'] = 1; // pending
 
-        $user = Order::create($data);
+        $order = Order::create($data);
 
         $message = trans('Successful Added');
 
-        return $this->sendResponse(true,$user,$message,200);
+        return $this->sendResponse(true,$order->fresh(),$message,200);
     }
 
     /*
@@ -119,6 +120,32 @@ class ApiOrderController extends Controller
 
     }
 
+    /*
+    |--------------------------------------------------------------------------
+    | Add Payment File
+    |--------------------------------------------------------------------------
+    */
+    public function addPaymentFile(AddPaymentFileRequest $request,$id)
+    {
+        $order =  Order::find($id);
+        
+        if (is_null($order) ) {
+            return $this->sendResponse(false,[],trans('Not Found'),404);
+        }
+
+        if ($request->hasFile('payment_file')) {
+            
+            $file = $request->file('payment_file');
+            $path = $this->uploadFile('payment_files',$file);
+            
+            $order->update([
+                'payment_file' => $path,
+            ]);
+
+        } 
+
+        return $this->sendResponse(true,$order->files,trans("Files Added Successfully"),200);
+    }
     /*
     |--------------------------------------------------------------------------
     | Add Files

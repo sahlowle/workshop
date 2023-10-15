@@ -4,7 +4,7 @@
 
 @section('content')
 <h4 class="fw-bold py-3 mb-4">
-  <span class="text-muted fw-light"> @lang("Users") /</span> @lang('List')
+  <span class="text-muted fw-light"> {{ $title }}  /</span> @lang('List')
 </h4>
 
 <a class="btn btn-outline-primary m-2" href="{{ route('users.create') }}">
@@ -16,7 +16,7 @@
 <div class="card">
   <h5 class="card-header mb-0">
     <i class='bx bxs-user'></i>
-    @lang('Users')
+    {{ $title }} 
   </h5>
   <div class="table-responsive text-nowrap p-4">
     <table class="table table-hover datatable">
@@ -35,24 +35,23 @@
           <td> {{ $item->name }}  </td>
           <td> {{ $item->email }}  </td>
           <td>
-            <div class="dropdown">
-              <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown"><i class="bx bx-dots-vertical-rounded"></i></button>
-              <div class="dropdown-menu">
-                <a class="dropdown-item" href="{{ route('users.edit',$item->id) }}">
-                    <i class="bx bx-edit-alt me-1"></i>
-                    @lang('Edit')
-                </a>
-                
-                <button  class="dropdown-item" onclick="deleteForm('deleteForm{{ $item->id }}')">
-                  <i class="bx bx-trash me-1"></i>
-                  @lang('Delete')
-                  <form id="deleteForm{{ $item->id }}" action="{{ route('users.destroy',$item->id) }}" method="POST">
-                    @method("DELETE")
-                    @csrf
+            <a class="btn btn-outline-success btn-sm pl-1"
+              href="{{ route('users.edit',$item->id) }}">
+              <i class='bx bx-edit' style="font-size: 1.2rem"></i>
+              @lang('Edit')
+            </a>
+
+            <button class="btn btn-outline-danger btn-sm pl-1" onclick="deleteForm('deleteForm{{ $item->id }}')">
+              <i class="bx bx-trash me-1"></i>
+              @lang('Delete')
+                <form id="deleteForm{{ $item->id }}"
+                  action="{{ route('users.destroy',$item->id) }}" method="POST">
+                  @method("DELETE")
+                  @csrf
                 </form>
-              </button>
-              </div>
-            </div>
+            </button>
+
+
           </td>
         </tr>
         @endforeach

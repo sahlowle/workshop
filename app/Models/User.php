@@ -84,5 +84,15 @@ class User extends Authenticatable
         return 'other';
     }
 
+    /**
+     * Get all of the comments for the User
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function roads()
+    {
+        return $this->hasMany(Road::class, 'driver_id', 'id');
+    }
+
     
 }

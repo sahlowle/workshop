@@ -87,10 +87,10 @@ class AuthController extends Controller
 
     /*
     |--------------------------------------------------------------------------
-    | Check Login
+    | Current User Login
     |--------------------------------------------------------------------------
     */
-    public function checkLogin(Request $request)
+    public function currentUser(Request $request)
     {
         $user = $request->user();
 

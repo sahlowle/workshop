@@ -34,17 +34,17 @@
           <td> {{ $item->customer->name }}  </td>
           <td> {{ $item->status_name }}  </td>
           <td>
-            <a class="btn btn-outline-primary pl-1" href="{{ route('orders.show',$item->id) }}">
+            <a class="btn btn-outline-primary btn-sm pl-1" href="{{ route('orders.show',$item->id) }}">
               <i class='bx bx-show' style="font-size: 1.2rem"></i>
               @lang('Show')
             </a>
 
-            <a class="btn btn-outline-success pl-1" href="{{ route('orders.edit',$item->id) }}">
+            <a class="btn btn-outline-success btn-sm pl-1" href="{{ route('orders.edit',$item->id) }}">
               <i class='bx bx-edit' style="font-size: 1.2rem"></i>
               @lang('Edit')
             </a>
 
-            <button  class="btn btn-outline-danger pl-1" onclick="deleteForm('deleteForm{{ $item->id }}')">
+            <button  class="btn btn-outline-danger btn-sm pl-1" onclick="deleteForm('deleteForm{{ $item->id }}')">
               <i class="bx bx-trash me-1"></i>
               @lang('Delete')
               <form id="deleteForm{{ $item->id }}" action="{{ route('orders.destroy',$item->id) }}" method="POST">

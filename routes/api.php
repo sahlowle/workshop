@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\ApiDriverController;
 use App\Http\Controllers\Api\ApiOrderController;
 use App\Http\Controllers\Api\ApiRoadController;
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\PaymentController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -55,11 +56,20 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('orders/add-files/{id}',[ApiOrderController::class,'addFiles']);
     Route::delete('orders/delete-files/{id}',[ApiOrderController::class,'deleteOrderFile']);
 
+    /* |------ payment file routes ---------| */
+    Route::post('orders/add-payment-file/{id}',[ApiOrderController::class,'addPaymentFile']);
+
     /* |------ roads routes ---------| */
     Route::apiResource('roads',ApiRoadController::class);
 
     /* |------ update profile routes ---------| */
     Route::post('update-profile',[AuthController::class,'updateProfile']);
+    
+    /* |------ current user routes ---------| */
+    Route::get('current-user',[AuthController::class,'currentUser']);
+
+    /* |------  stripe payment routes ---------| */
+    Route::post('payment-intents',[PaymentController::class,'paymentIntents']);
 
 });
 

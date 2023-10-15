@@ -48,6 +48,11 @@ class ApiRoadController extends Controller
 
         Order::whereIn('id',$request->orders_ids)->update(['road_id' => $road->id]);
 
+        $status = (int)$road->status;
+        if ($status == 2) {
+            changeOrderStatus($road->id,2);
+        }
+
         $message = trans('Successful Added');
 
         return $this->sendResponse(true,$road,$message,200);
@@ -60,7 +65,7 @@ class ApiRoadController extends Controller
     */
     public function show($id)
     {
-        $data = Road::with(['driver','orders'])->find($id);
+        $data = Road::with(['driver','orders.customer'])->find($id);
         
         if (is_null($data)) {
             return $this->sendResponse(false,[],trans('Not Found'),404);
@@ -93,6 +98,11 @@ class ApiRoadController extends Controller
             $road->orders()->update([ 'road_id' => null ]);
 
             Order::whereIn('id',$request->orders_ids)->update(['road_id' => $road->id]);
+        }
+
+        $status = (int)$road->status;
+        if ($status == 2) {
+            changeOrderStatus($road->id,2);
         }
     
         $message = trans('Successful Updated');
