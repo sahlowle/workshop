@@ -115,6 +115,7 @@
         @php
         $lat = 23.8859;
         $lng = 45.0792;
+        
         if (isset($order)) {
               $lat = $order->lat;
               $lng = $order->lng;
