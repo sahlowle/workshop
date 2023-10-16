@@ -72,6 +72,9 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('payment-intents',[PaymentController::class,'paymentIntents']);
     Route::get('payment-info',[PaymentController::class,'paymentInfo']);
 
+    /* |------  logout routes ---------| */
+    Route::post('logout',[AuthController::class,'logout']);
+
 });
 
 

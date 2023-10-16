@@ -98,5 +98,21 @@ class AuthController extends Controller
 
         return $this->sendResponse(true,$user,$message,200);
     }
+
+    /*
+    |--------------------------------------------------------------------------
+    | logout
+    |--------------------------------------------------------------------------
+    */
+    public function logout(Request $request)
+    {
+        $user = $request->user();
+
+        $user->currentAccessToken()->delete();
+
+        $message = trans('User Logged Out');
+
+        return $this->sendResponse(true,$user,$message,200);
+    }
 }
 
