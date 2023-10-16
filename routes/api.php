@@ -70,6 +70,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     /* |------  stripe payment routes ---------| */
     Route::post('payment-intents',[PaymentController::class,'paymentIntents']);
+    Route::get('payment-info',[PaymentController::class,'paymentInfo']);
 
 });
 
