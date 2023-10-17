@@ -42,11 +42,11 @@
 
 
           <td>
-            <a class="btn btn-outline-primary btn-sm pl-1"
+            {{-- <a class="btn btn-outline-primary btn-sm pl-1"
               href="{{ route('drivers.show',$item->id) }}">
               <i class='bx bx-show' style="font-size: 1.2rem"></i>
               @lang('Show')
-            </a>
+            </a> --}}
 
             <a class="btn btn-outline-success btn-sm pl-1"
               href="{{ route('drivers.edit',$item->id) }}">

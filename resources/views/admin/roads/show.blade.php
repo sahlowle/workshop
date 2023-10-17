@@ -4,7 +4,7 @@
 
 @section('content')
 <h4 class="fw-bold py-3 mb-4">
-  <span class="text-muted fw-light"> @lang("Orders") /</span> {{ $title }}
+  <span class="text-muted fw-light"> @lang("Routes") /</span> {{ $title }}
 </h4>
 
 <div class="row">

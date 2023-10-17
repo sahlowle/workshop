@@ -88,7 +88,7 @@ class RoadController extends Controller
     {
         $data['road'] = Road::with(['driver','orders'])->findOrFail($id);
 
-        $data['title'] = trans('Road Details');
+        $data['title'] = trans('Routes Details');
 
         // return $data;
 
