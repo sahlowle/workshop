@@ -8,6 +8,7 @@ use App\Http\Requests\Api\UpdateRoadRequest;
 use App\Models\Order;
 use App\Models\Road;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Schema;
 
 class ApiRoadController extends Controller
 {
@@ -24,6 +25,15 @@ class ApiRoadController extends Controller
 
         if ($user->hasRole('driver')) {
             $query->where('driver_id',$user->id);
+        }
+
+        if ($request->filled('search_text')) {
+            $search_text = $request->search_text;
+            $columns = ['description','reference_no'];
+
+            foreach($columns as $column){
+                $query->orWhere($column, 'LIKE', '%' . $search_text . '%');
+            }
         }
 
         $per_page = $request->filled('per_page') ? $request->per_page : 10;

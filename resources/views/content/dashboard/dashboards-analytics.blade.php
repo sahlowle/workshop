@@ -25,7 +25,7 @@
             <h5 class="card-title text-primary">Welcome  {{ auth()->user()->name }} ! 🎉</h5>
             <p class="mb-4">
               You have done 
-            <span class="fw-bold"> $20,000 </span> sales today. Check your new badge in your profile.</p>
+            <span class="fw-bold"> {{ $sales }} </span> sales . Check your new badge in your profile.</p>
 
           </div>
         </div>
@@ -39,7 +39,25 @@
   </div>
 </div>
 <div class="row">
-  <div class="col-sm-6 col-lg-3 mb-4">
+  <div class="col-sm-6 col-lg-6 mb-4">
+    <div class="card card-border-shadow-primary h-100">
+      <div class="card-body">
+        <div class="d-flex align-items-center mb-2 pb-1">
+          <div class="avatar me-2">
+            <span class="avatar-initial rounded bg-label-primary"><i class="bx bx-map-alt"></i></span>
+          </div>
+          <h4 class="ms-1 mb-0"> {{ $routes_count }} </h4>
+        </div>
+        <p class="mb-1"> @lang('Routes') </p>
+        <p class="mb-0">
+          {{-- <span class="fw-medium me-1">+18.2%</span> --}}
+          <small class="text-muted"> @lang('All Routes') </small>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-sm-6 col-lg-6 mb-4">
     <div class="card card-border-shadow-primary h-100">
       <div class="card-body">
         <div class="d-flex align-items-center mb-2 pb-1">
@@ -56,7 +74,8 @@
       </div>
     </div>
   </div>
-  <div class="col-sm-6 col-lg-3 mb-4">
+
+  <div class="col-sm-6 col-lg-4 mb-4">
     <div class="card card-border-shadow-warning h-100">
       <div class="card-body">
         <div class="d-flex align-items-center mb-2 pb-1">
@@ -73,7 +92,8 @@
       </div>
     </div>
   </div>
-  <div class="col-sm-6 col-lg-3 mb-4">
+
+  <div class="col-sm-6 col-lg-4 mb-4">
     <div class="card card-border-shadow-danger h-100">
       <div class="card-body">
         <div class="d-flex align-items-center mb-2 pb-1">
@@ -90,7 +110,7 @@
       </div>
     </div>
   </div>
-  <div class="col-sm-6 col-lg-3 mb-4">
+  <div class="col-sm-6 col-lg-4 mb-4">
     <div class="card card-border-shadow-info h-100">
       <div class="card-body">
         <div class="d-flex align-items-center mb-2 pb-1">

@@ -40,21 +40,21 @@
       <div class="mb-3">
         <label class=" col-form-label" for="basic-default-name">@lang("Phone")</label>
         <div class="col-sm-10">
-          {!! Form::text('order_phone_number', null, ['class' => 'form-control','placeholder'=> trans("Phone")]) !!}
+          {!! Form::number('order_phone_number', null, ['class' => 'form-control','placeholder'=> trans("Phone")]) !!}
         </div>
       </div>
 
       <div class="mb-3">
         <label class=" col-form-label" for="basic-default-name">@lang("Floor Number")</label>
         <div class="col-sm-10">
-          {!! Form::text('floor_number', null, ['class' => 'form-control','placeholder'=> trans("Floor Number")]) !!}
+          {!! Form::number('floor_number', null, ['class' => 'form-control','placeholder'=> trans("Floor Number")]) !!}
         </div>
       </div>
 
       <div class="mb-3">
         <label class=" col-form-label" for="basic-default-name">@lang("Apartment Number")</label>
         <div class="col-sm-10">
-          {!! Form::text('apartment_number', null, ['class' => 'form-control','placeholder'=> trans("Apartment Number")]) !!}
+          {!! Form::number('apartment_number', null, ['class' => 'form-control','placeholder'=> trans("Apartment Number")]) !!}
         </div>
       </div>
 
@@ -70,7 +70,7 @@
       </div> --}}
 
       <div class="mb-3">
-        <label class=" col-form-label" for="basic-default-name">@lang("Description")</label>
+        <label class=" col-form-label" for="basic-default-name">@lang("Problem Summary")</label>
         <div class="col-sm-10">
           {!! Form::textarea('description', null, ['required','rows'=>8,'class' => 'form-control','placeholder'=> trans("Description")]) !!}
         </div>
@@ -113,8 +113,8 @@
         <hr>
         
         @php
-        $lat = 23.8859;
-        $lng = 45.0792;
+        $lat = 52.520008;
+        $lng = 13.404954;
         
         if (isset($order)) {
               $lat = $order->lat;

@@ -7,6 +7,7 @@ use App\Http\Requests\Api\StoreAdminRequest;
 use App\Http\Requests\Api\UpdateAdminRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Schema;
 
 class ApiAdminController extends Controller
 {
@@ -20,6 +21,15 @@ class ApiAdminController extends Controller
         $query = User::query()->admins();
 
         $query->whereNotIn('id',[$request->user()->id]);
+
+        if ($request->filled('search_text')) {
+            $search_text = $request->search_text;
+            $columns = ['name','email'];
+
+            foreach($columns as $column){
+                $query->orWhere($column, 'LIKE', '%' . $search_text . '%');
+            }
+        }
 
         $per_page = $request->filled('per_page') ? $request->per_page : 10;
         

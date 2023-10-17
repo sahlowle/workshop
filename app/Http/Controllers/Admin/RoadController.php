@@ -86,7 +86,13 @@ class RoadController extends Controller
      */
     public function show($id)
     {
-        //
+        $data['road'] = Road::with(['driver','orders'])->findOrFail($id);
+
+        $data['title'] = trans('Road Details');
+
+        // return $data;
+
+        return view('admin.roads.show',$data);
     }
 
     /**
@@ -128,7 +134,7 @@ class RoadController extends Controller
         $validated = $request->validate([
             'description' => 'nullable|string|min:3|max:250',
             'driver_id' => 'nullable|exists:users,id',
-            'orders' => 'nullable|array',
+            'orders' => 'required|array',
         ]);
 
         $road->orders()->update(['road_id'=>null]);

@@ -87,7 +87,7 @@
 
 
           <div class="divider my-4">
-            <div class="divider-text">or</div>
+            <div class="divider-text"></div>
           </div>
 
 

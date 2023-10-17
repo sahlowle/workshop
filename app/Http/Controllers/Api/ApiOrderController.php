@@ -12,6 +12,7 @@ use App\Models\Customer;
 use App\Models\Order;
 use App\Traits\FileSaveTrait;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Schema;
 
 class ApiOrderController extends Controller
 {
@@ -28,6 +29,15 @@ class ApiOrderController extends Controller
 
         if ($request->filled('without_route')) {
             $query->whereNull('road_id');
+        }
+
+        if ($request->filled('search_text')) {
+            $search_text = $request->search_text;
+            $columns = ['reference_no','maintenance_device','brand','address','amount'];
+
+            foreach($columns as $column){
+                $query->orWhere($column, 'LIKE', '%' . $search_text . '%');
+            }
         }
 
         $per_page = $request->filled('per_page') ? $request->per_page : 10;

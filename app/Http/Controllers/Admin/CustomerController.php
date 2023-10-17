@@ -46,8 +46,8 @@ class CustomerController extends Controller
             'name' => 'required|string|min:3',
             'email' => 'nullable|email|unique:customers,email',
             'phone' => 'required|unique:customers',
-            'address' => 'required|string|min:6',
-            'zone_area' => 'required|string|min:10',
+            'address' => 'required|string|max:100',
+            'zone_area' => 'required|string|max:30',
         ]);
 
         $validated['type'] = 2;
@@ -102,8 +102,8 @@ class CustomerController extends Controller
         $validated = $request->validate([
             'name' => 'nullable|string|min:3',
             'email' => 'nullable|email|unique:customers,email,'.$id,
-            'phone' => 'nullable|string|min:9|max:10',
-            'address' => 'nullable|string|min:6',
+            'phone' => 'nullable|min:9|max:20|unique:customers,phone,'.$id,
+            'address' => 'nullable|string|max:100',
             'zone_area' => 'nullable|string|max:30',
         ]);
 

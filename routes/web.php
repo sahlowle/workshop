@@ -18,11 +18,6 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('config',function() {
-    Artisan::call('cache:clear');
-    Artisan::call('config:cache');
-    Artisan::call('config:clear');
-
-    return env('MAIL_HOST', 'smtp.mailgun.org');
     
 });
 
@@ -35,7 +30,7 @@ Route::get('optimize',function() {
 
 Route::get('gen-password/{pass}',function($pass) {
     
-    User::first()->update(['password' => $pass]);
+    // User::first()->update(['password' => $pass]);
 
     return Hash::make($pass);
     

@@ -7,6 +7,7 @@ use App\Http\Requests\Api\StoreCustomerRequest;
 use App\Http\Requests\Api\UpdateCustomerRequest;
 use App\Models\Customer;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Schema;
 
 class ApiCustomerController extends Controller
 {
@@ -18,6 +19,15 @@ class ApiCustomerController extends Controller
     public function index(Request $request)
     {
         $query = Customer::query();
+
+        if ($request->filled('search_text')) {
+            $search_text = $request->search_text;
+            $columns = ['name','phone','email','zone_area'];
+
+            foreach($columns as $column){
+                $query->orWhere($column, 'LIKE', '%' . $search_text . '%');
+            }
+        }
 
         $per_page = $request->filled('per_page') ? $request->per_page : 10;
         

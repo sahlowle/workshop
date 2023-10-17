@@ -26,7 +26,7 @@
           <div class="row mb-3">
             <label class="col-sm-2 col-form-label" for="basic-default-company">@lang("Phone")</label>
             <div class="col-sm-10">
-                {!! Form::text('phone', null,  ['class' => 'form-control','placeholder'=>  trans("Phone")]) !!}
+                {!! Form::number('phone', null,  ['class' => 'form-control','placeholder'=>  trans("Phone")]) !!}
             </div>
           </div>
 

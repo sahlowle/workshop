@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Customer;
 use App\Models\Order;
+use App\Models\Road;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
@@ -27,6 +28,7 @@ class HomeController extends Controller
      */
     public function index()
     {
+        $data['routes_count'] = Road::count();
         $data['orders_count'] = Order::count();
         $data['customers_count'] = Customer::count();
         $data['drivers_count'] = User::drivers()->count();

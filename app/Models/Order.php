@@ -18,13 +18,24 @@ class Order extends Model
     // ];
 
     protected $appends = [
-        'status_name'
+        'status_name', 'status_color','payment_method'
     ];
 
     protected $casts = [
         'is_paid' => 'boolean',
         'is_visit' => 'boolean',
     ];
+
+    public function getPaymentMethodAttribute()
+    {
+        $value = $this->payment_way;
+        
+        return match ((int)$value) {
+             1 => trans("Cash") ,
+             2 => trans("Online") ,
+             default => trans("Un Known") ,
+        };
+    }
 
     public function getStatusNameAttribute()
     {
@@ -36,6 +47,19 @@ class Order extends Model
              3 => trans("Finished") ,
              4 => trans("Canceled") ,
              default => trans("Pending") ,
+        };
+    }
+
+    public function getStatusColorAttribute()
+    {
+        $value = $this->status;
+        
+        return match ((int)$value) {
+             1 => "text-secondary" ,
+             2 => "text-warning" ,
+             3 => "text-success" ,
+             4 => "text-danger" ,
+             default => "text-secondary" ,
         };
     }
 

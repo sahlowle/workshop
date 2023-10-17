@@ -15,8 +15,20 @@ class Road extends Model
     ];
 
     protected $appends = [
-        'status_name'
+        'status_name','status_color'
     ];
+
+    public function getStatusColorAttribute()
+    {
+        $value = $this->status;
+        
+        return match ((int)$value) {
+             1 => "text-secondary" ,
+             2 => "text-warning" ,
+             3 => "text-success" ,
+             default => "text-secondary" ,
+        };
+    }
 
     public function getStatusNameAttribute()
     {
@@ -54,7 +66,7 @@ class Road extends Model
 
                 $token = User::find($road->driver_id)->fcm_token;
 
-                FirebaseService::sendNotification(trans('New Notifications'),[
+                FirebaseService::sendNotification(trans('You have a new route'),[
                     'id' => $road->id,
                     'type' => 'New Route',
                 ],collect([$token]));
@@ -68,13 +80,23 @@ class Road extends Model
 
             if ($status == 1 && ! is_null($road->driver_id)) {
                 $road->status = 2; // on progress
-
                 $token = User::find($road->driver_id)->fcm_token;
 
-                FirebaseService::sendNotification(trans('New Notifications'),[
+                FirebaseService::sendNotification(trans('You have a new route'),[
                     'id' => $road->id,
                     'type' => 'New Route',
                 ],collect([$token]));
+            } elseif ($road->wasChanged('driver_id')) {
+                $token = User::find($road->driver_id)->fcm_token;
+
+                FirebaseService::sendNotification(trans('You have a new route'),[
+                    'id' => $road->id,
+                    'type' => 'New Route',
+                ],collect([$token]));
+            }
+
+            if (is_null($road->driver_id)) {
+                $road->status = 1; // pending
             }
         });
 

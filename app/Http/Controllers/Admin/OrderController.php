@@ -97,7 +97,11 @@ class OrderController extends Controller
      */
     public function show($id)
     {
-        //
+        $data['order'] = Order::with(['customer','files'])->findOrFail($id);
+
+        $data['title'] = trans('Order Details');
+
+        return view('admin.orders.show',$data);
     }
 
     /**

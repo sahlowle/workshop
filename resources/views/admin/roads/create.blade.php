@@ -38,7 +38,7 @@
                   <td> 
                     {{ $item->reference_no }}</td>
                   <td> {{ $item->customer->name }}  </td>
-                  <td> {{ $item->status }}  </td>
+                  <td> {{ $item->status_name }}  </td>
                 </tr>
                 @endforeach
               </tbody>
