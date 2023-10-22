@@ -10,7 +10,7 @@ if (! function_exists('changeOrderStatus')) {
 
 if (! function_exists('loginBackground')) {
     function loginBackground() {
-        return asset('assets/img/backgrounds/login-background.png');
+        return asset('assets/img/backgrounds/global_bg.png');
     }
 }
 

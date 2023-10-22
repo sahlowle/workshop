@@ -22,10 +22,10 @@
       <div class="d-flex align-items-end row">
         <div class="col-sm-7">
           <div class="card-body">
-            <h5 class="card-title text-primary">Welcome  {{ auth()->user()->name }} ! 🎉</h5>
+            <h5 class="card-title text-primary"> @lang('Hello')  {{ auth()->user()->name }} ! 🎉</h5>
             <p class="mb-4">
-              You have done 
-            <span class="fw-bold"> {{ $sales }} </span> sales . Check your new badge in your profile.</p>
+              @lang('You have done') 
+            <span class="fw-bold"> {{ $sales }} </span> @lang('sales') .</p>
 
           </div>
         </div>

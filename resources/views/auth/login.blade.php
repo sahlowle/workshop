@@ -12,9 +12,9 @@
   <div class="authentication-wrapper authentication-cover">
     <div class="authentication-inner row m-0">
       <!-- /Left Text -->
-      <div class="d-none d-lg-flex col-lg-7 col-xl-8 align-items-center p-5">
+      <div class="d-none d-lg-flex col-lg-7 col-xl-8 align-items-center">
         <div class="w-100 d-flex justify-content-center">
-          <img src="{{ loginBackground() }}" class="img-fluid" alt="Login image" width="700"
+          <img src="{{ loginBackground() }}" class="img-fluid" alt="Login image" 
             data-app-dark-img="illustrations/boy-with-rocket-dark.png"
             data-app-light-img="illustrations/boy-with-rocket-light.png">
         </div>
@@ -26,7 +26,7 @@
         <div class="w-px-400 mx-auto">
           <!-- Logo -->
           <div class="app-brand mb-5">
-            <a href="https://demos.themeselection.com/sneat-bootstrap-html-laravel-admin-template/demo-1"
+            <a href="#"
               class="app-brand-link gap-2">
               <span class="app-brand-logo demo">
                 <img src="{{ asset('assets/img/logo.png') }}" style="max-height: 55px">

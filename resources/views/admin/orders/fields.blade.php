@@ -51,12 +51,12 @@
         </div>
       </div>
 
-      <div class="mb-3">
+      {{-- <div class="mb-3">
         <label class=" col-form-label" for="basic-default-name">@lang("Apartment Number")</label>
         <div class="col-sm-10">
           {!! Form::number('apartment_number', null, ['class' => 'form-control','placeholder'=> trans("Apartment Number")]) !!}
         </div>
-      </div>
+      </div> --}}
 
     </div>
     

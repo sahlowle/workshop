@@ -24,6 +24,16 @@ class OrderController extends Controller
             $query->where('reference_no',$request->reference_no);
         }
 
+        if ($request->filled(['date_from','date_to'])) {
+
+            $date_from = $request->date('date_from');
+            $date_to = $request->date('date_to');
+
+            $query
+            ->whereDate('created_at', '>=', $date_from)
+            ->whereDate('created_at', '<=', $date_to);
+        }
+
         $data['data'] = $query->with('customer')->latest('id')->paginate(10);
 
         $data['title'] = trans('Orders');
@@ -66,7 +76,7 @@ class OrderController extends Controller
             'customer_id' => 'required|exists:customers,id',
 
             'block_no' => 'nullable|string|max:20',
-            'order_phone_number' => 'required|string|max:20',
+            'order_phone_number' => 'required|string|min:12|max:20',
             'floor_number' => 'nullable|string|max:20',
             'apartment_number' => 'nullable|string|max:20',
             'maintenance_device' => 'required|string|max:120',
@@ -145,7 +155,7 @@ class OrderController extends Controller
             'customer_id' => 'nullable|exists:customers,id',
 
             'block_no' => 'nullable|string|max:20',
-            'order_phone_number' => 'nullable|string|max:20',
+            'order_phone_number' => 'nullable|string|min:12|max:20',
             'floor_number' => 'nullable|string|max:20',
             'apartment_number' => 'nullable|string|max:20',
             'maintenance_device' => 'nullable|string|max:120',

@@ -28,9 +28,11 @@ class StoreCustomerRequest extends FormRequest
         return [
             'name' => ['required', 'string','min:3','max:80'],
             'email' => ['required','email','unique:customers,email','string','max:120'],
-            'phone' => ['required','unique:customers,phone','string','min:9','max:20'],
+            'phone' => ['required','unique:customers,phone','string','min:12','max:20'],
             'address' => ['required','string','min:3','max:190'],
             'zone_area' => ['required','string','min:3','max:30'],
+            'postal_code' => ['nullable','string','min:3','max:30'],
+            'city' => ['nullable','string','min:3','max:30'],
         ];
     }
 

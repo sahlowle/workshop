@@ -43,6 +43,20 @@
                 {!! Form::text('zone_area', null,  ['class' => 'form-control','placeholder'=>  trans("Zone Area")]) !!}
             </div>
           </div>
+          
+          <div class="row mb-3">
+            <label class="col-sm-2 col-form-label" for="basic-default-company">@lang("City")</label>
+            <div class="col-sm-10">
+                {!! Form::text('city', null,  ['class' => 'form-control','placeholder'=>  trans("City")]) !!}
+            </div>
+          </div>
+
+          <div class="row mb-3">
+            <label class="col-sm-2 col-form-label" for="basic-default-company">@lang("Postal Code")</label>
+            <div class="col-sm-10">
+                {!! Form::text('postal_code', null,  ['class' => 'form-control','placeholder'=>  trans("Postal Code")]) !!}
+            </div>
+          </div>
                     
           <div class="row justify-content-end">
             <div class="col-sm-10">

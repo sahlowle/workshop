@@ -32,7 +32,7 @@ class UpdateOrderRequest extends FormRequest
             'brand' => ['nullable', 'string','max:250'],
             'additional_info' => ['nullable', 'string','max:250'],
             'block_no' => ['nullable', 'string','max:250'],
-            'order_phone_number' => ['nullable', 'string','min:9','max:250'],
+            'order_phone_number' => ['nullable', 'string','min:12','max:20'],
             'floor_number' => ['nullable', 'string','min:1','max:250'],
             'apartment_number' => ['nullable', 'string','max:250'],
             'lat' => ['nullable','string','min:3','max:100'],

@@ -40,7 +40,7 @@ class UpdateDriverRequest extends FormRequest
             'phone' => [
                 'nullable',
                 Rule::unique('users')->ignore($this->route('driver'), 'id'),
-                'string','min:9','max:20'
+                'string','min:12','max:20'
             ],
         ];
     }
