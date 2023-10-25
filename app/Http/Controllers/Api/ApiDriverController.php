@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\StoreDriverRequest;
+use App\Http\Requests\Api\UpdateDriverLocationRequest;
 use App\Http\Requests\Api\UpdateDriverRequest;
 use App\Models\User;
 use App\Notifications\NewPassword;
@@ -26,8 +27,12 @@ class ApiDriverController extends Controller
             $search_text = $request->search_text;
             $columns = ['name','phone','email','zone_area'];
 
-            foreach($columns as $column){
-                $query->orWhere($column, 'LIKE', '%' . $search_text . '%');
+            foreach($columns as $key => $column){
+                if ($key == 0) {
+                    $query->where($column, 'LIKE', '%' . $search_text . '%');
+                } else{
+                    $query->orWhere($column, 'LIKE', '%' . $search_text . '%');
+                }
             }
         }
 
@@ -121,6 +126,25 @@ class ApiDriverController extends Controller
         $user->delete();
     
         $message = trans('Successful Delete');
+
+        return $this->sendResponse(true,$user,$message,200);
+
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | update location
+    |--------------------------------------------------------------------------
+    */
+    public function updateLocation(UpdateDriverLocationRequest $request)
+    {
+        $user =  $request->user();
+
+        $data = $request->validated();
+
+        $user->update($data);
+    
+        $message = trans('Successful Updated');
 
         return $this->sendResponse(true,$user,$message,200);
 

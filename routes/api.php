@@ -68,6 +68,9 @@ Route::middleware(['auth:sanctum'])->group(function () {
     /* |------ current user routes ---------| */
     Route::get('current-user',[AuthController::class,'currentUser']);
 
+    /* |------ update driver location user ---------| */
+    Route::post('drivers/update-location',[ApiDriverController::class,'updateLocation']);
+
     /* |------  stripe payment routes ---------| */
     Route::post('payment-intents',[PaymentController::class,'paymentIntents']);
     Route::get('payment-info',[PaymentController::class,'paymentInfo']);

@@ -17,14 +17,21 @@ class LocaleMiddleware
   public function handle(Request $request, Closure $next)
   {
     // available language in template array
-    $availLocale = ['en' => 'en', 'fr' => 'fr', 'de' => 'de', 'pt' => 'pt'];
+    $availLocale = ['en','de'];
+    $session_locale = session()->get('locale');
+    $lang_locale = $request->lang;
+
+
 
     // Locale is enabled and allowed to be change
-    if (session()->has('locale') && array_key_exists(session()->get('locale'), $availLocale)) {
+    if (session()->has('locale') && in_array($session_locale,$availLocale)) {
       // Set the Laravel locale
-      app()->setLocale(session()->get('locale'));
+      app()->setLocale($session_locale);
+    } 
+    else if($request->filled('lang') && in_array($lang_locale,$availLocale)) {
+      // Set the Laravel locale
+      app()->setLocale($lang_locale);
     }
-
     return $next($request);
   }
 }

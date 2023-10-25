@@ -131,8 +131,19 @@
                 <div class="d-flex justify-content-between">
                     <h6 class="card-title m-0"> @lang('Technician Report'): </h6>
                 </div>
+                <hr>
                 <br>
               {{ $order->report }}
+
+                <div class="d-flex justify-content-between">
+                    <h6 class="card-title m-0"> @lang('Current Technician Location'): </h6>
+                </div>
+                <hr>
+                <br>
+                <a target="_blank" href="https://maps.google.com/?q={{ $order->road->driver->lat }},{{ $order->road->driver->lng }}" class="btn btn-sm btn-primary" >
+                  <i class='bx bxs-map'></i>
+                  @lang('Show Technician Location')
+                </a> 
             </div>
       
           </div>

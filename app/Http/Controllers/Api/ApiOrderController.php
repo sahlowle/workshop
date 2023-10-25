@@ -35,8 +35,12 @@ class ApiOrderController extends Controller
             $search_text = $request->search_text;
             $columns = ['reference_no','maintenance_device','brand','address','amount'];
 
-            foreach($columns as $column){
-                $query->orWhere($column, 'LIKE', '%' . $search_text . '%');
+            foreach($columns as $key => $column){
+                if ($key == 0) {
+                    $query->where($column, 'LIKE', '%' . $search_text . '%');
+                } else{
+                    $query->orWhere($column, 'LIKE', '%' . $search_text . '%');
+                }
             }
         }
 

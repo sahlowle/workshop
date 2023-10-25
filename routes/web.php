@@ -5,8 +5,8 @@ use App\Models\User;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
-// use Illuminate\Support\Facades\Schema;
-// use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,10 +20,12 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('config',function() {
-    // Schema::table('customers', function (Blueprint $table) {
-    //     $table->string('postal_code',10)->nullable()->after('zone_area');
-    //     $table->string('city',50)->nullable()->after('postal_code');
-    // });
+    Schema::table('users', function (Blueprint $table) {
+        $table->string('lat',100)->nullable()->after('address');
+        $table->string('lng',100)->nullable()->after('lat');
+    });
+
+    return "<h1> Cached Successful </h1>";
 });
 
 Route::get('optimize',function() {

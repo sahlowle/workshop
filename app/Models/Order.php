@@ -42,11 +42,11 @@ class Order extends Model
         $value = $this->status;
         
         return match ((int)$value) {
-             1 => trans("Pending") ,
-             2 => trans("On Progress") ,
-             3 => trans("Finished") ,
-             4 => trans("Canceled") ,
-             default => trans("Pending") ,
+             1 => "Pending",
+             2 => "On Progress",
+             3 => "Finished",
+             4 => "Canceled",
+             default => "Pending" ,
         };
     }
 
@@ -72,6 +72,13 @@ class Order extends Model
     public function customer()
     {
         return $this->belongsTo(Customer::class, 'customer_id')->withDefault([
+            'name' => trans('No Customer'),
+        ]);
+    }
+
+    public function road()
+    {
+        return $this->belongsTo(Road::class, 'road_id')->withDefault([
             'name' => trans('No Customer'),
         ]);
     }

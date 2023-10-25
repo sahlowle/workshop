@@ -37,7 +37,6 @@ class HasRole
             'data' => [],
             'code' => 403,
         ];
-    
        
         return response()->json($response, 403);
 

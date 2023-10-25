@@ -13,7 +13,7 @@
     <div class="col-lg-8">
         <div class="card border--dark">
             <h5 class="card-header bg--dark">
-                @lang('Order Information')
+                @lang('Route Information')
             </h5>
             <div class="card-body">
                 <ul class="list-group">
@@ -32,6 +32,19 @@
                     <li class="list-group-item d-flex justify-content-between align-items-center">
                         @lang("Description")    <span>{{ $road->description }}</span>
                     </li>
+
+                    @if ($road->driver)
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                      @lang("Driver")
+                      <span>
+                        <a target="_blank" href="https://maps.google.com/?q={{ $road->driver->lat }},{{ $road->driver->lng }}" class="btn btn-sm btn-primary" >
+                          <i class='bx bxs-map'></i>
+                          @lang('Show Technician Location')
+                        </a> 
+                      | {{ $road->driver->name }}
+                      </span>
+                  </li>
+                    @endif
 
                 </ul>
             </div>
