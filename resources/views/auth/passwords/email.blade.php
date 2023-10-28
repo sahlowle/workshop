@@ -15,7 +15,7 @@
 
 <div class="container-xxl">
     <div class="authentication-wrapper authentication-basic container-p-y">
-      <div class="authentication-inner py-4">
+      <div class="authentication-inner py-4" style="max-width: 450px">
   
         <!-- Forgot Password -->
         <div class="card">

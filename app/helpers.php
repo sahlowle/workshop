@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Order;
+use Carbon\Carbon;
 
 if (! function_exists('changeOrderStatus')) {
     function changeOrderStatus($road_id,$status) {
@@ -29,5 +30,21 @@ if (! function_exists('referenceNo')) {
     function referenceNo($prefix) {
         // return $prefix.'-' . date("Ymd") . '-' . date("his").'-';
         return $prefix.'-'.str()->upper(uniqid());
+    }
+}
+
+
+if (! function_exists('greeting')) {
+    function greeting()
+    {
+        $hour = Carbon::now()->hour;
+        // $hour = $this->format('H');
+        if ($hour < 12) {
+            return trans('Good morning');
+        }
+        if ($hour < 17) {
+            return trans('Good afternoon');
+        }
+        return trans('Good evening');
     }
 }

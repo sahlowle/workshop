@@ -12,7 +12,7 @@
   <div class="authentication-wrapper authentication-cover">
     <div class="authentication-inner row m-0">
       <!-- /Left Text -->
-      <div class="d-none d-lg-flex col-lg-7 col-xl-8 align-items-center">
+      <div class="d-none d-lg-flex col-lg-7 col-xl-8 align-items-center" style="padding: 0;">
         <div class="w-100 d-flex justify-content-center">
           <img src="{{ loginBackground() }}" class="img-fluid" alt="Login image" 
             data-app-dark-img="illustrations/boy-with-rocket-dark.png"
@@ -29,7 +29,7 @@
             <a href="#"
               class="app-brand-link gap-2">
               <span class="app-brand-logo demo">
-                <img src="{{ asset('assets/img/logo.png') }}" style="max-height: 55px">
+                <img src="{{ asset('assets/img/logo.png') }}" style="max-height: 85px">
               </span>
               {{-- <span class="app-brand-text demo text-body fw-bold">Sneat</span> --}}
             </a>
@@ -98,4 +98,26 @@
   </div>
 </div>
 </div>
+
+<script>
+  window.onload = function () {
+      if (typeof history.pushState === "function") {
+          history.pushState("jibberish", null, null);
+          window.onpopstate = function () {
+              history.pushState('newjibberish', null, null);
+          };
+      } else {
+          var ignoreHashChange = true;
+          window.onhashchange = function () {
+              if (!ignoreHashChange) {
+                  ignoreHashChange = true;
+                  window.location.hash = Math.random();
+              } else {
+                  ignoreHashChange = false;   
+              }
+          };
+      }
+  }
+</script>
+
 @endsection

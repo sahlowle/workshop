@@ -25,14 +25,14 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::resource('roads', RoadController::class);
-Route::resource('orders', OrderController::class);
-Route::resource('users', UserController::class);
-Route::resource('drivers', DriverController::class);
-Route::resource('customers', CustomerController::class);
+Route::resource('roads', RoadController::class)->middleware('prevent-back-history');
+Route::resource('orders', OrderController::class)->middleware('prevent-back-history');
+Route::resource('users', UserController::class)->middleware('prevent-back-history');
+Route::resource('drivers', DriverController::class)->middleware('prevent-back-history');
+Route::resource('customers', CustomerController::class)->middleware('prevent-back-history');
 
-Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('index');
+Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->middleware('prevent-back-history')->name('index');
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->middleware('prevent-back-history')->name('home');
 
-Route::get('/change-lang/{lang}', [HomeController::class, 'changeLang'])->name('change-lang');
+Route::get('/change-lang/{lang}', [HomeController::class, 'changeLang'])->name('change-lang')->middleware('prevent-back-history');
