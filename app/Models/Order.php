@@ -72,7 +72,7 @@ class Order extends Model
     
     public function customer()
     {
-        return $this->belongsTo(Customer::class, 'customer_id')->withDefault([
+        return $this->belongsTo(Customer::class, 'customer_id')->withTrashed()->withDefault([
             'name' => trans('No Customer'),
         ]);
     }

@@ -1,5 +1,10 @@
 {
     "x": "",
+    "Successful Disabled": "Successful Disabled",
+    "Successful Enabled": "Successful Enabled",
+    "Disable": "Disable",
+    "Enable": "Enable",
+    "phone must be 12 number": "phone must be 12 number",
     "Good evening": "Good evening",
     "Good afternoon": "Good afternoon",
     "Good morning": "Good morning",

@@ -40,34 +40,34 @@
 </div>
 <div class="row">
   <div class="col-sm-6 col-lg-6 mb-4">
-    <div class="card card-border-shadow-primary h-100">
+    <div class="card card-border-shadow-primary h-100 bg-primary text-white">
       <div class="card-body">
         <a href="{{ route('roads.index') }}">
         <div class="d-flex align-items-center mb-2 pb-1">
-          <div class="avatar me-2">
-            <span class="avatar-initial rounded "><i class="bx bx-map-alt"></i></span>
+          <div class=" me-2">
+            <span class="avatar-initial rounded "><i class="fs-2 bx bx-map-alt"></i></span>
           </div>
-          <h4 class="ms-1 mb-0"> {{ $routes_count }} </h4>
+          <h4 class="ms-1 mb-0 text-white"> {{ $routes_count }} </h4>
         </div>
         </a>
         <p class="mb-1"> @lang('Routes') </p>
         <p class="mb-0">
           {{-- <span class="fw-medium me-1">+18.2%</span> --}}
-          <small class="text-muted"> @lang('All Routes') </small>
+          <small class="text-muted text-white"> @lang('All Routes') </small>
         </p>
       </div>
     </div>
   </div>
 
   <div class="col-sm-6 col-lg-6 mb-4">
-    <div class="card card-border-shadow-primary h-100">
+    <div class="card card-border-shadow-primary h-100 bg-primary text-white">
       <div class="card-body">
         <a href="{{ route('orders.index') }}">
         <div class="d-flex align-items-center mb-2 pb-1">
-          <div class="avatar me-2">
-            <span class="avatar-initial rounded bg-label-primary"><i class="bx bxs-calendar-check"></i></span>
+          <div class=" me-2">
+            <span class="avatar-initial rounded "><i class="fs-2 bx bxs-calendar-check"></i></span>
           </div>
-          <h4 class="ms-1 mb-0"> {{ $orders_count }} </h4>
+          <h4 class="ms-1 mb-0 text-white"> {{ $orders_count }} </h4>
         </div>
         </a>
         <p class="mb-1"> @lang('Orders') </p>
@@ -80,14 +80,14 @@
   </div>
 
   <div class="col-sm-6 col-lg-6 mb-4">
-    <div class="card card-border-shadow-warning h-100">
+    <div class="card card-border-shadow-warning h-100 bg-primary text-white">
       <div class="card-body">
         <a href="{{ route('customers.index') }}">
         <div class="d-flex align-items-center mb-2 pb-1">
-          <div class="avatar me-2">
-            <span class="avatar-initial rounded bg-label-warning"><i class='bx bx-user-check'></i></span>
+          <div class="me-2">
+            <span class="avatar-initial rounded "><i class='fs-2 bx bx-user-check'></i></span>
           </div>
-          <h4 class="ms-1 mb-0"> {{ $customers_count }} </h4>
+          <h4 class="ms-1 mb-0 text-white"> {{ $customers_count }} </h4>
         </div>
         </a>
         <p class="mb-1"> @lang('Customers') </p>
@@ -100,14 +100,14 @@
   </div>
 
   <div class="col-sm-6 col-lg-6 mb-4">
-    <div class="card card-border-shadow-danger h-100">
+    <div class="card card-border-shadow-danger h-100 bg-primary text-white">
       <div class="card-body">
         <a href="{{ route('drivers.index') }}">
           <div class="d-flex align-items-center mb-2 pb-1">
-            <div class="avatar me-2">
-              <span class="avatar-initial rounded bg-label-danger"><i class='bx bx-wrench'></i></span>
+            <div class="me-2">
+              <span class="avatar-initial rounded"><i class='fs-2 bx bx-wrench'></i></span>
             </div>
-            <h4 class="ms-1 mb-0">{{ $drivers_count }}</h4>
+            <h4 class="ms-1 mb-0 bg-primary text-white">{{ $drivers_count }}</h4>
           </div>
         </a>
         <p class="mb-1"> @lang('Technician') </p>

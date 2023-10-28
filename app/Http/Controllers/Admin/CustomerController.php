@@ -13,9 +13,23 @@ class CustomerController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $data['users'] = Customer::paginate(10);
+        $query = Customer::query();
+
+        if ($request->filled('search_text')) {
+            $search_text = $request->search_text;
+            $columns = ['name','phone','email'];
+
+            foreach($columns as $key => $column){
+                if ($key == 0) {
+                    $query->where($column, 'LIKE', '%' . $search_text . '%');
+                } else{
+                    $query->orWhere($column, 'LIKE', '%' . $search_text . '%');
+                }
+            }
+        }
+        $data['users'] = $query->withTrashed()->paginate(10);
 
         $data['title'] = trans('Customers');
 
@@ -134,7 +148,20 @@ class CustomerController extends Controller
 
         $user->delete();
 
-        $message = trans('Successful Delete');
+        $message = trans('Successful Disabled');
+
+        notify()->success($message);
+
+        return redirect()->route('customers.index');
+    }
+
+    public function reStore($id)
+    {
+        $user = Customer::withTrashed()->findOrFail($id);
+
+        $user->restore();
+
+        $message = trans('Successful Enabled');
 
         notify()->success($message);
 

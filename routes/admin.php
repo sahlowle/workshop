@@ -30,6 +30,8 @@ Route::resource('orders', OrderController::class)->middleware('prevent-back-hist
 Route::resource('users', UserController::class)->middleware('prevent-back-history');
 Route::resource('drivers', DriverController::class)->middleware('prevent-back-history');
 Route::resource('customers', CustomerController::class)->middleware('prevent-back-history');
+Route::get('customers/active/{id}', [CustomerController::class, 'reStore'])->name('customers.active')->middleware('prevent-back-history');
+
 
 Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->middleware('prevent-back-history')->name('index');
 
