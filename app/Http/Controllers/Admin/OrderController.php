@@ -34,7 +34,7 @@ class OrderController extends Controller
             ->whereDate('created_at', '<=', $date_to);
         }
 
-        $data['data'] = $query->with('customer')->latest('id')->paginate(10);
+        $data['data'] = $query->with('customer')->latest('id')->paginate(10)->withQueryString();
 
         $data['title'] = trans('Orders');
 

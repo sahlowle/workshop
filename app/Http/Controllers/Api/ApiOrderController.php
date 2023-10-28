@@ -28,12 +28,13 @@ class ApiOrderController extends Controller
         $query = Order::query();
 
         if ($request->filled('without_route')) {
-            $query->whereNull('road_id');
+            $query->whereDoesntHave('road');
         }
 
         if ($request->filled('search_text')) {
             $search_text = $request->search_text;
-            $columns = ['reference_no','maintenance_device','brand','address','amount'];
+
+            $columns = ['reference_no','maintenance_device','brand','amount'];
 
             foreach($columns as $key => $column){
                 if ($key == 0) {

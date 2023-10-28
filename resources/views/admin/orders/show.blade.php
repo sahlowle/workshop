@@ -140,10 +140,19 @@
                 </div>
                 <hr>
                 <br>
+                @if ($order?->road?->driver && $order->road->driver->lat && $order->road->driver->lng)
+
+                @php
+                    $driver_lat = $order->road->driver->lat;
+                    $driver_lng = $order->road->driver->lng;
+                @endphp
+                
                 <a target="_blank" href="https://maps.google.com/?q={{ $order->road->driver->lat }},{{ $order->road->driver->lng }}" class="btn btn-sm btn-primary" >
                   <i class='bx bxs-map'></i>
                   @lang('Show Technician Location')
                 </a> 
+                @endif
+                
             </div>
       
           </div>

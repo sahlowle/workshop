@@ -18,6 +18,43 @@
     <i class="bx bxs-calendar-check"></i>
     @lang('Orders')
   </h5>
+  <form action="{{ route('orders.index') }}" method="GET">
+    <div class="row p-4">
+
+      <div class="col-5">
+        <div class="mb-3">
+          <label class=" col-form-label" for="basic-default-name">@lang("From date")</label>
+          <div class="col-sm-10">
+            <input required class="form-control" name="date_from" type="date" value="{{ request()->date_from }}">
+          </div>
+        </div>
+      </div>
+      <div class="col-5">
+        <div class="mb-3">
+          <label class=" col-form-label" for="basic-default-name">@lang("To date")</label>
+          <div class="col-sm-10">
+            <input required class="form-control" name="date_to" type="date" value="{{ request()->date_to }}">
+          </div>
+        </div>
+      </div>
+
+      <div class="col-2">
+        <div class="mb-3">
+          <label class=" col-form-label" for="basic-default-name"> - </label>
+          <div class="col-sm-10">
+            <button class="btn btn-primary">
+              <i class="bx bx-search"></i>
+              @lang('Search')
+            </button>
+          </div>
+        </div>
+        
+        
+      </div>
+
+    </div>
+  </form>
+
   <div class="table-responsive text-nowrap p-4">
     <table class="table table-hover datatable">
       <thead>
@@ -26,6 +63,8 @@
           <th> @lang("Refrence No") </th>
           <th> @lang("Customer") </th>
           <th> @lang("Status") </th>
+          <th> @lang("Amount") </th>
+          <th> @lang("Date") </th>
           <th> @lang("Actions") </th>
         </tr>
       </thead>
@@ -36,13 +75,15 @@
           <td> {{ $item->reference_no }}  </td>
           <td> {{ $item->customer->name }}  </td>
           <td> {{ $item->status_name }}  </td>
+          <td> {{ $item->amount ? $item->amount : trans('Amount Not Added') }}  </td>
+          <td> {{ $item->created_at->format('Y-M-d') }}  </td>
           <td>
-            <a class="btn btn-outline-primary btn-sm pl-1" href="{{ route('orders.show',$item->id) }}">
+            <a class="btn btn-show btn-sm pl-1" href="{{ route('orders.show',$item->id) }}">
               <i class='bx bx-show' style="font-size: 1.2rem"></i>
               @lang('Show')
             </a>
 
-            <a class="btn btn-outline-success btn-sm pl-1" href="{{ route('orders.edit',$item->id) }}">
+            <a class="btn btn-outline-primary btn-sm pl-1" href="{{ route('orders.edit',$item->id) }}">
               <i class='bx bx-edit' style="font-size: 1.2rem"></i>
               @lang('Edit')
             </a>

@@ -46,7 +46,7 @@
               @lang('Show')
             </a> --}}
 
-            <a class="btn btn-outline-success btn-sm pl-1" href="{{ route('customers.edit',$item->id) }}">
+            <a class="btn btn-outline-primary btn-sm pl-1" href="{{ route('customers.edit',$item->id) }}">
               <i class='bx bx-edit' style="font-size: 1.2rem"></i>
               @lang('Edit')
             </a>

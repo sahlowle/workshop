@@ -35,7 +35,7 @@
           <td> {{ $item->name }}  </td>
           <td> {{ $item->email }}  </td>
           <td>
-            <a class="btn btn-outline-success btn-sm pl-1"
+            <a class="btn btn-outline-primary btn-sm pl-1"
               href="{{ route('users.edit',$item->id) }}">
               <i class='bx bx-edit' style="font-size: 1.2rem"></i>
               @lang('Edit')

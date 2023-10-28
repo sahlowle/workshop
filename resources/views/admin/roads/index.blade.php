@@ -36,7 +36,7 @@
           <td> {{ $item->driver ? $item->driver->name: trans('No Technician') }}  </td>
           <td> {{ $item->status_name }}  </td>
           <td>
-            <a class="btn btn-outline-success btn-sm  pl-1" href="{{ route('roads.show',$item->id) }}">
+            <a class="btn btn-show btn-sm  pl-1" href="{{ route('roads.show',$item->id) }}">
               <i class='bx bx-show' style="font-size: 1.2rem"></i>
               @lang('Show')
             </a>

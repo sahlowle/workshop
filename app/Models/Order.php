@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Services\FirebaseService;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -78,9 +79,7 @@ class Order extends Model
 
     public function road()
     {
-        return $this->belongsTo(Road::class, 'road_id')->withDefault([
-            'name' => trans('No Customer'),
-        ]);
+        return $this->belongsTo(Road::class, 'road_id');
     }
 
     public function files()
@@ -94,6 +93,16 @@ class Order extends Model
             // $order->reference_no = 'OF-' . date("Ymd") . '-' . date("his");
             $order->reference_no = referenceNo('OF');
             $order->create_by = auth()->user()->id; 
+        });
+
+        static::updating(function ($order) {
+            if ($order->amount != $order->getOriginal('amount') && $order->road->driver_id) {
+                $token = User::find($order->road->driver_id)->fcm_token;
+                FirebaseService::sendNotification('Amount of order was changed',[
+                    'id' => $order->id,
+                    'type' => 'Order amount changed',
+                ],collect([$token]));
+            }
         });
     }
 }

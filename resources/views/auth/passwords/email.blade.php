@@ -1,47 +1,69 @@
-@extends('layouts.app')
+@extends('layouts/blankLayout' )
 
-@section('content')
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">{{ __('Reset Password') }}</div>
+@section('layoutContent')
 
-                <div class="card-body">
-                    @if (session('status'))
-                        <div class="alert alert-success" role="alert">
-                            {{ session('status') }}
-                        </div>
-                    @endif
-
-                    <form method="POST" action="{{ route('password.email') }}"> 
-                        @csrf
-
-                        <div class="row mb-3">
-                            <label for="email" class="col-md-4 col-form-label text-md-end">{{ __('Email Address') }}</label>
-
-                            <div class="col-md-6">
-                                <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
-
-                                @error('email')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-                        </div>
-
-                        <div class="row mb-0">
-                            <div class="col-md-6 offset-md-4">
-                                <button type="submit" class="btn btn-primary">
-                                    {{ __('Send Password Reset Link') }}
-                                </button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+@section('page-style')
+<!-- Page -->
+<link rel="stylesheet" href="{{ asset('assets/vendor/css/pages/page-auth.css') }}">
+<style>
+    h1, h2, h3, h4, h5, h6 {
+    font-size: revert-layer !important;
+    font-weight: 500;
+}
+</style>
 @endsection
+
+<div class="container-xxl">
+    <div class="authentication-wrapper authentication-basic container-p-y">
+      <div class="authentication-inner py-4">
+  
+        <!-- Forgot Password -->
+        <div class="card">
+          <div class="card-body">
+            @if (session('status'))
+            <div class="alert alert-success" style="color: black;" role="alert">
+                {{ session('status') }}
+            </div>
+        @endif
+           <!-- Logo -->
+           <div class="app-brand justify-content-center mb-5">
+            <a href="#"
+              class="app-brand-link gap-2">
+              <span class="app-brand-logo demo">
+                <img src="{{ asset('assets/img/logo.png') }}" style="max-height: 55px">
+              </span>
+              {{-- <span class="app-brand-text demo text-body fw-bold">Sneat</span> --}}
+            </a>
+          </div>
+          <!-- /Logo -->
+            <h1 class="mb-2"> @lang('Forgot Password') ? 🔒</h1>
+            <p class="mb-4">
+                @lang("Enter your email and we'll send you new password to your email")
+            </p>
+            <form action="{{ route('password.email') }}" id="formAuthentication" class="mb-3 fv-plugins-bootstrap5 fv-plugins-framework" method="POST">
+                @csrf
+              <div class="mb-3 fv-plugins-icon-container">
+                <label for="email" class="form-label"> @lang('Email') </label>
+                <input required type="email" class="form-control" id="email" name="email" placeholder="{{ trans('Enter your email') }}" @error('email') is-invalid @enderror>
+                @error('email')
+                <span style="color: red;"  role="alert">
+                    <strong>{{ $message }}</strong>
+                </span>
+            @enderror
+            </div>
+              <button class="btn btn-primary d-grid w-100"> @lang('Send Password Reset Link') </button>
+            <input type="hidden"></form>
+            <div class="text-center">
+              <a href="{{ route('login') }}">
+                <i class="bx bx-chevron-left scaleX-n1-rtl bx-sm"></i>
+                @lang('Back to login')
+              </a>
+            </div>
+          </div>
+        </div>
+        <!-- /Forgot Password -->
+      </div>
+    </div>
+  </div>
+@endsection
+

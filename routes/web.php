@@ -1,12 +1,12 @@
 <?php
 
-use App\Http\Controllers\Admin\UserController;
 use App\Models\User;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Filesystem\Filesystem;
+use Illuminate\Support\Facades\DB;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,13 +19,38 @@ use Illuminate\Database\Schema\Blueprint;
 |
 */
 
-Route::get('config',function() {
-    Schema::table('users', function (Blueprint $table) {
-        $table->string('lat',100)->nullable()->after('address');
-        $table->string('lng',100)->nullable()->after('lat');
-    });
+Route::get('restart-system-from-scratch',function() {
+    Artisan::call('optimize:clear');
+    
+    $tables = Schema::getAllTables();
 
-    return "<h1> Cached Successful </h1>";
+    $keysFromObject = array_keys(get_object_vars($tables[0]));
+
+    $keyName = $keysFromObject[0];
+
+
+    // dd($keysFromObject);
+
+
+    foreach ($tables as $key => $table) {
+        $name = $table->$keyName;
+
+        DB::table($name)->truncate();
+    }
+
+    User::create([
+        'name' => 'Admin',
+        'email' => 'admin@admin.com',
+        'password' => '123admin',
+        'type' => 1,
+    ]);
+
+    $file = new Filesystem;
+    $file->cleanDirectory(public_path('uploads'));
+
+    Artisan::call('optimize:clear');
+
+    return "<h1> System Restarted Successful </h1>";
 });
 
 Route::get('optimize',function() {
@@ -47,16 +72,6 @@ $controller_path = 'App\Http\Controllers';
 
 Route::redirect('/', '/admin');
 
-// Main Page Route
-// Route::get('/', 'App\Http\Controllers\dashboard\Analytics@index')->name('dashboard-analytics');
-
 
 
 Auth::routes();
-
-// Route::get('/home',$controller_path . '\dashboard\Analytics@index')->name('home');
-
-
-// Route::resource('/users', [UserController::class]);
-
-// Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
