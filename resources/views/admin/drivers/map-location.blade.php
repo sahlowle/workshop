@@ -111,16 +111,14 @@ defer >
     @foreach ($users as $user )
      myCenter = new google.maps.LatLng({{ $user->lat }}, {{ $user->lng }});
 
-     image = {
-        url: "https://cdn-icons-png.flaticon.com/512/8683/8683033.png", // url
-        scaledSize: new google.maps.Size(50, 50), // scaled size
-        origin: new google.maps.Point(0,0), // origin
-        anchor: new google.maps.Point(0, 0) // anchor
-    };
-
      marker = new google.maps.Marker({
 		position: myCenter,
-        icon: image
+        label: {
+            text: "{{ $user->name }}",
+            fontSize: "20px",
+            color: "black",
+            fontWeight: "bold"
+        }
 	});
 
     marker.setMap(map);
@@ -137,24 +135,6 @@ defer >
 		markers.length = 0;
 
 
-		var lat = e.latLng.lat();
-		var lng = e.latLng.lng();
-
-        myCenter = new google.maps.LatLng(lat, lng);
-
-     image = {
-        url: "https://cdn-icons-png.flaticon.com/512/8683/8683033.png", // url
-        scaledSize: new google.maps.Size(50, 50), // scaled size
-        origin: new google.maps.Point(0,0), // origin
-        anchor: new google.maps.Point(0, 0) // anchor
-    };
-
-     marker = new google.maps.Marker({
-		position: myCenter,
-        icon: image
-	});
-
-    marker.setMap(map);
 
 		// map.setZoom(9);
 		

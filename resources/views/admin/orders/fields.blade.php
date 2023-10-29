@@ -24,14 +24,14 @@
       <div class="mb-3">
         <label class=" col-form-label" for="basic-default-name">@lang("Phone")</label>
         <div class="col-sm-10">
-          {!! Form::number('phone', null, ['id'=>'phone','readonly','class' => 'form-control','placeholder'=> trans("Phone")]) !!}
+          {!! Form::tel('phone', null, ['id'=>'phone','readonly','class' => 'form-control','placeholder'=> trans("Phone")]) !!}
         </div>
       </div>
 
       <div class="mb-3">
         <label class=" col-form-label" for="basic-default-name">@lang("Other Phone")</label>
         <div class="col-sm-10">
-          {!! Form::tel('order_phone_number', null,  ['required','class' => 'form-control','placeholder'=>  trans("phone must be 12 number"),'pattern'=>'[0-9]{12}']) !!}
+          {!! Form::tel('order_phone_number', null,  ['required','class' => 'form-control number','placeholder'=>  trans("phone must be 12 number")]) !!}
         </div>
       </div>
 
@@ -47,14 +47,14 @@
       <div class="mb-3">
         <label class=" col-form-label" for="basic-default-name">@lang("Block No")</label>
         <div class="col-sm-10">
-          {!! Form::text('block_no', null, ['class' => 'form-control','placeholder'=> trans("Block No")]) !!}
+          {!! Form::text('block_no', null, ['class' => 'form-control number','placeholder'=> trans("Block No")]) !!}
         </div>
       </div>
 
       <div class="mb-3">
         <label class=" col-form-label" for="basic-default-name">@lang("Floor Number")</label>
         <div class="col-sm-10">
-          {!! Form::number('floor_number', null, ['class' => 'form-control','placeholder'=> trans("Floor Number")]) !!}
+          {!! Form::text('floor_number', null, ['class' => 'form-control number','placeholder'=> trans("Floor Number")]) !!}
         </div>
       </div>
 
@@ -107,7 +107,7 @@
       <div class="mb-3">
         <label class=" col-form-label" for="basic-default-name">@lang("Amount")</label>
         <div class="col-sm-10">
-          {!! Form::number('amount', null, ['class' => 'form-control','placeholder'=> trans("Amount")]) !!}
+          {!! Form::text('amount', null, ['class' => 'form-control number','placeholder'=> trans("Amount")]) !!}
         </div>
       </div>
       
@@ -163,9 +163,13 @@
 
     var phone = data.phone;
     var address = data.address;
+    var lat = data.lat;
+    var lng = data.lng;
 
     $('#phone').val(phone);
     $('#address').val(address);
+    $('#lat').val(lat);
+    $('#lng').val(lng);
 
     // alert(phone)
   });

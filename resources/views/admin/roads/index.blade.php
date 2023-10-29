@@ -53,7 +53,7 @@
         <tr>
           <th>#</th>
           <th> @lang("Refrence No") </th>
-          <th> @lang("Driver") </th>
+          <th> @lang("Technician") </th>
           <th> @lang("Status") </th>
           <th> @lang("Actions") </th>
         </tr>

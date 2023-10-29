@@ -84,7 +84,7 @@
           <td> {{ $item->reference_no }}  </td>
           <td> {{ $item->customer->name }}  </td>
           <td> {{ $item->status_name }}  </td>
-          <td> {{ $item->amount ? $item->amount : trans('Amount Not Added') }}  </td>
+          <td> {{ $item->amount ? $item->amount : 0 }}  </td>
           <td> {{ $item->created_at->format('Y-M-d') }}  </td>
           <td>
             <a class="btn btn-show btn-sm pl-1" href="{{ route('orders.show',$item->id) }}">

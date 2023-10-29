@@ -48,7 +48,7 @@ class RoadController extends Controller
     {
         $data['title'] = trans('Add New Route');
 
-        $data['orders'] = Order::latest('id')->whereNull('road_id')->get();
+        $data['orders'] = Order::doesntHave('road')->has('activeCustomer')->latest('id')->get();
 
         $data['drivers'] = User::drivers()->select('name','id')->pluck('name','id');
 
@@ -118,7 +118,7 @@ class RoadController extends Controller
 
         $data['myOrders'] = $myOrders;
 
-        $data['orders'] = Order::latest('id')->whereNull('road_id')->orWhere('road_id',$id)->get();
+        $data['orders'] = Order::doesntHave('road')->has('activeCustomer')->latest('id')->get();
 
         $data['title'] = trans('Edit Route');
 

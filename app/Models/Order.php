@@ -76,6 +76,10 @@ class Order extends Model
             'name' => trans('No Customer'),
         ]);
     }
+    public function activeCustomer()
+    {
+        return $this->belongsTo(Customer::class, 'customer_id');
+    }
 
     public function road()
     {

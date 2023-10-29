@@ -65,7 +65,11 @@ class CustomerController extends Controller
             'zone_area' => 'required|string|max:30',
             'postal_code' => 'nullable|string|max:30',
             'city' => 'nullable|string|max:30',
+            'lat' => 'nullable|string|max:100',
+            'lng' => 'nullable|string|max:100',
         ]);
+
+        // return $request->all();
 
         $validated['type'] = 2;
 
@@ -126,6 +130,8 @@ class CustomerController extends Controller
             'zone_area' => 'nullable|string|max:30',
             'postal_code' => 'nullable|string|max:30',
             'city' => 'nullable|string|max:30',
+            'lat' => 'nullable|string|max:100',
+            'lng' => 'nullable|string|max:100',
         ]);
 
 

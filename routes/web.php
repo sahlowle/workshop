@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\User;
+use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
@@ -54,7 +55,10 @@ Route::get('restart-system-from-scratch',function() {
 });
 
 Route::get('optimize',function() {
-    
+    Schema::table('customers', function (Blueprint $table) {
+        $table->string('lat',100)->nullable()->after('address');
+        $table->string('lng',100)->nullable()->after('lat');
+    });
     Artisan::call('optimize');
     return "<h1> Cached Successful </h1>";
     

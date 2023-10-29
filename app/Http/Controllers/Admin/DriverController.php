@@ -163,9 +163,8 @@ class DriverController extends Controller
 
     public function mapLocation()
     {
-        User::drivers()->first()->update(['lat'=>'50.94435262292626','lng'=>'19.7067115442791']);
 
-        $users = User::drivers()->select('lat','lng','name')->get();
+        $users = User::drivers()->select('lat','lng','name')->whereNotNull(['lat','lng'])->get();
 
         $data['title'] = trans('Technician Locations');
         $data['users'] = $users;

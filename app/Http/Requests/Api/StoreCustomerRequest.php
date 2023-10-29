@@ -33,6 +33,8 @@ class StoreCustomerRequest extends FormRequest
             'zone_area' => ['required','string','min:3','max:30'],
             'postal_code' => ['nullable','string','min:3','max:30'],
             'city' => ['nullable','string','min:3','max:30'],
+            'lat' => ['nullable','max:100'],
+            'lng' => ['nullable','max:100'],
         ];
     }
 

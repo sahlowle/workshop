@@ -29,7 +29,7 @@ Route::resource('roads', RoadController::class)->middleware('prevent-back-histor
 Route::resource('orders', OrderController::class)->middleware('prevent-back-history');
 Route::resource('users', UserController::class)->except('show')->middleware('prevent-back-history');
 Route::resource('drivers', DriverController::class)->except('show')->middleware('prevent-back-history');
-Route::resource('customers', CustomerController::class)->except('show')->middleware('prevent-back-history');
+Route::resource('customers', CustomerController::class)->middleware('prevent-back-history');
 
 //restore customer
 Route::get('drivers/map/location', [DriverController::class, 'mapLocation'])->name('drivers.map-location')->middleware('prevent-back-history');

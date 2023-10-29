@@ -29,6 +29,7 @@ class ApiOrderController extends Controller
 
         if ($request->filled('without_route')) {
             $query->whereDoesntHave('road');
+            $query->has('activeCustomer');
         }
 
         if ($request->filled('search_text')) {
