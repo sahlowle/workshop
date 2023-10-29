@@ -13,9 +13,23 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $data['users'] = User::admins()->paginate(10);
+        $query = User::query();
+
+        if ($request->filled('search_text')) {
+            $search_text = $request->search_text;
+            $columns = ['name','email'];
+
+            foreach($columns as $key => $column){
+                if ($key == 0) {
+                    $query->where($column, 'LIKE', '%' . $search_text . '%');
+                } else{
+                    $query->orWhere($column, 'LIKE', '%' . $search_text . '%');
+                }
+            }
+        }
+        $data['users'] = $query->admins()->paginate(10)->withQueryString();
 
         $data['title'] = __('Admins');
 

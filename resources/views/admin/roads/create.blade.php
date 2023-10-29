@@ -9,7 +9,7 @@
 
 <!-- Hoverable Table rows -->
 <div class="row">
-  <div class="col-10">
+  <div class="col-11">
     <div class="card-body">
         <x-alert/>
       {!! Form::open(['route' => 'roads.store']) !!}

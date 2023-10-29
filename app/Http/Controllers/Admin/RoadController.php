@@ -19,11 +19,20 @@ class RoadController extends Controller
     {
         $query = Road::query();
 
-        if ($request->filled('reference_no')) {
-            $query->where('reference_no',$request->reference_no);
+        if ($request->filled('search_text')) {
+            $search_text = $request->search_text;
+            $columns = ['description','reference_no'];
+
+            foreach($columns as $key => $column){
+                if ($key == 0) {
+                    $query->where($column, 'LIKE', '%' . $search_text . '%');
+                } else{
+                    $query->orWhere($column, 'LIKE', '%' . $search_text . '%');
+                }
+            }
         }
 
-        $data['data'] = $query->with('driver')->latest('id')->paginate(10);
+        $data['data'] = $query->with('driver')->latest('id')->paginate(10)->withQueryString();
 
         $data['title'] = trans('Routes');
 

@@ -20,10 +20,19 @@ class OrderController extends Controller
     {
         $query = Order::query();
 
-        if ($request->filled('reference_no')) {
-            $query->where('reference_no',$request->reference_no);
-        }
+        if ($request->filled('search_text')) {
+            $search_text = $request->search_text;
 
+            $columns = ['reference_no','maintenance_device','brand','amount'];
+
+            foreach($columns as $key => $column){
+                if ($key == 0) {
+                    $query->where($column, 'LIKE', '%' . $search_text . '%');
+                } else{
+                    $query->orWhere($column, 'LIKE', '%' . $search_text . '%');
+                }
+            }
+        }
         if ($request->filled(['date_from','date_to'])) {
 
             $date_from = $request->date('date_from');

@@ -51,8 +51,7 @@ class NewPassword extends Notification
                 ->line('you can change your password from App in any time,')
                 // ->lineIf($this->amount > 0, "Amount paid: {$this->amount}")
                 // ->action('View Invoice', $url)
-                ->line('Thank you for using our application!')
-                ->line('Regards,');
+                ->line('Thank you for using our application!');
     }
 
     /**

@@ -27,9 +27,14 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::resource('roads', RoadController::class)->middleware('prevent-back-history');
 Route::resource('orders', OrderController::class)->middleware('prevent-back-history');
-Route::resource('users', UserController::class)->middleware('prevent-back-history');
-Route::resource('drivers', DriverController::class)->middleware('prevent-back-history');
-Route::resource('customers', CustomerController::class)->middleware('prevent-back-history');
+Route::resource('users', UserController::class)->except('show')->middleware('prevent-back-history');
+Route::resource('drivers', DriverController::class)->except('show')->middleware('prevent-back-history');
+Route::resource('customers', CustomerController::class)->except('show')->middleware('prevent-back-history');
+
+//restore customer
+Route::get('drivers/map/location', [DriverController::class, 'mapLocation'])->name('drivers.map-location')->middleware('prevent-back-history');
+
+//restore customer
 Route::get('customers/active/{id}', [CustomerController::class, 'reStore'])->name('customers.active')->middleware('prevent-back-history');
 
 

@@ -20,9 +20,9 @@
   </h5>
 
   <form action="{{ route('customers.index') }}" method="GET">
-    <div class="row p-4">
+    <div class="row ps-4">
 
-      <div class="col-5">
+      <div class="col-4">
         <div class="mb-3">
           <label class=" col-form-label" for="basic-default-name">@lang("Search Input")</label>
           <div class="col-sm-10">

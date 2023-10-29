@@ -21,19 +21,28 @@
   <form action="{{ route('orders.index') }}" method="GET">
     <div class="row p-4">
 
-      <div class="col-5">
+      <div class="col-3">
         <div class="mb-3">
           <label class=" col-form-label" for="basic-default-name">@lang("From date")</label>
           <div class="col-sm-10">
-            <input required class="form-control" name="date_from" type="date" value="{{ request()->date_from }}">
+            <input class="form-control" name="date_from" type="date" value="{{ request()->date_from }}">
           </div>
         </div>
       </div>
-      <div class="col-5">
+      <div class="col-3">
         <div class="mb-3">
           <label class=" col-form-label" for="basic-default-name">@lang("To date")</label>
           <div class="col-sm-10">
-            <input required class="form-control" name="date_to" type="date" value="{{ request()->date_to }}">
+            <input  class="form-control" name="date_to" type="date" value="{{ request()->date_to }}">
+          </div>
+        </div>
+      </div>
+
+      <div class="col-3">
+        <div class="mb-3">
+          <label class=" col-form-label" for="basic-default-name">@lang("Search Input")</label>
+          <div class="col-sm-10">
+            <input class="form-control" name="search_text" type="text" placeholder="@lang('Search Input')" value="{{ request()->search_text }}">
           </div>
         </div>
       </div>

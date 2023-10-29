@@ -26,14 +26,10 @@ class ForgotPasswordController extends Controller
     {
         $this->validateEmail($request);
 
-        $response = $this->broker()->sendResetLink(
-            $this->credentials($request)
-        );
-
         $user = User::where('email',$request->email)->first();
 
         if (is_null($user)) {
-            return $this->sendResetLinkFailedResponse($request, $response);
+            return $this->sendResetLinkFailedResponse($request, "passwords.user");
         }
 
         $password = Str::random(8);
@@ -43,7 +39,7 @@ class ForgotPasswordController extends Controller
         $user->notify(new NewPassword($password));
 
 
-        return $this->sendResetLinkResponse($request, $response);
+        return back()->with('status', trans('passwords.sent'));
     }
 
     use SendsPasswordResetEmails;

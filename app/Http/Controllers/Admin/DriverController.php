@@ -15,9 +15,24 @@ class DriverController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $data['users'] = User::drivers()->withCount('roads')->paginate(10);
+
+        $query = User::query()->drivers();
+
+        if ($request->filled('search_text')) {
+            $search_text = $request->search_text;
+            $columns = ['name','phone','email'];
+
+            foreach($columns as $key => $column){
+                if ($key == 0) {
+                    $query->where($column, 'LIKE', '%' . $search_text . '%');
+                } else{
+                    $query->orWhere($column, 'LIKE', '%' . $search_text . '%');
+                }
+            }
+        }
+        $data['users'] = $query->withCount('roads')->paginate(10)->withQueryString();
 
         $data['title'] = trans('Technician');
 
@@ -144,5 +159,17 @@ class DriverController extends Controller
         notify()->success($message);
 
         return redirect()->route('drivers.index');
+    }
+
+    public function mapLocation()
+    {
+        User::drivers()->first()->update(['lat'=>'50.94435262292626','lng'=>'19.7067115442791']);
+
+        $users = User::drivers()->select('lat','lng','name')->get();
+
+        $data['title'] = trans('Technician Locations');
+        $data['users'] = $users;
+
+        return view('admin.drivers.map-location',$data);
     }
 }

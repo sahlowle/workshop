@@ -1,3 +1,8 @@
+@extends('layouts/contentNavbarLayout')
+
+@section('title', $title)
+
+@section('content')
 <style>
     .pac-card {
     	background-color: #fff;
@@ -49,23 +54,30 @@
     }
 </style>
 
-<div class="col-12 col-lg-12 p-2">
-    <div class="col-12">
-        <label class="col-sm-2 col-form-label" for="basic-default-company">
-            <i class="bx bx-map"></i>
-            @lang("Location")
-        </label>
-      
-    </div>
-    <div class="col-12 pt-3">
-         <input id="pac-input" class="controls form-control" type="text" placeholder="Search Here...">
-        <div id="googleMap" style="border: solid 3px black; width:100%;height:400px;"></div>
+<h4 class="fw-bold py-3 mb-4">
+  <span class="text-muted fw-light"> {{ $title }}  /</span> @lang('List')
+</h4>
 
-        <input name="lat" type="hidden" id="lat" value="{{ $lat }}">
-        <input name="lng" type="hidden" id="lng" value="{{ $lng }}">
-        
+<!-- Hoverable Table rows -->
+<div class="card">
+  <h5 class="card-header"> {{ $title }} </h5>
+
+  <div class="card-body">
+    <div class="col-12 col-lg-12 p-2">
+        <div class="col-12">
+            <label class="col-sm-2 col-form-label" for="basic-default-company">
+                <i class="bx bx-map"></i>
+                @lang("Location")
+            </label>
+          
+        </div>
+        <div class="col-12 pt-3">
+            <div id="googleMap" style="border: solid 3px black; width:100%;height:600px;"></div>        
+        </div>
     </div>
+  </div>
 </div>
+<!--/ Hoverable Table rows -->
 
 <script
 {{-- src = "https://maps.googleapis.com/maps/api/js?key=AIzaSyDqJDhzkyerG250Du1U9tUpPKtqPgim564&callback=initAutocomplete&libraries=places&v=weekly" --}}
@@ -78,8 +90,8 @@ defer >
 	var geocoder;
 
     function initAutocomplete() {
-		var lat =  {{ $lat }};
-		var lng ={{ $lng }};
+		var lat = 52.520008;
+		var lng = 13.404954;
 
 		geocoder = new google.maps.Geocoder();
 
@@ -92,36 +104,60 @@ defer >
 		mapTypeId: "roadmap",
 	});
 
-	var myCenter = new google.maps.LatLng(lat, lng);
+    var myCenter;
+    var image;
+    var marker;
 
-	var marker = new google.maps.Marker({
-		position: myCenter
+    @foreach ($users as $user )
+     myCenter = new google.maps.LatLng({{ $user->lat }}, {{ $user->lng }});
+
+     image = {
+        url: "https://cdn-icons-png.flaticon.com/512/8683/8683033.png", // url
+        scaledSize: new google.maps.Size(50, 50), // scaled size
+        origin: new google.maps.Point(0,0), // origin
+        anchor: new google.maps.Point(0, 0) // anchor
+    };
+
+     marker = new google.maps.Marker({
+		position: myCenter,
+        icon: image
 	});
 
-	marker.setMap(map);
+    marker.setMap(map);
+    @endforeach
 
 	let markers = [];
 
 	google.maps.event.addListener(map, 'click', function (e) {
 
-		// alert(e.latLng);
-		
-		getAddress(e.latLng);
-
+	
 		for (var i = 0; i < markers.length; i++) {
 			markers[i].setMap(null);
 		}
 		markers.length = 0;
 
 
-
-		var lng = e.latLng.lng();
 		var lat = e.latLng.lat();
+		var lng = e.latLng.lng();
 
-		$("#lng").val(lng);
-		$("#lat").val(lat);
+        myCenter = new google.maps.LatLng(lat, lng);
+
+     image = {
+        url: "https://cdn-icons-png.flaticon.com/512/8683/8683033.png", // url
+        scaledSize: new google.maps.Size(50, 50), // scaled size
+        origin: new google.maps.Point(0,0), // origin
+        anchor: new google.maps.Point(0, 0) // anchor
+    };
+
+     marker = new google.maps.Marker({
+		position: myCenter,
+        icon: image
+	});
+
+    marker.setMap(map);
+
 		// map.setZoom(9);
-		marker.setPosition(e.latLng);
+		
 		//   infowindow.setContent('<div>'+'Longitute'+'<strong>' + e.latLng.lng() + '</strong><br>' +
 		//     'Latitude:'+'<strong>' + e.latLng.lat()+'</strong>'  + '</div>');
 		//   infowindow.open(map, this);
@@ -211,21 +247,8 @@ document.onfullscreenchange = function (event) {
 };
 
 
-function getAddress(latLng) {
-    geocoder.geocode( {'latLng': latLng},
-      function(results, status) {
-        if(status == google.maps.GeocoderStatus.OK) {
-          if(results[0]) {
-            document.getElementById("address").value = results[0].formatted_address;
-          }
-          else {
-            document.getElementById("address").value = "No results";
-          }
-        }
-        else {
-          document.getElementById("address").value = status;
-        }
-      });
-    }
+
   
 </script>
+
+@endsection

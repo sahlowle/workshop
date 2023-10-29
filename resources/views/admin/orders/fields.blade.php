@@ -8,18 +8,34 @@
     <div class="col-6">
 
       <div class="mb-3">
-        <label class=" col-form-label" for="basic-default-name">@lang("Address")</label>
+        <label class=" col-form-label" for="basic-default-company">@lang("Customer")</label>
         <div class="col-sm-10">
-          {!! Form::text('address', null, ['required','class' => 'form-control','placeholder'=> trans("Address")]) !!}
+          {!! Form::select('customer_id',$customers, null, ['required','class' => 'select2 form-control','onchange'=>'fillDetatils(event)']) !!}
         </div>
       </div>
 
       <div class="mb-3">
-        <label class=" col-form-label" for="basic-default-company">@lang("Customer")</label>
+        <label class=" col-form-label" for="basic-default-name">@lang("Address")</label>
         <div class="col-sm-10">
-          {!! Form::select('customer_id',$customers, null, ['required','class' => 'select2 form-control']) !!}
+          {!! Form::text('address', null, ['id'=>'address','readonly','required','class' => 'form-control','placeholder'=> trans("Address")]) !!}
         </div>
       </div>
+
+      <div class="mb-3">
+        <label class=" col-form-label" for="basic-default-name">@lang("Phone")</label>
+        <div class="col-sm-10">
+          {!! Form::number('phone', null, ['id'=>'phone','readonly','class' => 'form-control','placeholder'=> trans("Phone")]) !!}
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <label class=" col-form-label" for="basic-default-name">@lang("Other Phone")</label>
+        <div class="col-sm-10">
+          {!! Form::tel('order_phone_number', null,  ['required','class' => 'form-control','placeholder'=>  trans("phone must be 12 number"),'pattern'=>'[0-9]{12}']) !!}
+        </div>
+      </div>
+
+      
 
       <div class="mb-3">
         <label class=" col-form-label" for="basic-default-company">@lang("Status")</label>
@@ -28,19 +44,10 @@
         </div>
       </div>
 
-     
-
       <div class="mb-3">
         <label class=" col-form-label" for="basic-default-name">@lang("Block No")</label>
         <div class="col-sm-10">
           {!! Form::text('block_no', null, ['class' => 'form-control','placeholder'=> trans("Block No")]) !!}
-        </div>
-      </div>
-
-      <div class="mb-3">
-        <label class=" col-form-label" for="basic-default-name">@lang("Phone")</label>
-        <div class="col-sm-10">
-          {!! Form::number('order_phone_number', null, ['class' => 'form-control','placeholder'=> trans("Phone")]) !!}
         </div>
       </div>
 
@@ -141,3 +148,27 @@
 
   </div>
 </div>
+
+@section('page-script')
+<script>
+  function fillDetatils(event) {
+    var selectElement = event.target;
+    var id = selectElement.value;
+    var url = "/admin/customers/"+id;
+
+    // alert(url);
+
+    $.get(url, function(data, status){
+    // alert("Data: " + data + "\nStatus: " + status);
+
+    var phone = data.phone;
+    var address = data.address;
+
+    $('#phone').val(phone);
+    $('#address').val(address);
+
+    // alert(phone)
+  });
+  }
+</script>
+@endsection

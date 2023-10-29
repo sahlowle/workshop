@@ -15,7 +15,7 @@ return [
     |
     */
 
-  'name' => env('APP_NAME', 'Laravel'),
+  'name' => env('Smart Intercom', 'Smart Intercom'), 
 
   /*
     |--------------------------------------------------------------------------

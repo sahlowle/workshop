@@ -12,9 +12,44 @@
   @lang("Add New") 
 </a>
 
+<a class="btn btn-outline-primary m-2" href="{{ route('drivers.map-location') }}">
+  <i class='bx bx-map' style="font-size: 1.5rem"></i>
+  @lang("Show all technicians in map") 
+</a>
+
 <!-- Hoverable Table rows -->
 <div class="card">
   <h5 class="card-header"> {{ $title }} </h5>
+
+  <form action="{{ route('drivers.index') }}" method="GET">
+    <div class="row ps-4">
+
+      <div class="col-4">
+        <div class="mb-3">
+          <label class=" col-form-label" for="basic-default-name">@lang("Search Input")</label>
+          <div class="col-sm-10">
+            <input class="form-control" name="search_text" type="text" placeholder="@lang('Search Input')" value="{{ request()->search_text }}">
+          </div>
+        </div>
+      </div>
+
+      <div class="col-2">
+        <div class="mb-3">
+          <label class=" col-form-label" for="basic-default-name"> - </label>
+          <div class="col-sm-10">
+            <button class="btn btn-primary">
+              <i class="bx bx-search"></i>
+              @lang('Search')
+            </button>
+          </div>
+        </div>
+        
+        
+      </div>
+
+    </div>
+  </form>
+
   <div class="table-responsive text-nowrap p-4">
     <table class="table table-hover datatable">
       <thead>

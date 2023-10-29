@@ -2,6 +2,8 @@
 
 @section('title', $title)
 
+
+
 @section('content')
 <h4 class="fw-bold py-3 mb-4">
   <span class="text-muted fw-light"> @lang("Orders") /</span> {{ $title }}
@@ -205,7 +207,7 @@
        
     </div>
 
-    <div class="col-lg-8">
+    <div class="col-lg-12">
         <br>
         <div class="card">
             <h5 class="card-header">

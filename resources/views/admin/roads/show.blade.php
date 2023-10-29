@@ -10,7 +10,7 @@
 <div class="row">
 
     
-    <div class="col-lg-8">
+    <div class="col-lg-11">
         <div class="card border--dark">
             <h5 class="card-header bg--dark">
                 @lang('Route Information')
@@ -51,7 +51,7 @@
         </div>
     </div>
 
-    <div class="col-lg-8">
+    <div class="col-lg-11">
         <br>
         <div class="card">
             <h5 class="card-header">
@@ -80,7 +80,7 @@
                             {{ $item->status_name }}
                         </td>
                         <td>
-                          <a class="btn btn-outline-info btn-sm pl-1" href="{{ route('orders.show',$item->id) }}">
+                          <a class="btn btn-show btn-sm pl-1" href="{{ route('orders.show',$item->id) }}">
                             <i class='bx bx-show' style="font-size: 1.2rem"></i>
                             @lang('Show')
                           </a>

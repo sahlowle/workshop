@@ -15,6 +15,8 @@
 <script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.html5.min.js"></script>
 <script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.print.min.js"></script>
 <script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.colVis.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 
 @yield('vendor-script')
 <!-- END: Page Vendor JS-->
@@ -23,14 +25,28 @@
 
 <script>
     function deleteForm(id) {
-      if (confirm('Sure?')) {
-        document.getElementById(id).submit();
-      }
+      // if (confirm('Sure?')) {
+      //   document.getElementById(id).submit();
+      // }
+
+      Swal.fire({
+        title: '@lang("Are you sure?")',
+        text: "@lang("You won't to delete this!")",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: '@lang("Yes, delete it!")'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          document.getElementById(id).submit();
+        }
+      })
     }
 
     $(document).ready(function() {
       
-      new DataTable('.datatable',{
+      new DataTable('.datatable-test',{
         info: false,
         searching: false,
         ordering: false,
