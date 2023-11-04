@@ -38,6 +38,10 @@ Route::get('roads/only/today', [RoadController::class, 'today'])->name('roads.to
 //today orders
 Route::get('orders/only/today', [OrderController::class, 'today'])->name('orders.today')->middleware('prevent-back-history');
 
+//today orders
+Route::get('orders/print/pdf/{id}', [OrderController::class, 'printPdf'])->name('orders.print.pdf')->middleware('prevent-back-history');
+Route::get('orders/send/invoice/{id}', [OrderController::class, 'sendInvoice'])->name('orders.send.invoice')->middleware('prevent-back-history');
+
 //restore customer
 Route::get('orders/remind/customers', [OrderController::class, 'unpaid'])->name('orders.unpaid')->middleware('prevent-back-history');
 

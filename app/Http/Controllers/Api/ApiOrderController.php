@@ -15,7 +15,7 @@ use App\Traits\FileSaveTrait;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\Schema;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class ApiOrderController extends Controller
 {
@@ -175,6 +175,19 @@ class ApiOrderController extends Controller
 
         return $this->sendResponse(true,$order,$message,200);
 
+    }
+
+    public function printPdf($id)
+    {
+        $order =  Order::find($id);
+        
+        if (is_null($order)) {
+            return $this->sendResponse(false,[],trans('Not Found'),404);
+        }
+
+        $pdf = Pdf::loadView('emails.invoice',['order'=> $order]); ;
+        
+        return $pdf->stream('invoice.pdf');
     }
 
     /*

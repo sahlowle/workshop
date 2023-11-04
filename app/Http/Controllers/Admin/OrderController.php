@@ -3,12 +3,15 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Mail\SendInvoice;
 use App\Models\Customer;
 use App\Models\Road;
 use App\Models\User;
 use App\Models\Order;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\Mail;
 
 class OrderController extends Controller
 {
@@ -241,14 +244,38 @@ class OrderController extends Controller
      */
     public function destroy($id)
     {
-        $user = Road::findOrFail($id);
+        $order = Order::findOrFail($id);
 
-        $user->delete();
+        $order->delete();
 
         $message = trans('Successful Delete');
 
         notify()->success($message);
 
         return redirect()->route('orders.index');
+    }
+
+    public function sendInvoice($id)
+    {
+        $order = Order::findOrFail($id);
+
+        $order->load('customer');
+
+        Mail::to($order->customer->email)->send(new SendInvoice($order));
+
+        $message = trans('Successful Sent');
+
+        notify()->success($message);
+
+        return redirect()->route('orders.index');
+    }
+
+    public function printPdf($id)
+    {
+        $order = Order::findOrFail($id);
+
+        $pdf = Pdf::loadView('emails.invoice',['order'=> $order]); ;
+        
+        return $pdf->stream('invoice.pdf');
     }
 }

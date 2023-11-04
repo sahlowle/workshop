@@ -5,6 +5,7 @@ namespace App\Http\Requests\Api;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Validation\Rule;
 
 class UpdateOrderRequest extends FormRequest
 {
@@ -46,6 +47,7 @@ class UpdateOrderRequest extends FormRequest
             'status' => ['nullable','in:1,2,3,4'],
             'payment_way' => ['nullable','in:1,2'],
             'payment_id' => ['nullable','string','max:1024'],
+            'type' => ['nullable',Rule::in([1,2,3]),],
         ];
     }
 

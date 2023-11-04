@@ -6,16 +6,17 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <style>
       body {
-  background: rgb(204,204,204); 
-}
+        font-family: Arial, Helvetica, sans-serif;
+        background: rgb(204,204,204); 
+      }
 page[size="A4"] {
   background: white;
-  width: 21cm;
-  height: 29.7cm;
+  /* width: 21cm; */
+  height: 27.3cm;
   display: block;
-  margin: 0 auto;
-  margin-bottom: 0.5cm;
-  box-shadow: 0 0 0.5cm rgba(0,0,0,0.5);
+  /* margin: 0 auto; */
+  /* margin-bottom: 0.5cm; */
+  /* box-shadow: 0 0 0.5cm rgba(0,0,0,0.5); */
 }
 @media print {
   body, page[size="A4"] {
@@ -24,7 +25,7 @@ page[size="A4"] {
   }
 }
     </style>
-    <title>Inline CSS Invoice Template</title>
+    <title>Invoice </title>
   </head>
   <body> 
    <page size="A4">
@@ -38,7 +39,8 @@ page[size="A4"] {
           </td>
           <td style="width: 50%; text-align: right;">
             <span class="app-brand-logo demo">
-              <img src="{{ asset('assets/img/logo.png') }}" style="max-height: 55px">
+              <img src="{{ public_path().'/assets/img/logo.png' }}" style="max-height: 55px">
+
             </span>
           </td>
         </tr>

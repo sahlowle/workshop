@@ -2,9 +2,11 @@
 
 namespace App\Models;
 
+use App\Mail\SendInvoice;
 use App\Services\FirebaseService;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Mail;
 
 class Order extends Model
 {
@@ -19,7 +21,7 @@ class Order extends Model
     // ];
 
     protected $appends = [
-        'status_name', 'status_color','payment_method'
+        'status_name',  'type_name', 'status_color','payment_method'
     ];
 
     protected $casts = [
@@ -66,19 +68,22 @@ class Order extends Model
         
     }
 
+    public function getTypeNameAttribute()
+    {
+        $value = $this->type;
+
+        return match ((int)$value) {
+            1 => trans("On site"),
+            2 => trans("Pick up"),
+            3 => trans("Drop off"),
+            default => trans("On site") ,
+       };
+        
+    }
+
     public function getStatusNameAttribute()
     {
         $value = $this->status;
-
-        // if (request()->is('api/*')) {
-        //     return match ((int)$value) {
-        //         1 => "Pending",
-        //         2 => "On Progress",
-        //         3 => "Finished",
-        //         4 => "Canceled",
-        //         default => "Pending" ,
-        //    };
-        // }
 
         return match ((int)$value) {
             1 => trans("Pending"),
@@ -148,8 +153,26 @@ class Order extends Model
                         'type' => 'Order amount changed',
                     ],collect([$token]));
                 }
+
+                if ($order->is_paid && $order->is_paid != $order->getOriginal('is_paid')) {
+                    $order->load('customer');
+                    Mail::to($order->customer->email)->send(new SendInvoice($order));
+    
+                    $tokens = User::admins()->pluck('fcm_token');
+    
+                    FirebaseService::sendNotification(trans('You have paid order'),[
+                        'id' => $order->id,
+                        'type' => 'Paid Order',
+                    ],$tokens);
+                }
             }
             
+        });
+
+        static::updated(function ($order) {
+
+           
+
         });
     }
 }

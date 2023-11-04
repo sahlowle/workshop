@@ -26,7 +26,7 @@
           <div class="row mb-3">
             <label class="col-sm-2 col-form-label" for="basic-default-company">@lang("Phone")</label>
             <div class="col-sm-10">
-              {!! Form::tel('phone', null,  ['required','class' => 'form-control','placeholder'=>  trans("phone must be 12 number"),'pattern'=>'[0-9]{12}']) !!}
+              {!! Form::tel('phone', null,  ['required','class' => 'form-control number','placeholder'=>  trans("phone must be 12 number"),'pattern'=>'[0-9]{12}']) !!}
             </div>
           </div>
 

@@ -1,5 +1,12 @@
 {
     "x": "",
+    "Paid Order": "Paid Order",
+    "You have paid order": "You have paid order",
+    "Drop off": "Drop off",
+    "On site": "On site",
+    "Pick up": "Pick up",
+    "You have a finished route": "You have a finished route",
+    "Send Invoice": "Send Invoice",
     "Today Orders": "Today Orders",
     "All Routes": "All Routes",
     "Today Routes": "Today Routes",

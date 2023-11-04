@@ -64,18 +64,7 @@ Route::get('optimize/clear',function() {
     
 });
 
-Route::get('gen-password/{pass}',function($pass) {
-    
-    // User::first()->update(['password' => $pass]);
-
-    return Hash::make($pass);
-    
-});
-
-$controller_path = 'App\Http\Controllers';
 
 Route::redirect('/', '/admin');
-
-
 
 Auth::routes();

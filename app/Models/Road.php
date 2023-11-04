@@ -95,6 +95,15 @@ class Road extends Model
                 ],collect([$token]));
             }
 
+            if ($status == 3) {
+                $tokens = User::admins()->pluck('fcm_token');
+
+                FirebaseService::sendNotification(trans('You have a finished route'),[
+                    'id' => $road->id,
+                    'type' => 'Route Number '.$road->reference_no.' has finished',
+                ],$tokens);
+            }
+
             if (is_null($road->driver_id)) {
                 $road->status = 1; // pending
             }
