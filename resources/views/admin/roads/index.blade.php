@@ -16,9 +16,10 @@
 <div class="card">
   <h5 class="card-header"> 
     <i class='bx bx-map-alt' ></i>
-    @lang('Routes') </h5>
+    {{ $title }}
+  </h5>
 
-    <form action="{{ route('roads.index') }}" method="GET">
+    <form  method="GET">
       <div class="row ps-4">
   
         <div class="col-4">

@@ -5,6 +5,13 @@
 @section('page-style')
 <!-- Page -->
 <link rel="stylesheet" href="{{ asset('assets/vendor/css/pages/page-auth.css') }}">
+
+<style>
+  .img-fluid{
+    height: 100vh;
+    width: 100vw;
+  }
+</style>
 @endsection
 
 @section('content')
@@ -14,9 +21,7 @@
       <!-- /Left Text -->
       <div class="d-none d-lg-flex col-lg-7 col-xl-8 align-items-center" style="padding: 0;">
         <div class="w-100 d-flex justify-content-center">
-          <img src="{{ loginBackground() }}" class="img-fluid" alt="Login image" 
-            data-app-dark-img="illustrations/boy-with-rocket-dark.png"
-            data-app-light-img="illustrations/boy-with-rocket-light.png">
+          <img src="{{ loginBackground() }}" class="img-fluid" alt="Login image" >
         </div>
       </div>
       <!-- /Left Text -->

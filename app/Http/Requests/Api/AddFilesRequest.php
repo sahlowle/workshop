@@ -26,7 +26,7 @@ class AddFilesRequest extends FormRequest
     public function rules()
     {
         return [
-            'files' => 'required|array|max:3',
+            'files' => 'required|array|max:4',
             'files.*' => 'file|max:5000|mimes:jpeg,jpg,png,pdf,word,csv,rar,zip,doc,docx,mp4,ppt,pptx,xls,xlsx'
         ];
     }

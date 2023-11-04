@@ -16,13 +16,14 @@ class LocaleMiddleware
    */
   public function handle(Request $request, Closure $next)
   {
-    // available language in template array
     $availLocale = ['en','de'];
     $session_locale = session()->get('locale');
 
     if ($request->is('api/*')) {
-      session()->put('locale', 'en');
-      app()->setLocale('en');
+      $locale = $request->header('Accept-Language', 'en');
+
+      session()->put('locale', $locale);
+      app()->setLocale($locale);
     }
     else if(session()->has('locale') && in_array($session_locale,$availLocale)){
       app()->setLocale($session_locale);

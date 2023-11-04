@@ -33,6 +33,10 @@ class ApiCustomerController extends Controller
             }
         }
 
+        if ($request->isNotFilled('active')) {
+            $query->withTrashed();
+        }
+
         $per_page = $request->filled('per_page') ? $request->per_page : 10;
         
         $data = $query->latest('id')->paginate($per_page);
@@ -96,6 +100,27 @@ class ApiCustomerController extends Controller
         $message = trans('Successful Updated');
 
         return $this->sendResponse(true,$user,$message,200);
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | delete item
+    |--------------------------------------------------------------------------
+    */
+    public function restore($id)
+    {
+        $user =  Customer::withTrashed()->find($id);
+        
+        if (is_null($user)) {
+            return $this->sendResponse(false,[],trans('Not Found'),404);
+        }
+
+        $user->restore();
+    
+        $message = trans('Successful Enabled');
+
+        return $this->sendResponse(true,$user,$message,200);
+
     }
 
     /*

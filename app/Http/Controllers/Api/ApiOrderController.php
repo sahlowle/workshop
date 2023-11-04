@@ -8,10 +8,13 @@ use App\Http\Requests\Api\AddPaymentFileRequest;
 use App\Http\Requests\Api\DeleteFilesRequest;
 use App\Http\Requests\Api\StoreOrderRequest;
 use App\Http\Requests\Api\UpdateOrderRequest;
+use App\Mail\SendInvoice;
 use App\Models\Customer;
 use App\Models\Order;
 use App\Traits\FileSaveTrait;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Schema;
 
 class ApiOrderController extends Controller
@@ -30,6 +33,10 @@ class ApiOrderController extends Controller
         if ($request->filled('without_route')) {
             $query->whereDoesntHave('road');
             $query->has('activeCustomer');
+        }
+
+        if ($request->filled('today')) {
+            $query->whereDate('created_at', Carbon::today());
         }
 
         if ($request->filled('search_text')) {
@@ -58,8 +65,8 @@ class ApiOrderController extends Controller
 
         $per_page = $request->filled('per_page') ? $request->per_page : 10;
         
-        $data = $query->latest('id')->paginate($per_page);
-
+        $data = $query->with('customer')->latest('id')->paginate($per_page);
+        
         $message = trans('Successful Retrieved');
         
         return $this->sendResponse(true,$data,$message,200);
@@ -141,6 +148,30 @@ class ApiOrderController extends Controller
         $order->delete();
     
         $message = trans('Successful Delete');
+
+        return $this->sendResponse(true,$order,$message,200);
+
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | send Invoice
+    |--------------------------------------------------------------------------
+    */
+    public function sendInvoice($id)
+    {
+        $order =  Order::find($id);
+        
+        if (is_null($order)) {
+            return $this->sendResponse(false,[],trans('Not Found'),404);
+        }
+        
+        $order->load('customer');
+
+        Mail::to($order->customer->email)->send(new SendInvoice($order));
+
+        $message = trans('Successful Sent');
 
         return $this->sendResponse(true,$order,$message,200);
 

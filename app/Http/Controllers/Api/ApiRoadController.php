@@ -7,6 +7,7 @@ use App\Http\Requests\Api\StoreRoadRequest;
 use App\Http\Requests\Api\UpdateRoadRequest;
 use App\Models\Order;
 use App\Models\Road;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Schema;
 
@@ -22,9 +23,14 @@ class ApiRoadController extends Controller
         $query = Road::query();
 
         $user = $request->user();
+        
 
         if ($user->hasRole('driver')) {
             $query->where('driver_id',$user->id);
+        }
+
+        if ($request->filled('today')) {
+            $query->whereDate('created_at', Carbon::today());
         }
 
         if ($request->filled('search_text')) {

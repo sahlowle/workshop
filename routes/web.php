@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\DataBaseBackupController;
 use App\Models\User;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Artisan;
@@ -19,6 +20,8 @@ use Illuminate\Support\Facades\DB;
 | contains the "web" middleware group. Now create something great!
 |
 */
+
+Route::get('backups',[DataBaseBackupController::class,'store']);
 
 Route::get('restart-system-from-scratch',function() {
     Artisan::call('optimize:clear');
@@ -54,12 +57,9 @@ Route::get('restart-system-from-scratch',function() {
     return "<h1> System Restarted Successful </h1>";
 });
 
-Route::get('optimize',function() {
-    Schema::table('customers', function (Blueprint $table) {
-        $table->string('lat',100)->nullable()->after('address');
-        $table->string('lng',100)->nullable()->after('lat');
-    });
-    Artisan::call('optimize');
+Route::get('optimize/clear',function() {
+
+    Artisan::call('optimize:clear');
     return "<h1> Cached Successful </h1>";
     
 });

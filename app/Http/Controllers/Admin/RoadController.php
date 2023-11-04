@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Order;
 use App\Models\Road;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class RoadController extends Controller
@@ -34,7 +35,33 @@ class RoadController extends Controller
 
         $data['data'] = $query->with('driver')->latest('id')->paginate(10)->withQueryString();
 
-        $data['title'] = trans('Routes');
+        $data['title'] = trans('All Routes');
+
+        return view('admin.roads.index',$data);
+    }
+
+    public function today(Request $request)
+    {
+        $query = Road::query();
+
+        $query->whereDate('created_at', Carbon::today());
+
+        if ($request->filled('search_text')) {
+            $search_text = $request->search_text;
+            $columns = ['description','reference_no'];
+
+            foreach($columns as $key => $column){
+                if ($key == 0) {
+                    $query->where($column, 'LIKE', '%' . $search_text . '%');
+                } else{
+                    $query->orWhere($column, 'LIKE', '%' . $search_text . '%');
+                }
+            }
+        }
+
+        $data['data'] = $query->with('driver')->latest('id')->paginate(10)->withQueryString();
+
+        $data['title'] = trans('Today Routes');
 
         return view('admin.roads.index',$data);
     }
@@ -118,7 +145,9 @@ class RoadController extends Controller
 
         $data['myOrders'] = $myOrders;
 
-        $data['orders'] = Order::doesntHave('road')->has('activeCustomer')->latest('id')->get();
+        $data['orders'] = Order::doesntHave('road')
+        ->has('activeCustomer')
+        ->orWhereIn('id',$myOrders)->latest('id')->get();
 
         $data['title'] = trans('Edit Route');
 

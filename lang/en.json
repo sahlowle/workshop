@@ -1,5 +1,13 @@
 {
     "x": "",
+    "Today Orders": "Today Orders",
+    "All Routes": "All Routes",
+    "Today Routes": "Today Routes",
+    "Assigned": "Assigned",
+    "Successful Sent": "Successful Sent",
+    "Opened": "Opened",
+    "Remind Customers": "Remind Customers",
+    "It's time for some customers to pay up": "It's time for some customers to pay up",
     "Location": "Location",
     "Select Orders": "Select Orders",
     "Status": "Status",

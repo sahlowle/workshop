@@ -4,7 +4,7 @@
   <div class="app-brand demo mb-4">
     <a href="{{url('/')}}" class="app-brand-link">
       <span class="app-brand-logo demo">
-        <img src="{{ asset('assets/img/logo.png') }}" style="max-height: 55px">
+        <img src="{{ asset('assets/img/logo.png') }}" style="max-height: 45px">
         {{-- @include('_partials.macros',["width"=>25,"withbg"=>'#696cff']) --}}
       </span>
       {{-- <span class="app-brand-text demo menu-text fw-bold ms-2">{{config('variables.templateName')}}</span> --}}
@@ -28,15 +28,57 @@
       </a>      
     </li>
 
-    <li @class(['menu-item', 'active' => request()->routeIs('roads*') ])>
-      <a href="{{ route('roads.index') }}" class="menu-link" >
+    <li @class(['menu-item', 'active open' => request()->routeIs('roads*') ]) >
+      <a href="javascript:void(0);" class="menu-link menu-toggle" >
+       
+        <div> 
+          <i class='menu-icon bx bx-map-alt'></i>
+          @lang('Routes')
+        </div>
+      </a>
+
+      <ul class="menu-sub">
+        <li @class(['menu-item', 'active' => request()->routeIs('roads.today') ])>
+          <a href="{{ route('roads.today') }}" class="menu-link" >            
+            <div> @lang('Today Routes') </div>
+          </a> 
+        </li>
         
-        <i class='menu-icon bx bx-map-alt'></i>
+        <li @class(['menu-item', 'active' => request()->routeIs('roads.index') ])>
+          <a href="{{ route('roads.index') }}" class="menu-link" >            
+            <div> @lang('All Routes') </div>
+          </a> 
+        </li>
+      </ul>
+
+    </li>
+    
+    <li @class(['menu-item', 'active open' => request()->routeIs('orders*') ]) >
+      <a href="javascript:void(0);" class="menu-link menu-toggle" >
+       
+        <i class='menu-icon bx bxs-calendar-check'></i>
         
-        <div> @lang('Routes') </div>
-      </a>      
+        <div> @lang('Orders') </div>
+      </a>
+
+      <ul class="menu-sub">
+        <li @class(['menu-item', 'active' => request()->routeIs('orders.today') ])>
+          <a href="{{ route('orders.today') }}" class="menu-link" >            
+            <div> @lang('Today Orders') </div>
+          </a> 
+        </li>
+        
+        <li @class(['menu-item', 'active' => request()->routeIs('orders.index') ])>
+          <a href="{{ route('orders.index') }}" class="menu-link" >            
+            <div> @lang('All Orders') </div>
+          </a> 
+        </li>
+      </ul>
+
     </li>
 
+   
+{{-- 
     <li @class(['menu-item', 'active' => request()->routeIs('orders*') ])>
       <a href="{{ route('orders.index') }}" class="menu-link" >
         
@@ -44,7 +86,7 @@
         
         <div> @lang('Orders') </div>
       </a>      
-    </li>
+    </li> --}}
 
     <li @class(['menu-item', 'active' => request()->routeIs('customers*') ])>
       <a href="{{ route('customers.index') }}" class="menu-link" >
@@ -64,7 +106,7 @@
       </a>      
     </li>
 
-    <li @class(['menu-item', 'active' => request()->routeIs('users*') ])>
+    <li @class(['menu-item', 'active' => request()->routeIs('users*') ]) >
       <a href="{{ route('users.index') }}" class="menu-link" >
         
         <i class="menu-icon tf-icons bx bx-user-circle"></i>
@@ -73,14 +115,7 @@
       </a>      
     </li>
   
-    {{-- <li @class(['menu-item menu-toggle', 'active' => request()->is('/k') ])>
-      <a href="{{ route('home') }}" class="{{ isset($submenu->submenu) ? 'menu-link menu-toggle' : 'menu-link' }}" @if (isset($submenu->target) and !empty($submenu->target)) target="_blank" @endif>
-        
-        <i class="menu-icon tf-icons bx bx-home-circle"></i>
-        @endif
-        <div>{{ isset($submenu->name) ? __($submenu->name) : '' }}</div>
-      </a>
-    </li> --}}
+
     
     
   </ul>

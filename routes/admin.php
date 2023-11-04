@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\RoadController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\HomeController;
+use App\Models\Order;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use SebastianBergmann\CodeCoverage\Driver\Driver;
@@ -31,6 +32,15 @@ Route::resource('users', UserController::class)->except('show')->middleware('pre
 Route::resource('drivers', DriverController::class)->except('show')->middleware('prevent-back-history');
 Route::resource('customers', CustomerController::class)->middleware('prevent-back-history');
 
+//today roads
+Route::get('roads/only/today', [RoadController::class, 'today'])->name('roads.today')->middleware('prevent-back-history');
+
+//today orders
+Route::get('orders/only/today', [OrderController::class, 'today'])->name('orders.today')->middleware('prevent-back-history');
+
+//restore customer
+Route::get('orders/remind/customers', [OrderController::class, 'unpaid'])->name('orders.unpaid')->middleware('prevent-back-history');
+
 //restore customer
 Route::get('drivers/map/location', [DriverController::class, 'mapLocation'])->name('drivers.map-location')->middleware('prevent-back-history');
 
@@ -43,3 +53,5 @@ Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->middlewa
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->middleware('prevent-back-history')->name('home');
 
 Route::get('/change-lang/{lang}', [HomeController::class, 'changeLang'])->name('change-lang')->middleware('prevent-back-history');
+
+Route::view('invoice','emails.invoice',['order'=> Order::first()]);

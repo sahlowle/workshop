@@ -25,30 +25,69 @@ class Order extends Model
     protected $casts = [
         'is_paid' => 'boolean',
         'is_visit' => 'boolean',
+        'floor_number' => 'integer',
+        'apartment_number' => 'integer',
+        'lat' => 'float',
+        'lng' => 'float',
     ];
+    
 
+    public function scopeUnpaid($query)
+    {
+        return $query->where('is_paid',false);
+    }
+
+    public function getAmountAttribute($value)
+    {
+        if (is_null($value)) {
+            return 0.00;
+        }
+
+        return (float) $value;
+    }
     public function getPaymentMethodAttribute()
     {
         $value = $this->payment_way;
-        
+
+        // if (request()->is('api/*')) {
+        //     return match ((int)$value) {
+        //         1 => trans("Cash") ,
+        //         2 => trans("Online") ,
+        //         default => trans("Un Known") ,
+        //    };
+        // }
+
         return match ((int)$value) {
-             1 => trans("Cash") ,
-             2 => trans("Online") ,
-             default => trans("Un Known") ,
-        };
+            1 => trans("Cash") ,
+            2 => trans("Online") ,
+            default => trans("Un Known") ,
+       };
+        
+        
     }
 
     public function getStatusNameAttribute()
     {
         $value = $this->status;
-        
+
+        // if (request()->is('api/*')) {
+        //     return match ((int)$value) {
+        //         1 => "Pending",
+        //         2 => "On Progress",
+        //         3 => "Finished",
+        //         4 => "Canceled",
+        //         default => "Pending" ,
+        //    };
+        // }
+
         return match ((int)$value) {
-             1 => "Pending",
-             2 => "On Progress",
-             3 => "Finished",
-             4 => "Canceled",
-             default => "Pending" ,
-        };
+            1 => trans("Pending"),
+            2 => trans("On Progress"),
+            3 => trans("Finished"),
+            4 => trans("Canceled"),
+            default => trans("Pending") ,
+       };
+        
     }
 
     public function getStatusColorAttribute()
@@ -100,13 +139,17 @@ class Order extends Model
         });
 
         static::updating(function ($order) {
-            if ($order->amount != $order->getOriginal('amount') && $order->road->driver_id) {
-                $token = User::find($order->road->driver_id)->fcm_token;
-                FirebaseService::sendNotification('Amount of order was changed',[
-                    'id' => $order->id,
-                    'type' => 'Order amount changed',
-                ],collect([$token]));
+            if ($order->road()->exists()
+            ) {
+                if ($order->amount != $order->getOriginal('amount') && $order->road->driver_id) {
+                    $token = User::find($order->road->driver_id)->fcm_token;
+                    FirebaseService::sendNotification('Amount of order was changed',[
+                        'id' => $order->id,
+                        'type' => 'Order amount changed',
+                    ],collect([$token]));
+                }
             }
+            
         });
     }
 }

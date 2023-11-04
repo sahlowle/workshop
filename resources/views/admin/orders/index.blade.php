@@ -16,9 +16,9 @@
 <div class="card">
   <h5 class="card-header">
     <i class="bx bxs-calendar-check"></i>
-    @lang('Orders')
+    {{ $title }}
   </h5>
-  <form action="{{ route('orders.index') }}" method="GET">
+  <form method="GET">
     <div class="row p-4">
 
       <div class="col-3">
@@ -84,7 +84,7 @@
           <td> {{ $item->reference_no }}  </td>
           <td> {{ $item->customer->name }}  </td>
           <td> {{ $item->status_name }}  </td>
-          <td> {{ $item->amount ? $item->amount : 0 }}  </td>
+          <td> {{ number_format($item->amount, 2) }}  </td>
           <td> {{ $item->created_at->format('Y-M-d') }}  </td>
           <td>
             <a class="btn btn-show btn-sm pl-1" href="{{ route('orders.show',$item->id) }}">

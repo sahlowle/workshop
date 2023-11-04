@@ -39,6 +39,7 @@ Route::middleware(['auth:sanctum','role:admin'])->group(function () {
 
     /* |------ customers routes ---------| */
     Route::apiResource('customers',ApiCustomerController::class);
+    Route::post('customers/active/{id}',[ApiCustomerController::class,'restore']);
 
     
 });
@@ -55,6 +56,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     /* |------ orders files routes ---------| */
     Route::post('orders/add-files/{id}',[ApiOrderController::class,'addFiles']);
     Route::delete('orders/delete-files/{id}',[ApiOrderController::class,'deleteOrderFile']);
+    Route::post('orders/send-invoice/{id}',[ApiOrderController::class,'sendInvoice']);
 
     /* |------ payment file routes ---------| */
     Route::post('orders/add-payment-file/{id}',[ApiOrderController::class,'addPaymentFile']);

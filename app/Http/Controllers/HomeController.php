@@ -30,16 +30,20 @@ class HomeController extends Controller
     {
         $data['routes_count'] = Road::count();
         $data['orders_count'] = Order::count();
+        $data['orders_count'] = Order::count();
+        $data['unpaid_orders'] = Order::unpaid()->has('activeCustomer')->count();
         $data['customers_count'] = Customer::count();
         $data['drivers_count'] = User::drivers()->count();
         $data['sales'] = Order::sum('amount');
 
         // return $data;
-        return view('content.dashboard.dashboards-analytics',$data);
+        return view('admin.home.index',$data);
     }
 
     public function changeLang($locale)
     {
+        // Artisan::call('optimize:clear');
+
         app()->setLocale($locale);
         
         session()->put('locale', $locale);

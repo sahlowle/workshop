@@ -13,4 +13,22 @@ class Customer extends Model
     protected $guarded = [
         'id'
     ];
+
+    protected $appends = [
+        'is_disabled',
+    ];
+
+    protected $casts = [
+        'postal_code' => 'integer',
+        'lat' => 'float',
+        'lng' => 'float',
+        // 'shipping_fee_value' => 'float(10,2)',
+    ];
+
+    public function getIsDisabledAttribute()
+    {
+        return $this->trashed();
+    }
+
+
 }

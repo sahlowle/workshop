@@ -35,8 +35,8 @@ class Road extends Model
         $value = $this->status;
         
         return match ((int)$value) {
-             1 => trans("Pending") ,
-             2 => trans("Assigned To Driver") ,
+             1 => trans("Opened") ,
+             2 => trans("Assigned") ,
              3 => trans("Finished") ,
              default => trans("Pending") ,
         };

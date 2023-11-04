@@ -7,10 +7,20 @@ use App\Models\Customer;
 use App\Models\Road;
 use App\Models\User;
 use App\Models\Order;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class OrderController extends Controller
 {
+    public function unpaid(Request $request)
+    {
+        $data['data'] = Order::unpaid()->has('activeCustomer')->latest()->paginate(10)->withQueryString();
+
+        $data['title'] = trans('Remind Customers');
+
+        return view('admin.orders.unpaid',$data);
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -45,7 +55,43 @@ class OrderController extends Controller
 
         $data['data'] = $query->with('customer')->latest('id')->paginate(10)->withQueryString();
 
-        $data['title'] = trans('Orders');
+        $data['title'] = trans('All Orders');
+
+        return view('admin.orders.index',$data);
+    }
+
+    public function today(Request $request)
+    {
+        $query = Order::query();
+
+        $query->whereDate('created_at', Carbon::today());
+
+        if ($request->filled('search_text')) {
+            $search_text = $request->search_text;
+
+            $columns = ['reference_no','maintenance_device','brand','amount'];
+
+            foreach($columns as $key => $column){
+                if ($key == 0) {
+                    $query->where($column, 'LIKE', '%' . $search_text . '%');
+                } else{
+                    $query->orWhere($column, 'LIKE', '%' . $search_text . '%');
+                }
+            }
+        }
+        if ($request->filled(['date_from','date_to'])) {
+
+            $date_from = $request->date('date_from');
+            $date_to = $request->date('date_to');
+
+            $query
+            ->whereDate('created_at', '>=', $date_from)
+            ->whereDate('created_at', '<=', $date_to);
+        }
+
+        $data['data'] = $query->with('customer')->latest('id')->paginate(10)->withQueryString();
+
+        $data['title'] = trans('Today Orders');
 
         return view('admin.orders.index',$data);
     }
