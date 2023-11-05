@@ -88,6 +88,10 @@ class ApiOrderController extends Controller
 
         $order = Order::create($data);
 
+        $address_data = $request->only(['address','phone','zone_area','city','postal_code']);
+
+        Customer::find($request->customer_id)->update(array_filter($address_data));
+
         $message = trans('Successful Added');
 
         return $this->sendResponse(true,$order->fresh(),$message,200);
@@ -106,6 +110,10 @@ class ApiOrderController extends Controller
         
         if (is_null($order)) {
             return $this->sendResponse(false,[],trans('Not Found'),404);
+        }
+        
+        if ($order->status != 3) {
+            return $this->sendResponse(false,[],trans('Sorry, Pickup orders must be finished first'),401);
         }
 
         if ($request->with_route) {
@@ -167,6 +175,12 @@ class ApiOrderController extends Controller
         
         if (is_null($order)) {
             return $this->sendResponse(false,[],trans('Not Found'),404);
+        }
+
+        if ($request->filled('status') && $request->integer('status') == 3) {
+            if (! $order->is_paid || ! $request->boolean('is_pay_later')) {
+                return $this->sendResponse(false,[],trans('Pay Order First'),401);
+            }
         }
 
         $data = $request->validated();

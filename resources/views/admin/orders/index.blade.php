@@ -9,7 +9,12 @@
 
 <a class="btn btn-outline-primary m-2" href="{{ route('orders.create') }}">
   <i class='bx bx-plus' style="font-size: 1.5rem"></i>
-  @lang("Add New") 
+  @lang("Add Pickup Order") 
+</a>
+
+<a class="btn btn-outline-primary m-2" href="{{ route('orders.drop.create') }}">
+  <i class='bx bx-plus' style="font-size: 1.5rem"></i>
+  @lang("Add Drop Off Order") 
 </a>
 
 <!-- Hoverable Table rows -->
@@ -83,7 +88,7 @@
           <td> {{ $loop->index + 1 }}  </td>
           <td> {{ $item->reference_no }}  </td>
           <td> {{ $item->customer->name }}  </td>
-          <td> {{ $item->status_name }}  </td>
+          <td> {{ $item->status_name }} |  {{ $item->type_name }}</td>
           <td> {{ number_format($item->amount, 2) }}  </td>
           <td> {{ $item->created_at->format('Y-M-d') }}  </td>
           <td>

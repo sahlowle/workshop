@@ -136,7 +136,7 @@ class RoadController extends Controller
 
         notify()->success($message);
 
-        return redirect()->route('roads.index');
+        return redirect()->back();
     }
 
     /**
@@ -240,6 +240,6 @@ class RoadController extends Controller
 
         notify()->success($message);
 
-        return redirect()->route('roads.index');
+        return redirect()->back();
     }
 }

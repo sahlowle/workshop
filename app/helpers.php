@@ -18,6 +18,7 @@ if (! function_exists('loginBackground')) {
 if (! function_exists('orderStatus')) {
     function orderStatus() {
         return [
+            "" => trans("Select") ,
             1 => trans("Pending") ,
             2 => trans("On Progress") ,
             3 => trans("Finished") ,

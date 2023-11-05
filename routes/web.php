@@ -64,6 +64,16 @@ Route::get('optimize/clear',function() {
     
 });
 
+Route::get('edit/table',function() {
+
+    Schema::table('orders', function (Blueprint $table) {
+        $table->boolean('is_pay_later')->default(false)->after('postal_code');
+    });
+
+    return "<h1> Added Successful </h1>";
+    
+});
+
 
 Route::redirect('/', '/admin');
 

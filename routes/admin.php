@@ -32,6 +32,10 @@ Route::resource('users', UserController::class)->except('show')->middleware('pre
 Route::resource('drivers', DriverController::class)->except('show')->middleware('prevent-back-history');
 Route::resource('customers', CustomerController::class)->middleware('prevent-back-history');
 
+ /* |------ add drop Off order routes ---------| */
+ Route::get('orders/create/drop/off',[OrderController::class,'createDropOffOrder'])->name('orders.drop.create')->middleware('prevent-back-history');
+ Route::post('orders/store/drop/off',[OrderController::class,'storeDropOffOrder'])->name('orders.drop.store')->middleware('prevent-back-history');
+
 //today roads
 Route::get('roads/only/today', [RoadController::class, 'today'])->name('roads.today')->middleware('prevent-back-history');
 

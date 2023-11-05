@@ -1,5 +1,10 @@
 {
     "x": "",
+    "Pay Order First": "Pay Order First",
+    "With New Route": "With New Route",
+    "Add Drop Off Order": "Add Drop Off Order",
+    "Add Pickup Order": "Add Pickup Order",
+    "Sorry, Pickup orders must be finished first": "Sorry, Pickup orders must be finished first",
     "Paid Order": "Paid Order",
     "You have paid order": "You have paid order",
     "Drop off": "Drop off",

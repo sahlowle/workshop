@@ -21,12 +21,13 @@ class Order extends Model
     // ];
 
     protected $appends = [
-        'status_name',  'type_name', 'status_color','payment_method'
+        'status_name',  'type_name', 'status_color','payment_method','pdf_link'
     ];
 
     protected $casts = [
         'is_paid' => 'boolean',
         'is_visit' => 'boolean',
+        'status' => 'integer',
         'floor_number' => 'integer',
         'apartment_number' => 'integer',
         'lat' => 'float',
@@ -78,6 +79,14 @@ class Order extends Model
             3 => trans("Drop off"),
             default => trans("Pick up") ,
        };
+        
+    }
+
+    public function getPdfLinkAttribute()
+    {
+        $id = $this->id;
+
+        return route('api.orders.pdf',$id);
         
     }
 

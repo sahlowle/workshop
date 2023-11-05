@@ -20,6 +20,20 @@
           {!! Form::text('address', null, ['id'=>'address','readonly','required','class' => 'form-control','placeholder'=> trans("Address")]) !!}
         </div>
       </div>
+      
+      <div class="mb-3">
+        <label class=" col-form-label" for="basic-default-name">@lang("City")</label>
+        <div class="col-sm-10">
+          {!! Form::text('city', null, ['id'=>'city','required','class' => 'form-control','placeholder'=> trans("City")]) !!}
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <label class=" col-form-label" for="basic-default-name">@lang("Postal Code")</label>
+        <div class="col-sm-10">
+          {!! Form::text('postal_code', null, ['id'=>'postal_code','required','class' => 'form-control','placeholder'=> trans("Postal Code")]) !!}
+        </div>
+      </div>
 
       <div class="mb-3">
         <label class=" col-form-label" for="basic-default-name">@lang("Phone")</label>
@@ -31,18 +45,18 @@
       <div class="mb-3">
         <label class=" col-form-label" for="basic-default-name">@lang("Other Phone")</label>
         <div class="col-sm-10">
-          {!! Form::tel('order_phone_number', null,  ['required','class' => 'form-control number','placeholder'=>  trans("phone must be 12 number")]) !!}
+          {!! Form::tel('order_phone_number', null,  ['required','id'=>'order_phone_number','class' => 'form-control number','placeholder'=>  trans("phone must be 12 number")]) !!}
         </div>
       </div>
 
       
 
-      <div class="mb-3">
+      {{-- <div class="mb-3">
         <label class=" col-form-label" for="basic-default-company">@lang("Status")</label>
         <div class="col-sm-10">
           {!! Form::select('status',orderStatus(), null, ['required','class' => 'select2 form-control']) !!}
         </div>
-      </div>
+      </div> --}}
 
       <div class="mb-3">
         <label class=" col-form-label" for="basic-default-name">@lang("Block No")</label>
@@ -101,6 +115,13 @@
         <label class=" col-form-label" for="basic-default-name">@lang("Additional Info")</label>
         <div class="col-sm-10">
           {!! Form::text('additional_info', null, ['class' => 'form-control','placeholder'=> trans("Additional Info")]) !!}
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <label class=" col-form-label" for="basic-default-name">@lang("Zone Area")</label>
+        <div class="col-sm-10">
+          {!! Form::text('zone_area', null, ['id'=>'zone_area','class' => 'form-control','placeholder'=> trans("Zone Area")]) !!}
         </div>
       </div>
 
@@ -167,7 +188,11 @@
     var lng = data.lng;
 
     $('#phone').val(phone);
+    $('#order_phone_number').val(phone);
     $('#address').val(address);
+    $('#city').val(data.city);
+    $('#postal_code').val(data.postal_code);
+    $('#zone_area').val(data.zone_area);
     $('#lat').val(lat);
     $('#lng').val(lng);
 

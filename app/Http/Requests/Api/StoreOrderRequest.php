@@ -41,6 +41,11 @@ class StoreOrderRequest extends FormRequest
             'amount' => ['nullable','numeric'],
             'is_visit' => ['nullable','boolean'],
             'first_visit_id' => ['required_if:is_visit,true','exists:orders,id'],
+
+            'city' => ['nullable','string','max:100'],
+            'zone_area' => ['nullable','string','max:100'],
+            'postal_code' => ['nullable','string','max:10'],
+            'is_pay_later' => ['nullable','boolean'],
         ];
     }
 

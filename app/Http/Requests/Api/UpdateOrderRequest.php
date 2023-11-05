@@ -48,6 +48,11 @@ class UpdateOrderRequest extends FormRequest
             'payment_way' => ['nullable','in:1,2'],
             'payment_id' => ['nullable','string','max:1024'],
             'type' => ['nullable',Rule::in([1,2,3]),],
+            
+            'city' => ['nullable','string','max:100'],
+            'zone_area' => ['nullable','string','max:100'],
+            'postal_code' => ['nullable','string','max:10'],
+            'is_pay_later' => ['nullable','boolean'],
         ];
     }
 

@@ -126,6 +126,17 @@ class OrderController extends Controller
         return view('admin.orders.create',$data);
     }
 
+    public function createDropOffOrder()
+    {
+        $data['title'] = trans('Add Drop Off Order');
+
+        $data['orders'] = Order::select('reference_no','id')->where('status','!=', 3)->pluck('reference_no','reference_no');
+
+        $data['orders']->prepend(trans('Select..'),'');
+
+        return view('admin.orders.create-drop-off',$data);
+    }
+
     /**
      * Store a newly created resource in storage.
      *
@@ -135,8 +146,8 @@ class OrderController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'status' => 'required|numeric|max:4',
-            'description' => 'required|string|min:5|max:250',
+            // 'status' => 'required|numeric|max:4',
+            'description' => 'required|string|min:2|max:250',
             'address' => 'required|string|min:3',
             'customer_id' => 'required|exists:customers,id',
 
@@ -151,17 +162,69 @@ class OrderController extends Controller
             // 'road_id' => 'required|exists:roads,id',
             'lat' => 'required|string|max:100',
             'lng' => 'required|string|max:100',
+
+            'city' => 'nullable|string|max:100',
+            'postal_code' => 'nullable|string|max:100',
+            'zone_area' => 'nullable|string|max:100',
         ]);
 
         // return $request->all();
 
         Order::create($validated);
 
+        $address_data = $request->only(['address','phone','zone_area','city','postal_code']);
+
+        Customer::find($request->customer_id)->update(array_filter($address_data));
+
+        $message = trans('Successful Added');
+
+        notify()->success($message); 
+        
+        return redirect()->back();
+    }
+
+    public function storeDropOffOrder(Request $request)
+    {
+        $validated = $request->validate([
+            'reference_no' => 'required|exists:orders,reference_no',
+            'with_route' => 'required|boolean',
+        ]);
+
+        $reference_no = $request->reference_no;
+
+        $order =  Order::where('reference_no',$reference_no)->first();
+
+        if ($request->with_route) {
+            $new_road = $order->road->replicate()->fill([
+                'status' => 2,
+            ]);
+
+            $new_road->save();
+
+            $new_order = $order->replicate()->fill([
+                'road_id' => $new_road->id,
+                'status' => 1,
+                'type' => 3,
+                'is_paid' => false,
+            ]);
+
+            $new_order->save();
+        } else {
+            $new_order = $order->replicate()->fill([
+                'status' => 1,
+                'type' => 3,
+                'is_paid' => false,
+            ]);
+
+            $new_order->save();
+        }
+
+
         $message = trans('Successful Added');
 
        notify()->success($message); 
 
-        return redirect()->route('orders.index');
+       return redirect()->route('orders.today');
     }
 
     /**
@@ -230,6 +293,10 @@ class OrderController extends Controller
             // 'road_id' => 'required|exists:roads,id',
             'lat' => 'nullable|string|max:100',
             'lng' => 'nullable|string|max:100',
+
+            'city' => 'nullable|string|max:100',
+            'postal_code' => 'nullable|string|max:100',
+            'zone_area' => 'nullable|string|max:100',
         ]);
 
         // return $validated;
@@ -259,7 +326,7 @@ class OrderController extends Controller
 
         notify()->success($message);
 
-        return redirect()->route('orders.index');
+        return redirect()->back();
     }
 
     public function sendInvoice($id)
