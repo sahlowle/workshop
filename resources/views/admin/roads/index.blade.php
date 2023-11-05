@@ -19,34 +19,51 @@
     {{ $title }}
   </h5>
 
-    <form  method="GET">
-      <div class="row ps-4">
-  
-        <div class="col-4">
-          <div class="mb-3">
-            <label class=" col-form-label" for="basic-default-name">@lang("Search Input")</label>
-            <div class="col-sm-10">
-              <input class="form-control" name="search_text" type="text" placeholder="@lang('Search Input')" value="{{ request()->search_text }}">
-            </div>
+  <form method="GET">
+    <div class="row p-4">
+
+      <div class="col-3">
+        <div class="mb-3">
+          <label class=" col-form-label" for="basic-default-name">@lang("From date")</label>
+          <div class="col-sm-10">
+            <input class="form-control" name="date_from" type="date" value="{{ request()->date_from }}">
           </div>
         </div>
-  
-        <div class="col-2">
-          <div class="mb-3">
-            <label class=" col-form-label" for="basic-default-name"> - </label>
-            <div class="col-sm-10">
-              <button class="btn btn-primary">
-                <i class="bx bx-search"></i>
-                @lang('Search')
-              </button>
-            </div>
-          </div>
-          
-          
-        </div>
-  
       </div>
-    </form>
+      <div class="col-3">
+        <div class="mb-3">
+          <label class=" col-form-label" for="basic-default-name">@lang("To date")</label>
+          <div class="col-sm-10">
+            <input  class="form-control" name="date_to" type="date" value="{{ request()->date_to }}">
+          </div>
+        </div>
+      </div>
+
+      <div class="col-3">
+        <div class="mb-3">
+          <label class=" col-form-label" for="basic-default-name">@lang("Search Input")</label>
+          <div class="col-sm-10">
+            <input class="form-control" name="search_text" type="text" placeholder="@lang('Search Input')" value="{{ request()->search_text }}">
+          </div>
+        </div>
+      </div>
+
+      <div class="col-2">
+        <div class="mb-3">
+          <label class=" col-form-label" for="basic-default-name"> - </label>
+          <div class="col-sm-10">
+            <button class="btn btn-primary">
+              <i class="bx bx-search"></i>
+              @lang('Search')
+            </button>
+          </div>
+        </div>
+        
+        
+      </div>
+
+    </div>
+  </form>
     
   <div class="table-responsive text-nowrap p-4">
     <table class="table table-hover datatable">

@@ -73,10 +73,10 @@ class Order extends Model
         $value = $this->type;
 
         return match ((int)$value) {
-            1 => trans("On site"),
-            2 => trans("Pick up"),
+            1 => trans("Pick up"),
+            2 => trans("On site"),
             3 => trans("Drop off"),
-            default => trans("On site") ,
+            default => trans("Pick up") ,
        };
         
     }

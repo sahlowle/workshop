@@ -31,6 +31,18 @@ class RoadController extends Controller
                     $query->orWhere($column, 'LIKE', '%' . $search_text . '%');
                 }
             }
+
+            $query->orWhereRelation('driver','name','LIKE', '%' . $search_text . '%');
+        }
+
+        if ($request->filled(['date_from','date_to'])) {
+
+            $date_from = $request->date('date_from');
+            $date_to = $request->date('date_to');
+
+            $query
+            ->whereDate('created_at', '>=', $date_from)
+            ->whereDate('created_at', '<=', $date_to);
         }
 
         $data['data'] = $query->with('driver')->latest('id')->paginate(10)->withQueryString();
@@ -57,7 +69,20 @@ class RoadController extends Controller
                     $query->orWhere($column, 'LIKE', '%' . $search_text . '%');
                 }
             }
+
+            $query->orWhereRelation('driver','name','LIKE', '%' . $search_text . '%');
         }
+
+        if ($request->filled(['date_from','date_to'])) {
+
+            $date_from = $request->date('date_from');
+            $date_to = $request->date('date_to');
+
+            $query
+            ->whereDate('created_at', '>=', $date_from)
+            ->whereDate('created_at', '<=', $date_to);
+        }
+
 
         $data['data'] = $query->with('driver')->latest('id')->paginate(10)->withQueryString();
 

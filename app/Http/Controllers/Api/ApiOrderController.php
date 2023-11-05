@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\AddFilesRequest;
 use App\Http\Requests\Api\AddPaymentFileRequest;
 use App\Http\Requests\Api\DeleteFilesRequest;
+use App\Http\Requests\Api\StoreDropOffOrderRequest;
 use App\Http\Requests\Api\StoreOrderRequest;
 use App\Http\Requests\Api\UpdateOrderRequest;
 use App\Mail\SendInvoice;
@@ -42,7 +43,7 @@ class ApiOrderController extends Controller
         if ($request->filled('search_text')) {
             $search_text = $request->search_text;
 
-            $columns = ['reference_no','maintenance_device','brand','amount'];
+            $columns = ['reference_no','maintenance_device','brand','amount','order_phone_number'];
 
             foreach($columns as $key => $column){
                 if ($key == 0) {
@@ -51,6 +52,8 @@ class ApiOrderController extends Controller
                     $query->orWhere($column, 'LIKE', '%' . $search_text . '%');
                 }
             }
+
+            $query->orWhereRelation('customer','name','LIKE', '%' . $search_text . '%');
         }
 
         if ($request->filled(['date_from','date_to'])) {
@@ -88,6 +91,51 @@ class ApiOrderController extends Controller
         $message = trans('Successful Added');
 
         return $this->sendResponse(true,$order->fresh(),$message,200);
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | add new drop off
+    |--------------------------------------------------------------------------
+    */
+    public function storeDropOffOrder(StoreDropOffOrderRequest $request)
+    {
+        $reference_no = $request->reference_no;
+
+        $order =  Order::where('reference_no',$reference_no)->first();
+        
+        if (is_null($order)) {
+            return $this->sendResponse(false,[],trans('Not Found'),404);
+        }
+
+        if ($request->with_route) {
+            $new_road = $order->road->replicate()->fill([
+                'status' => 2,
+            ]);
+
+            $new_road->save();
+
+            $new_order = $order->replicate()->fill([
+                'road_id' => $new_road->id,
+                'status' => 1,
+                'type' => 3,
+                'is_paid' => false,
+            ]);
+
+            $new_order->save();
+        } else {
+            $new_order = $order->replicate()->fill([
+                'status' => 1,
+                'type' => 3,
+                'is_paid' => false,
+            ]);
+
+            $new_order->save();
+        }
+
+        $message = trans('Successful Added');
+
+        return $this->sendResponse(true,[],$message,200);
     }
 
     /*

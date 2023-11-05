@@ -36,7 +36,7 @@ class OrderController extends Controller
         if ($request->filled('search_text')) {
             $search_text = $request->search_text;
 
-            $columns = ['reference_no','maintenance_device','brand','amount'];
+            $columns = ['reference_no','maintenance_device','brand','amount','order_phone_number'];
 
             foreach($columns as $key => $column){
                 if ($key == 0) {
@@ -45,7 +45,10 @@ class OrderController extends Controller
                     $query->orWhere($column, 'LIKE', '%' . $search_text . '%');
                 }
             }
+
+            $query->orWhereRelation('customer','name','LIKE', '%' . $search_text . '%');
         }
+
         if ($request->filled(['date_from','date_to'])) {
 
             $date_from = $request->date('date_from');
@@ -69,10 +72,11 @@ class OrderController extends Controller
 
         $query->whereDate('created_at', Carbon::today());
 
+
         if ($request->filled('search_text')) {
             $search_text = $request->search_text;
 
-            $columns = ['reference_no','maintenance_device','brand','amount'];
+            $columns = ['reference_no','maintenance_device','brand','amount','order_phone_number'];
 
             foreach($columns as $key => $column){
                 if ($key == 0) {
@@ -81,7 +85,10 @@ class OrderController extends Controller
                     $query->orWhere($column, 'LIKE', '%' . $search_text . '%');
                 }
             }
+
+            $query->orWhereRelation('customer','name','LIKE', '%' . $search_text . '%');
         }
+
         if ($request->filled(['date_from','date_to'])) {
 
             $date_from = $request->date('date_from');

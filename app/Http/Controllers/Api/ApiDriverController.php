@@ -25,7 +25,7 @@ class ApiDriverController extends Controller
 
         if ($request->filled('search_text')) {
             $search_text = $request->search_text;
-            $columns = ['name','phone','email'];
+            $columns = ['name','phone','email','address'];
 
             foreach($columns as $key => $column){
                 if ($key == 0) {
@@ -34,6 +34,16 @@ class ApiDriverController extends Controller
                     $query->orWhere($column, 'LIKE', '%' . $search_text . '%');
                 }
             }
+        }
+
+        if ($request->filled(['date_from','date_to'])) {
+
+            $date_from = $request->date('date_from');
+            $date_to = $request->date('date_to');
+
+            $query
+            ->whereDate('created_at', '>=', $date_from)
+            ->whereDate('created_at', '<=', $date_to);
         }
 
         $per_page = $request->filled('per_page') ? $request->per_page : 10;

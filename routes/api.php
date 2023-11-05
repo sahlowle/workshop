@@ -53,6 +53,9 @@ Route::middleware(['auth:sanctum'])->group(function () {
     /* |------ orders routes ---------| */
     Route::apiResource('orders',ApiOrderController::class);
 
+    /* |------ add drop Off order routes ---------| */
+    Route::post('orders/add-drop-off',[ApiOrderController::class,'storeDropOffOrder']);
+
     /* |------ orders files routes ---------| */
     Route::post('orders/add-files/{id}',[ApiOrderController::class,'addFiles']);
     Route::delete('orders/delete-files/{id}',[ApiOrderController::class,'deleteOrderFile']);

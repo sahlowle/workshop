@@ -20,9 +20,13 @@ class ApiCustomerController extends Controller
     {
         $query = Customer::query();
 
+        if ($request->isNotFilled('active')) {
+            $query->withTrashed();
+        }
+        
         if ($request->filled('search_text')) {
             $search_text = $request->search_text;
-            $columns = ['name','phone','email'];
+            $columns = ['name','phone','email','address','city','postal_code'];
 
             foreach($columns as $key => $column){
                 if ($key == 0) {
@@ -33,8 +37,14 @@ class ApiCustomerController extends Controller
             }
         }
 
-        if ($request->isNotFilled('active')) {
-            $query->withTrashed();
+        if ($request->filled(['date_from','date_to'])) {
+
+            $date_from = $request->date('date_from');
+            $date_to = $request->date('date_to');
+
+            $query
+            ->whereDate('created_at', '>=', $date_from)
+            ->whereDate('created_at', '<=', $date_to);
         }
 
         $per_page = $request->filled('per_page') ? $request->per_page : 10;

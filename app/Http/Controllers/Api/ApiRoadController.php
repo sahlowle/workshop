@@ -44,6 +44,18 @@ class ApiRoadController extends Controller
                     $query->orWhere($column, 'LIKE', '%' . $search_text . '%');
                 }
             }
+
+            $query->orWhereRelation('driver','name','LIKE', '%' . $search_text . '%');
+        }
+
+        if ($request->filled(['date_from','date_to'])) {
+
+            $date_from = $request->date('date_from');
+            $date_to = $request->date('date_to');
+
+            $query
+            ->whereDate('created_at', '>=', $date_from)
+            ->whereDate('created_at', '<=', $date_to);
         }
 
         $per_page = $request->filled('per_page') ? $request->per_page : 10;
