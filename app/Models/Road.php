@@ -64,9 +64,10 @@ class Road extends Model
             if (! is_null($road->driver_id)) {
                 $road->status = 2; // on progress
 
-                $token = User::find($road->driver_id)->fcm_token;
+                $user = User::find($road->driver_id);
+                $token = $user->fcm_token;
 
-                FirebaseService::sendNotification(trans('You have a new route'),[
+                FirebaseService::sendNotification(trans('You have a new route',[], $user->lang),[
                     'id' => $road->id,
                     'type' => 'New Route',
                 ],collect([$token]));

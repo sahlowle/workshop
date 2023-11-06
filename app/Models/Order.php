@@ -156,11 +156,25 @@ class Order extends Model
             if ($order->road()->exists()
             ) {
                 if ($order->amount != $order->getOriginal('amount') && $order->road->driver_id) {
-                    $token = User::find($order->road->driver_id)->fcm_token;
-                    FirebaseService::sendNotification('Amount of order was changed',[
-                        'id' => $order->id,
-                        'type' => 'Order amount changed',
-                    ],collect([$token]));
+                    $user = request()->user();
+
+                    if ($user->hasRole('admin')) {
+                        $user = User::find($order->road->driver_id);
+                        $token = $user->fcm_token;
+                        
+                        FirebaseService::sendNotification(trans('Amount of order was changed',[],$user->lang),[
+                            'id' => $order->id,
+                            'type' => 'Order amount changed',
+                        ],collect([$token]));
+
+                    } elseif($user->hasRole('driver')) {
+                         $tokens = User::admins()->pluck('fcm_token');
+                         FirebaseService::sendNotification(trans('Amount of order was changed'),[
+                            'id' => $order->id,
+                            'type' => 'Order amount changed',
+                         ],$tokens);
+                    }
+                    
                 }
 
                 if ($order->is_paid && $order->is_paid != $order->getOriginal('is_paid')) {

@@ -37,7 +37,7 @@ class AuthController extends Controller
 
         }
 
-        $message = trans('Email & Password does not match with our record.');
+        $message = trans('auth.failed');
 
         return $this->sendResponse(false,[],$message ,401);    
     }

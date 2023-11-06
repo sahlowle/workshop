@@ -177,7 +177,9 @@ class ApiOrderController extends Controller
             return $this->sendResponse(false,[],trans('Not Found'),404);
         }
 
-        if ($request->filled('status') && $request->integer('status') == 3) {
+        $type = (int) $order->type;
+        if ($request->filled('status') && $request->integer('status') == 3 && $type != 1) {
+            
             if (! $order->is_paid || ! $request->boolean('is_pay_later')) {
                 return $this->sendResponse(false,[],trans('Pay Order First'),401);
             }

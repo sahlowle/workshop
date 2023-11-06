@@ -20,13 +20,24 @@ class LocaleMiddleware
     $session_locale = session()->get('locale');
 
     if ($request->is('api/*')) {
-      $locale = $request->header('Accept-Language', 'en');
-
+      $locale = $request->header('Accept-Language', 'de');
+      
       session()->put('locale', $locale);
+
       app()->setLocale($locale);
+
+      if (auth()->user()) {
+        $request->user()->update(['lang'=> $locale]);
+      }
+
     }
+
     else if(session()->has('locale') && in_array($session_locale,$availLocale)){
       app()->setLocale($session_locale);
+
+      if (auth()->user()) {
+        $request->user()->update(['lang'=> $session_locale]);
+      }
     }
 
     return $next($request);

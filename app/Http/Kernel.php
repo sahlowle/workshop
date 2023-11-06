@@ -68,6 +68,6 @@ class Kernel extends HttpKernel
     'prevent-back-history' => \App\Http\Middleware\PreventBackHistory::class,
 
     'role' => \App\Http\Middleware\HasRole::class,
-    'enforceJson' => \App\Http\Middleware\EnforceJson::class,
+    // 'enforceJson' => \App\Http\Middleware\EnforceJson::class,
   ];
 }
