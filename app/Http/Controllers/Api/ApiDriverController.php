@@ -32,6 +32,7 @@ class ApiDriverController extends Controller
                     $query->where($column, 'LIKE', '%' . $search_text . '%');
                 } else{
                     $query->orWhere($column, 'LIKE', '%' . $search_text . '%');
+                    $query->where('type',2);
                 }
             }
         }
@@ -65,15 +66,13 @@ class ApiDriverController extends Controller
         $data = $request->validated();
 
         // $password = Str::password(8); // this feature in laravel 10
-        
-        $password = Str::random(8);
+        // $password = Str::random(8);
+        // $data['password'] = $password;
+        // $user->notify(new NewPassword($password));
 
         $data['type'] = 2;
-        $data['password'] = $password;
 
         $user = User::create($data);
-
-        $user->notify(new NewPassword($password));
 
         $message = trans('Successful Added');
 

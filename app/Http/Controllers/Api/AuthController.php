@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Api\DriverLoginRequest;
 use App\Http\Requests\Api\ForgerPasswordRequest;
 use App\Http\Requests\Api\LoginRequest;
 use App\Http\Requests\Api\UpdateProfileRequest;
@@ -22,6 +23,34 @@ class AuthController extends Controller
     public function Login(LoginRequest $request)
     {
         if(Auth::attempt($request->only(['email', 'password']))){
+            
+            $user = Auth::user();
+
+            $data['user'] = $user ;
+            $data["token"] = $user->createToken("API-TOKEN")->plainTextToken;
+
+            if ($request->filled('fcm_token')) {
+                $user->update($request->only(['fcm_token','device_type']));
+            }
+
+            $message = trans('Successful Login');
+            return $this->sendResponse(true ,$data ,$message,200);
+
+        }
+
+        $message = trans('auth.failed');
+
+        return $this->sendResponse(false,[],$message ,401);    
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Login User
+    |--------------------------------------------------------------------------
+    */
+    public function driverLogin(DriverLoginRequest $request)
+    {
+        if(Auth::attempt($request->only(['phone', 'password']))){
             
             $user = Auth::user();
 

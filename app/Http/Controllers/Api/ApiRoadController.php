@@ -68,7 +68,7 @@ class ApiRoadController extends Controller
     }
 
     /*
-    |--------------------------------------------------------------------------
+    |---------------------------------------------------f-----------------------
     | add new
     |--------------------------------------------------------------------------
     */
@@ -76,11 +76,20 @@ class ApiRoadController extends Controller
     {
         $data = $request->validated();
 
+        if ($request->isNotFilled('driver_id')) {
+            $driver_id = getAvailableDrivers()->first()->driver_id;
+            $data['driver_id'] = $driver_id;
+        }
+
         $road = Road::create($data);
 
-        Order::whereIn('id',$request->orders_ids)->update(['road_id' => $road->id]);
+        Order::whereIn('id',$request->orders_ids)->update([
+            'road_id' => $road->id,
+            'driver_id' => $road->driver_id,
+        ]);
 
         $status = (int)$road->status;
+
         if ($status == 2) {
             changeOrderStatus($road->id,2);
         }
@@ -127,9 +136,17 @@ class ApiRoadController extends Controller
 
         if ($request->filled('orders_ids')) {
 
-            $road->orders()->update([ 'road_id' => null ]);
+            $road->orders()->where('status','!=',3)->update([ 'status' => 1 ]);
 
-            Order::whereIn('id',$request->orders_ids)->update(['road_id' => $road->id]);
+            $road->orders()->update([
+                'road_id' => null,
+                'driver_id' => null,
+            ]);
+
+            Order::whereIn('id',$request->orders_ids)->update([
+                'road_id' => $road->id,
+                'driver_id' => $road->driver_id,
+            ]); 
         }
 
         $status = (int)$road->status;

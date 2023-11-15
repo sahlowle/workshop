@@ -31,12 +31,6 @@ class UpdateDriverRequest extends FormRequest
             // 'password' => ['nullable','string','min:6','max:30'],
             'address' => ['nullable','string','min:3','max:190'],
             'zone_area' => ['nullable','string','min:3','max:30'],
-
-            'email' => [
-                'nullable','email:rfc,dns',
-                Rule::unique('users')->ignore($this->route('driver'), 'id'),
-                'string','max:120'
-            ],
             'phone' => [
                 'nullable',
                 Rule::unique('users')->ignore($this->route('driver'), 'id'),

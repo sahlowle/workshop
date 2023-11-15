@@ -1,7 +1,10 @@
 <?php
 
 use App\Http\Controllers\Admin\DataBaseBackupController;
+use App\Models\Order;
 use App\Models\User;
+use App\Services\TimeSlot;
+use Carbon\Carbon;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Hash;
@@ -38,8 +41,11 @@ Route::get('restart-system-from-scratch',function() {
 
     foreach ($tables as $key => $table) {
         $name = $table->$keyName;
-
-        DB::table($name)->truncate();
+        if ($name == "telescope_entries" || $name == "telescope_entries_tags" ||$name == "telescope_monitoring" ) {
+            
+        } else{
+            DB::table($name)->truncate();
+        }
     }
 
     User::create([
@@ -64,10 +70,13 @@ Route::get('optimize/clear',function() {
     
 });
 
-Route::get('edit/table',function() {
 
-    Schema::table('orders', function (Blueprint $table) {
-        $table->boolean('is_pay_later')->default(false)->after('postal_code');
+Route::get('edit/table',function() {
+    Schema::create('reports', function (Blueprint $table) {
+        $table->id();
+        $table->bigInteger('order_id');
+        $table->text('description');
+        $table->timestamps();
     });
 
     return "<h1> Added Successful </h1>";

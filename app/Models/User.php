@@ -93,7 +93,7 @@ class User extends Authenticatable
      */
     public function roads()
     {
-        return $this->hasMany(Road::class, 'driver_id', 'id');
+        return $this->hasMany(Road::class, 'driver_id');
     }
 
     

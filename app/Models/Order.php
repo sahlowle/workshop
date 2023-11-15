@@ -32,6 +32,7 @@ class Order extends Model
         'apartment_number' => 'integer',
         'lat' => 'float',
         'lng' => 'float',
+        'visit_time' =>  'datetime:Y-m-d H:i',
     ];
     
 
@@ -129,6 +130,12 @@ class Order extends Model
             'name' => trans('No Customer'),
         ]);
     }
+
+    public function scopePickup($query)
+    {
+        return $query->where('type',1);
+    }
+
     public function activeCustomer()
     {
         return $this->belongsTo(Customer::class, 'customer_id');
@@ -142,6 +149,12 @@ class Order extends Model
     public function files()
     {
         return $this->morphMany(File::class, 'fileable');
+    }
+
+    
+    public function reports()
+    {
+        return $this->hasMany(Report::class, 'order_id');
     }
 
     protected static function booted()

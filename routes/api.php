@@ -21,6 +21,7 @@ use Illuminate\Support\Facades\Route;
 
 /* |------ Login Routes ---------| */
 Route::post('login',[AuthController::class,'login']);
+Route::post('driver-login',[AuthController::class,'driverLogin']);
 
 /* |------ Login Routes ---------| */
 Route::post('forget-password',[AuthController::class,'forgerPassword']);
@@ -60,6 +61,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('orders/add-files/{id}',[ApiOrderController::class,'addFiles']);
     Route::delete('orders/delete-files/{id}',[ApiOrderController::class,'deleteOrderFile']);
     Route::post('orders/send-invoice/{id}',[ApiOrderController::class,'sendInvoice']);
+    Route::get('orders/available/time',[ApiOrderController::class,'getAvailableTime']);
 
     /* |------ payment file routes ---------| */
     Route::post('orders/add-payment-file/{id}',[ApiOrderController::class,'addPaymentFile']);

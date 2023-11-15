@@ -27,6 +27,7 @@ class UpdateOrderRequest extends FormRequest
     public function rules()
     {
         return [
+            'visit_time' => ['nullable', 'date_format:Y-m-d H:i:s'],
             'description' => ['nullable', 'string','min:3','max:250'],
             'address' => ['nullable', 'string','min:3','max:250'],
             'maintenance_device' => ['nullable', 'string','max:250'],
@@ -43,7 +44,7 @@ class UpdateOrderRequest extends FormRequest
             'is_visit' => ['nullable','boolean'],
             'is_paid' => ['nullable','boolean'],
             'first_visit_id' => ['required_if:is_visit,true','exists:orders,id'],
-            'report' => ['nullable'],
+            'reports' => ['nullable','array'],
             'status' => ['nullable','in:1,2,3,4'],
             'payment_way' => ['nullable','in:1,2'],
             'payment_id' => ['nullable','string','max:1024'],

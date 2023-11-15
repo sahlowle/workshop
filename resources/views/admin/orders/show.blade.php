@@ -28,7 +28,10 @@
                         @lang("Status")
                         <span >
                             <i class='bx bxs-circle {{ $order->status_color }}'></i>
-                            {{ $order->status_name }} </span>
+                            {{ $order->status_name }}
+                            |
+                            {{ $order->type_name }}
+                        </span>
                     </li>
 
                     <li class="list-group-item d-flex justify-content-between align-items-center">
@@ -73,10 +76,14 @@
                             @if ($order->is_paid)
                             <i class='text-success bx bx-check-circle' style="font-size: 2rem"></i>
                             @lang('Paid')
+                            @elseif ($order->is_pay_later)
+                            <i class='text-primary bx bx-time' style="font-size: 2rem"></i>
+                            @lang('Pay Later')
                             @else
                             <i class='text-danger bx bx-x-circle' style="font-size: 2rem"></i>
                             @lang('Un Paid')
-                            @endif </span>
+                            @endif
+                        </span>
                     </li>
 
                     @if ($order->is_paid)

@@ -192,7 +192,13 @@ class OrderController extends Controller
 
         $reference_no = $request->reference_no;
 
-        $order =  Order::where('reference_no',$reference_no)->first();
+        $order =  Order::pickup()->where('reference_no',$reference_no)->firstOrFail();
+
+        $first_visit = Order::where('first_visit_id',$order->id)->get();
+
+        if ($first_visit->isNotEmpty()) {
+            return $this->sendResponse(false,[],trans('This reference number is already exists as Dop-Off order'),404);
+        }
 
         if ($request->with_route) {
             $new_road = $order->road->replicate()->fill([
@@ -202,6 +208,8 @@ class OrderController extends Controller
             $new_road->save();
 
             $new_order = $order->replicate()->fill([
+                'first_visit_id' => $order->id,
+                'is_visit' => true,
                 'road_id' => $new_road->id,
                 'status' => 1,
                 'type' => 3,
@@ -211,6 +219,9 @@ class OrderController extends Controller
             $new_order->save();
         } else {
             $new_order = $order->replicate()->fill([
+                'first_visit_id' => $order->id,
+                'is_visit' => true,
+                'road_id' => null,
                 'status' => 1,
                 'type' => 3,
                 'is_paid' => false,

@@ -12,6 +12,7 @@ use App\Http\Requests\Api\UpdateOrderRequest;
 use App\Mail\SendInvoice;
 use App\Models\Customer;
 use App\Models\Order;
+use App\Services\TimeSlot;
 use App\Traits\FileSaveTrait;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -106,11 +107,19 @@ class ApiOrderController extends Controller
     {
         $reference_no = $request->reference_no;
 
-        $order =  Order::where('reference_no',$reference_no)->first();
+        $order =  Order::pickup()->where('reference_no',$reference_no)->first();
+
         
         if (is_null($order)) {
-            return $this->sendResponse(false,[],trans('Not Found'),404);
+            return $this->sendResponse(false,[],trans('Order Not Pickup'),404);
         }
+
+        $first_visit = Order::where('first_visit_id',$order->id)->get();
+
+        if ($first_visit->isNotEmpty()) {
+            return $this->sendResponse(false,[],trans('This reference number is already exists as Dop-Off order'),404);
+        }
+
         
         if ($order->status != 3) {
             return $this->sendResponse(false,[],trans('Sorry, Pickup orders must be finished first'),401);
@@ -124,6 +133,8 @@ class ApiOrderController extends Controller
             $new_road->save();
 
             $new_order = $order->replicate()->fill([
+                'first_visit_id' => $order->id,
+                'is_visit' => true,
                 'road_id' => $new_road->id,
                 'status' => 1,
                 'type' => 3,
@@ -133,6 +144,9 @@ class ApiOrderController extends Controller
             $new_order->save();
         } else {
             $new_order = $order->replicate()->fill([
+                'first_visit_id' => $order->id,
+                'is_visit' => true,
+                'road_id' => null,
                 'status' => 1,
                 'type' => 3,
                 'is_paid' => false,
@@ -153,7 +167,7 @@ class ApiOrderController extends Controller
     */
     public function show($id)
     {
-        $data =  Order::with(['files','customer'])->find($id);
+        $data =  Order::with(['files','customer','reports'])->find($id);
         
         if (is_null($data)) {
             return $this->sendResponse(false,[],trans('Not Found'),404);
@@ -178,16 +192,31 @@ class ApiOrderController extends Controller
         }
 
         $type = (int) $order->type;
+
         if ($request->filled('status') && $request->integer('status') == 3 && $type != 1) {
             
-            if (! $order->is_paid || ! $request->boolean('is_pay_later')) {
+            if (! $order->is_paid && ! $request->boolean('is_pay_later')) {
                 return $this->sendResponse(false,[],trans('Pay Order First'),401);
             }
+
         }
+
 
         $data = $request->validated();
 
         $order->update($data);
+
+        if ($request->filled('reports')){
+
+            $order->reports()->delete();
+
+            foreach ($request->reports as $key => $item) {
+                $order->reports()->create([
+                    'description' => $item
+                ]);
+
+            }
+        }
     
         $message = trans('Successful Updated');
 
@@ -331,5 +360,41 @@ class ApiOrderController extends Controller
         $file->delete();
 
         return $this->sendResponse(true,$file,"Files Deleted Successfully",200);
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Delete Files
+    |--------------------------------------------------------------------------
+    */
+    public function getAvailableTime(Request $request)
+    {
+        $exclude_dates = Order::whereDate('visit_time','>=', Carbon::today()->toDateString())->pluck('visit_time')->toArray();
+        
+        $currentDate =Carbon::yesterday();
+
+        $data = [];
+        $x = 0;
+
+        while($x == 0) {
+
+            $currentDate = $currentDate->addDay();
+            $start_date = $currentDate->startOfDay()->format('Y-m-d H:i');
+            $end_date = $currentDate->endOfDay()->format('Y-m-d H:i');
+
+            $data = TimeSlot::create(
+                $start_date,
+                $end_date, 
+                60, 
+                'Y-m-d H:i',
+                $exclude_dates
+            );
+
+            if ($data->isNotEmpty()) {
+                $x =1;
+            }        
+          }
+
+        return $this->sendResponse(true,$data,"Available time retrieved  Successfully",200);
     }
 }

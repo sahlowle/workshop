@@ -20,7 +20,7 @@ class ApiAdminController extends Controller
     {
         $query = User::query()->admins();
 
-        $query->whereNotIn('id',[$request->user()->id]);
+        $query->whereNotIn('id',[$request->user()->id]);// hide your self
 
         if ($request->filled('search_text')) {
             $search_text = $request->search_text;

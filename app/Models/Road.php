@@ -45,7 +45,7 @@ class Road extends Model
     
     public function orders()
     {
-        return $this->hasMany(Order::class, 'road_id');
+        return $this->hasMany(Order::class, 'road_id')->latest('visit_time');
     }
 
     
@@ -76,6 +76,23 @@ class Road extends Model
             }
         });
 
+        static::created(function ($road) {
+          
+
+            if (! is_null($road->driver_id)) {
+                $road->status = 2; // on progress
+
+                $user = User::find($road->driver_id);
+                $token = $user->fcm_token;
+
+                FirebaseService::sendNotification(trans('You have a new route'.$road->id,[], $user->lang),[
+                    'id' => $road->id,
+                    'type' => trans('New Route'),
+                ],collect([$token]));
+
+            }
+        });
+
         static::updating(function ($road) {
             $status = (int)$road->status;
 
@@ -87,7 +104,7 @@ class Road extends Model
                     'id' => $road->id,
                     'type' => 'New Route',
                 ],collect([$token]));
-            } elseif ($road->wasChanged('driver_id')) {
+            } elseif ($road->driver_id != $road->getOriginal('driver_id')) {
                 $token = User::find($road->driver_id)->fcm_token;
 
                 FirebaseService::sendNotification(trans('You have a new route'),[

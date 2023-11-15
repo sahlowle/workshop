@@ -1,11 +1,38 @@
 <?php
 
 use App\Models\Order;
+use App\Models\User;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\DB;
+
+if (! function_exists('getAvailableDrivers')) {
+    function getAvailableDrivers() {
+        $drivers = User::drivers();
+        
+        $first_drivers =  $drivers->whereDoesntHave('roads', function (Builder $query) {
+            $query->where('status', '!=', 3);
+        })->get();
+
+        if ($first_drivers->isNotEmpty()) {
+            return $first_drivers->pluck('driver_id');
+        }
+
+        return Order::select('driver_id', DB::raw('count(*) as total'))
+        // ->whereNotNull('driver_id')
+        ->groupBy('driver_id')
+        ->orderBy('total')->get()
+        ->makeHidden([
+            'pdf_link','status_name','type_name','status_color','payment_method'
+        ]);
+    }
+}
 
 if (! function_exists('changeOrderStatus')) {
     function changeOrderStatus($road_id,$status) {
-        Order::where('road_id',$road_id)->update([ 'status' => $status]);
+        Order::where('road_id',$road_id)
+        ->where('status','!=',3)
+        ->update([ 'status' => $status]);
     }
 }
 

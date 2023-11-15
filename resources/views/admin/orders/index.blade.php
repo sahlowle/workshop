@@ -88,7 +88,12 @@
           <td> {{ $loop->index + 1 }}  </td>
           <td> {{ $item->reference_no }}  </td>
           <td> {{ $item->customer->name }}  </td>
-          <td> {{ $item->status_name }} |  {{ $item->type_name }}</td>
+          <td> 
+            <i class='bx bxs-circle {{ $item->status_color }}'></i>
+            {{ $item->status_name }}
+            |
+            {{ $item->type_name }}
+          </td>
           <td> {{ number_format($item->amount, 2) }}  </td>
           <td> {{ $item->created_at->format('Y-M-d') }}  </td>
           <td>
