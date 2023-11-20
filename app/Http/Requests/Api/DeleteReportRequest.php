@@ -5,8 +5,7 @@ namespace App\Http\Requests\Api;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Http\Exceptions\HttpResponseException;
-
-class StoreDriverRequest extends FormRequest
+class DeleteReportRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -26,12 +25,7 @@ class StoreDriverRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => ['required', 'string','min:3','max:80'],
-            // 'email' => ['required','email:rfc,dns','unique:users,email','string','max:120'],
-            'password' => ['required','string','min:6','max:30'],
-            'phone' => ['required','unique:users,phone','string','min:12','max:20'],
-            'address' => ['nullable','string','min:3','max:190'],
-            'zone_area' => ['nullable','string','min:3','max:30'],
+            'report_id' => 'required|exists:reports,id'
         ];
     }
 

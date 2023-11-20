@@ -15,16 +15,16 @@ if (! function_exists('getAvailableDrivers')) {
         })->get();
 
         if ($first_drivers->isNotEmpty()) {
-            return $first_drivers->pluck('driver_id');
+            return $first_drivers->pluck('id');
         }
 
         return Order::select('driver_id', DB::raw('count(*) as total'))
-        // ->whereNotNull('driver_id')
+        ->whereNotNull('driver_id')
         ->groupBy('driver_id')
         ->orderBy('total')->get()
         ->makeHidden([
             'pdf_link','status_name','type_name','status_color','payment_method'
-        ]);
+        ])->get()->pluck('driver_id');
     }
 }
 

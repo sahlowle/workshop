@@ -141,6 +141,11 @@ class Order extends Model
         return $this->belongsTo(Customer::class, 'customer_id');
     }
 
+    public function driver()
+    {
+        return $this->belongsTo(User::class, 'driver_id');
+    }
+
     public function road()
     {
         return $this->belongsTo(Road::class, 'road_id');

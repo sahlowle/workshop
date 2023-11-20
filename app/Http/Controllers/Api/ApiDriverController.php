@@ -21,7 +21,7 @@ class ApiDriverController extends Controller
     */
     public function index(Request $request)
     {
-        $query = User::query()->drivers();
+        $query = User::query();
 
         if ($request->filled('search_text')) {
             $search_text = $request->search_text;
@@ -49,7 +49,8 @@ class ApiDriverController extends Controller
 
         $per_page = $request->filled('per_page') ? $request->per_page : 10;
         
-        $data = $query->latest('id')->paginate($per_page);
+        $data = $query->drivers()
+        ->latest('id')->paginate($per_page);
 
         $message = trans('Successful Retrieved');
         

@@ -26,7 +26,7 @@ class StoreOrderRequest extends FormRequest
     public function rules()
     {
         return [
-            'visit_time' => ['required', 'date_format:Y-m-d H:i:s'],
+            'visit_time' => ['required', 'date_format:Y-m-d H:i'],
             'description' => ['required', 'string','min:3','max:250'],
             'address' => ['required', 'string','min:3','max:250'],
             'maintenance_device' => ['required', 'string','max:250'],

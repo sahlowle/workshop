@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\DataBaseBackupController;
 use App\Models\Order;
+use App\Models\Road;
 use App\Models\User;
 use App\Services\TimeSlot;
 use Carbon\Carbon;
@@ -12,6 +13,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Facades\DB;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 /*
 |--------------------------------------------------------------------------
@@ -72,12 +74,24 @@ Route::get('optimize/clear',function() {
 
 
 Route::get('edit/table',function() {
-    Schema::create('reports', function (Blueprint $table) {
-        $table->id();
-        $table->bigInteger('order_id');
-        $table->text('description');
-        $table->timestamps();
-    });
+    $order = Order::first()->load(['road.driver','driver','customer','reports']);
+
+    $order->driver = $order->road->driver;
+
+
+    // $pdf = PDF::setOptions(['isHtml5ParserEnabled' => true, 'isRemoteEnabled' => true])
+    // ->loadView('reports.index', compact('order'));
+
+    // return $pdf->stream('inv.pdf');
+
+    // $html = view('reports.route',compact('road'));
+
+    // $pdf = Pdf::loadHtml($html);
+    // $pdf = Pdf::loadView('reports.route',['road'=> $road]);
+        
+    // return $pdf->download('inv.pdf');
+
+    return view('reports.route',compact('order'));
 
     return "<h1> Added Successful </h1>";
     

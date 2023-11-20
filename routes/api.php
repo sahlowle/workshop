@@ -61,6 +61,12 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('orders/add-files/{id}',[ApiOrderController::class,'addFiles']);
     Route::delete('orders/delete-files/{id}',[ApiOrderController::class,'deleteOrderFile']);
     Route::post('orders/send-invoice/{id}',[ApiOrderController::class,'sendInvoice']);
+
+    /* |------ orders report routes ---------| */
+    Route::post('orders/add-report/{id}',[ApiOrderController::class,'addReport']);
+    Route::delete('orders/delete-report/{id}',[ApiOrderController::class,'deleteReport']);
+
+     /* |------ orders get available routes ---------| */
     Route::get('orders/available/time',[ApiOrderController::class,'getAvailableTime']);
 
     /* |------ payment file routes ---------| */

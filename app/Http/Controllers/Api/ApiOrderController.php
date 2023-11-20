@@ -5,7 +5,9 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\AddFilesRequest;
 use App\Http\Requests\Api\AddPaymentFileRequest;
+use App\Http\Requests\Api\AddReportRequest;
 use App\Http\Requests\Api\DeleteFilesRequest;
+use App\Http\Requests\Api\DeleteReportRequest;
 use App\Http\Requests\Api\StoreDropOffOrderRequest;
 use App\Http\Requests\Api\StoreOrderRequest;
 use App\Http\Requests\Api\UpdateOrderRequest;
@@ -212,7 +214,9 @@ class ApiOrderController extends Controller
 
             foreach ($request->reports as $key => $item) {
                 $order->reports()->create([
-                    'description' => $item
+                    'title' => $item['title'],
+                    'description' => $item['description'],
+                    'price' => $item['price'],
                 ]);
 
             }
@@ -309,6 +313,47 @@ class ApiOrderController extends Controller
 
         return $this->sendResponse(true,$order->files,trans("Files Added Successfully"),200);
     }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Add Report
+    |--------------------------------------------------------------------------
+    */
+    public function addReport(AddReportRequest $request,$id)
+    {
+        $order =  Order::find($id);
+        
+        if (is_null($order)) {
+            return $this->sendResponse(false,[],trans('Not Found'),404);
+        }
+
+        $data = $request->validated();
+
+        $report = $order->reports()->create($data);
+
+        return $this->sendResponse(true,$report,trans("Report Added Successfully"),200);
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Delete Report
+    |--------------------------------------------------------------------------
+    */
+    public function deleteReport(DeleteReportRequest $request,$id)
+    {
+        $order =  Order::find($id);
+        
+        if (is_null($order)) {
+            return $this->sendResponse(false,[],trans('Not Found'),404);
+        }
+
+        $report = $order->reports()->find($request->report_id);
+
+        $report->delete();
+
+        return $this->sendResponse(true,$report,trans("Report Deleted Successfully"),200);
+    }
+
     /*
     |--------------------------------------------------------------------------
     | Add Files
@@ -364,10 +409,32 @@ class ApiOrderController extends Controller
 
     /*
     |--------------------------------------------------------------------------
-    | Delete Files
+    | getAvailableTime 
     |--------------------------------------------------------------------------
     */
     public function getAvailableTime(Request $request)
+    {
+        $selected_date = $request->date('selected_date');
+        
+        $exclude_dates = Order::whereDate('visit_time','>=', $selected_date->toDateString())->pluck('visit_time')->toArray();
+
+        $data = [];
+        
+        $start_date = $selected_date->startOfDay()->addHours(8)->format('Y-m-d H:i');
+        $end_date = $selected_date->addHours(10)->format('Y-m-d H:i');
+        
+        $data = TimeSlot::create(
+            $start_date,
+            $end_date, 
+            60, 
+            'H:i',
+            $exclude_dates
+        );
+
+        return $this->sendResponse(true,$data,"Available time retrieved  Successfully",200);
+    }
+
+    public function getAvailableTimeOld(Request $request)
     {
         $exclude_dates = Order::whereDate('visit_time','>=', Carbon::today()->toDateString())->pluck('visit_time')->toArray();
         

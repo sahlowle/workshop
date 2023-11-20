@@ -14,7 +14,10 @@ class Report extends Model
     ];
 
     protected $visible = [
-        'id','description'
+        'id',
+        'title',
+        'description',
+        'price',
     ];
 
 

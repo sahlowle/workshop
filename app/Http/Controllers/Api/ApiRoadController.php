@@ -77,8 +77,8 @@ class ApiRoadController extends Controller
         $data = $request->validated();
 
         if ($request->isNotFilled('driver_id')) {
-            $driver_id = getAvailableDrivers()->first()->driver_id;
-            $data['driver_id'] = $driver_id;
+            $driver_id = getAvailableDrivers()->first();
+            $data['driver_id'] = $driver_id ? $driver_id : null;
         }
 
         $road = Road::create($data);

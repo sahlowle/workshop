@@ -27,7 +27,7 @@ class UpdateOrderRequest extends FormRequest
     public function rules()
     {
         return [
-            'visit_time' => ['nullable', 'date_format:Y-m-d H:i:s'],
+            'visit_time' => ['nullable', 'date_format:Y-m-d H:i'],
             'description' => ['nullable', 'string','min:3','max:250'],
             'address' => ['nullable', 'string','min:3','max:250'],
             'maintenance_device' => ['nullable', 'string','max:250'],
