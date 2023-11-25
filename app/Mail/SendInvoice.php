@@ -45,7 +45,7 @@ class SendInvoice extends Mailable
     public function content()
     {
         return new Content(
-            view: 'emails.invoice',
+            view: 'reports.index',
         );
     }
 

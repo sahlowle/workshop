@@ -104,9 +104,11 @@ defer >
 
 	google.maps.event.addListener(map, 'click', function (e) {
 
-		// alert(e.latLng);
+		console.log(e);
+
+		$("#pac-input").val('');
 		
-		getAddress(e.latLng);
+		getAddress(e.latLng,null);
 
 		for (var i = 0; i < markers.length; i++) {
 			markers[i].setMap(null);
@@ -127,28 +129,34 @@ defer >
 		//   infowindow.open(map, this);
 	});
 	// Create the search box and link it to the UI element.
+
 	const input = document.getElementById("pac-input");
-	const searchBox = new google.maps.places.SearchBox(input);
+	var options = {
+	  componentRestrictions: {
+	    country: 'DE'
+	  }
+	};
 
-	map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
-	// Bias the SearchBox results towards current map's viewport.
-	map.addListener("bounds_changed", () => {
-		searchBox.setBounds(map.getBounds());
-	});
+	
+	  var autocomplete = new google.maps.places.Autocomplete((input), options);
 
+	  google.maps.event.addListener(autocomplete, 'place_changed', function () {
+		const places = autocomplete.getPlace();
 
+		console.log(places)
 
-	// Listen for the event fired when the user selects a prediction and retrieve
-	// more details for that place.
-	searchBox.addListener("places_changed", () => {
-		const places = searchBox.getPlaces();
+		$("#lng").val(places.geometry.location.lng());
+		$("#lat").val(places.geometry.location.lat());
 
-		$("#lng").val(places[0]["geometry"]["location"].lng());
-		$("#lat").val(places[0]["geometry"]["location"].lat());
+		// if (places.length == 0) {
+		// 	return;
+		// }
 
-		if (places.length == 0) {
-			return;
-		}
+		var latLng = places.geometry.location;
+
+		var address =  places.formatted_address;
+
+		getAddress(latLng,address);
 
 		// Clear out the old markers.
 		markers.forEach((marker) => {
@@ -159,7 +167,9 @@ defer >
 		// For each place, get the icon, name and location.
 		const bounds = new google.maps.LatLngBounds();
 
-		places.forEach((place) => {
+		var place = places;
+
+		// places.forEach((place) => {
 			if (!place.geometry || !place.geometry.location) {
 				console.log("Returned place contains no geometry");
 				return;
@@ -188,9 +198,32 @@ defer >
 			} else {
 				bounds.extend(place.geometry.location);
 			}
-		});
+		// });
 		map.fitBounds(bounds);
+	  });
+	
+
+			
+	// const searchBox = new google.maps.places.Autocomplete(input,options);
+
+// 	var searchBox = new google.maps.places.Autocomplete(input, {
+//     componentRestrictions: { country: ["us", "ca"] }
+//   });
+//   input.focus();
+  // When the user selects an address from the drop-down, populate the
+  // address fields in the form.
+
+	map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
+	// Bias the SearchBox results towards current map's viewport.
+	map.addListener("bounds_changed", () => {
+		autocomplete.setBounds(map.getBounds());
 	});
+
+
+
+	// Listen for the event fired when the user selects a prediction and retrieve
+	// more details for that place.
+
 }
 
 window.initAutocomplete = initAutocomplete;
@@ -211,12 +244,32 @@ document.onfullscreenchange = function (event) {
 };
 
 
-function getAddress(latLng) {
+function getAddress(latLng,address) {
+
     geocoder.geocode( {'latLng': latLng},
       function(results, status) {
         if(status == google.maps.GeocoderStatus.OK) {
           if(results[0]) {
-            document.getElementById("address").value = results[0].formatted_address;
+			if (address == null) {
+				document.getElementById("address").value = results[0].formatted_address;
+			} else {
+				document.getElementById("address").value = address;		
+			}
+			results[0].address_components.forEach(element => {
+
+				if (element.types[0] == "administrative_area_level_3" || element.types[0] == "administrative_area_level_2") {
+					$("#zone_area").val(element.long_name)
+				}
+
+				if (element.types[0] == "administrative_area_level_1") {
+					$("#city").val(element.long_name)
+				}
+
+				if (element.types[0] == "postal_code") {
+					$("#postal_code").val(element.long_name)
+				}
+
+			});
           }
           else {
             document.getElementById("address").value = "No results";
@@ -226,6 +279,6 @@ function getAddress(latLng) {
           document.getElementById("address").value = status;
         }
       });
-    }
+}
   
 </script>

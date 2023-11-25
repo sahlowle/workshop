@@ -57,4 +57,15 @@
         background-color: #0d6efd;
         color: white;
     }
+
+    .xdsoft_datetimepicker .xdsoft_timepicker {
+      width: 10rem !important;
+      font-size: 20rem !important;
+    }
+  
+    .xdsoft_datetimepicker .xdsoft_timepicker .xdsoft_time_box >div >div{
+      font-size: 22px !important;
+    }
 </style>
+
+

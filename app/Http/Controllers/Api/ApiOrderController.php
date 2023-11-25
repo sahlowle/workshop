@@ -109,9 +109,10 @@ class ApiOrderController extends Controller
     {
         $reference_no = $request->reference_no;
 
+        $visit_time = $request->visit_time;
+
         $order =  Order::pickup()->where('reference_no',$reference_no)->first();
 
-        
         if (is_null($order)) {
             return $this->sendResponse(false,[],trans('Order Not Pickup'),404);
         }
@@ -135,6 +136,7 @@ class ApiOrderController extends Controller
             $new_road->save();
 
             $new_order = $order->replicate()->fill([
+                'visit_time' => $visit_time,
                 'first_visit_id' => $order->id,
                 'is_visit' => true,
                 'road_id' => $new_road->id,
@@ -146,6 +148,7 @@ class ApiOrderController extends Controller
             $new_order->save();
         } else {
             $new_order = $order->replicate()->fill([
+                'visit_time' => $visit_time,
                 'first_visit_id' => $order->id,
                 'is_visit' => true,
                 'road_id' => null,
@@ -264,7 +267,9 @@ class ApiOrderController extends Controller
             return $this->sendResponse(false,[],trans('Not Found'),404);
         }
         
-        $order->load('customer');
+        $order->load(['road.driver','driver','customer','reports']);
+
+        $order->driver = $order->road->driver;
 
         Mail::to($order->customer->email)->send(new SendInvoice($order));
 
@@ -282,7 +287,9 @@ class ApiOrderController extends Controller
             return $this->sendResponse(false,[],trans('Not Found'),404);
         }
 
-        $pdf = Pdf::loadView('emails.invoice',['order'=> $order]); ;
+        $order->driver = $order->road->driver;
+
+        $pdf = Pdf::loadView('reports.index',['order'=> $order]);
         
         return $pdf->stream('invoice.pdf');
     }
@@ -419,9 +426,26 @@ class ApiOrderController extends Controller
         $exclude_dates = Order::whereDate('visit_time','>=', $selected_date->toDateString())->pluck('visit_time')->toArray();
 
         $data = [];
+
+        $start_hour = 8;
+
         
-        $start_date = $selected_date->startOfDay()->addHours(8)->format('Y-m-d H:i');
-        $end_date = $selected_date->addHours(10)->format('Y-m-d H:i');
+
+        if ($selected_date->isToday()) {
+            $current_hour = now()->hour;
+            if ($current_hour <= 18) {
+                $start_hour = $current_hour;
+            } else {
+                return $this->sendResponse(true,$data,"Available time retrieved  Successfully",200);
+            }
+        } elseif ($selected_date->isPast()) {
+            return $this->sendResponse(true,$data,"Available time retrieved  Successfully",200);
+        }
+
+        $end_hour = 18 - $start_hour;
+
+        $start_date = $selected_date->startOfDay()->addHours($start_hour)->format('Y-m-d H:i');
+        $end_date = $selected_date->addHours($end_hour)->format('Y-m-d H:i');
         
         $data = TimeSlot::create(
             $start_date,

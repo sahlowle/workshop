@@ -1,234 +1,356 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Bootstrap demo</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
-  <link rel="stylesheet" href="style.css">
-</head>
-<body>
-  <header>
-    <div class="row d-flex align-items-center">
-      <div class="col-md-5"><img class="w-62" src="/logo.png" alt="logo" srcset=""></div>
-      <div class="col-md-7">
-        <span>GLOBAL Reparaturservice | Stromstraße 31 | 10551 Berlin - Tiergarten Tel.: 030/ 398 873 40 | Mobil: 0171/ 15 87 826 | info@global-reparaturservice.de www.waschmaschine-reparatur-berlin.com</span>
-      </div>
-    </div>
-  </header>
-  <div class="container">
-    <div class="row">
-      <div class="col-md-7">
-        <div class="title">
-          <h3>Rechnung</h3>
-        </div>
-        <div class="form-check form-check-inline">
-          <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1"> <label class="form-check-label" for="inlineCheckbox1">Reparatur</label>
-        </div>
-        <div class="form-check form-check-inline">
-          <input class="form-check-input" type="checkbox" id="inlineCheckbox2" value="option2"> <label class="form-check-label" for="inlineCheckbox2">Verkauf</label>
-        </div>
-        <div class="form-check form-check-inline">
-          <input class="form-check-input" type="checkbox" id="inlineCheckbox3" value="option3"> <label class="form-check-label" for="inlineCheckbox3">Ankauf</label>
-        </div>
-      </div>
-      <div class="col-md-5">
-        <div class="form">
-          <div>
-            <label class="w-30">Datum :</label> <input type="text" name="" id="">
-          </div>
-          <div>
-            <label class="w-40">Auftrags-Nr.:</label> <input type="text" name="" id="">
-          </div>
-          <div>
-            <label class="w-40">Rechnungs-Nr.:</label> <input type="text" name="" id="">
-          </div>
-        </div>
-      </div>
-      <div class="col-md-6">
-        <span class="header-title">Rg. Empf</span>
-        <div class="form">
-          <div>
-            <label>Firma</label> <input type="text" name="" id="">
-          </div>
-          <div>
-            <label>Name</label>
-            <div>
-              <label>Adresse</label>
-            </div>
-            <div>
-              <div class="w-50">
-                <label class="w-35">Plz</label>
-              </div>
-            </div>
-            <div class="w-50">
-              <label class="w-35">Gebäudeteil</label>
-            </div>
-            <div>
-              <label>Telefon</label>
-            </div>
-            <div class="col-md-6">
-              <span class="header-title">Leist. Adresse</span>
-              <div class="form">
-                <div>
-                  <label>Firma</label> <input type="text" name="" id="">
-                </div>
-                <div>
-                  <label>Name</label>
-                </div>
-              </div>
-            </div>
-            <div>
-              <label>Adresse</label>
-            </div>
-            <div>
-              <div class="w-50">
-                <label class="w-35">Plz</label>
-              </div>
-            </div>
-            <div class="w-50">
-              <label class="w-35">Gebäudeteil</label>
-            </div>
-            <div>
-              <label>Telefon</label>
-            </div>
-            <div class="border-line"></div>
-            <div class="col-md-6 d-flex">
-              <div class="form w-62 pr-3">
-                <div>
-                  <label>Marke</label> <input type="text" name="" id="">
-                </div>
-              </div>
-              <div class="form-check form-check-inline w-35">
-                <input class="form-check-input" type="checkbox" id="inlineWaschmaschine" value="option1"> <label class="form-check-label color-000000" for="inlineWaschmaschine">Waschmaschine</label>
-              </div>
-            </div>
-            <div class="col-md-6">
-              <div class="form-check form-check-inline w-45">
-                <input class="form-check-input" type="checkbox" id="inlineGeschirrspüler" value="option1"> <label class="form-check-label color-000000" for="inlineGeschirrspüler">Geschirrspüler</label>
-              </div>
-              <div class="form-check form-check-inline w-45">
-                <input class="form-check-input" type="checkbox" id="inlineHerd" value="option2"> <label class="form-check-label color-000000" for="inlineHerd">Herd/Ceranfeld</label>
-              </div>
-            </div>
-            <div class="col-md-6 my-4">
-              <div class="form-check form-check-inline">
-                <input class="form-check-input" type="checkbox" id="inlineGastronomie" value="option1"> <label class="form-check-label color-000000" for="inlineGastronomie">Gastronomie</label>
-              </div>
-              <div class="form-check form-check-inline">
-                <input class="form-check-input" type="checkbox" id="inlineDAH" value="option2"> <label class="form-check-label color-000000" for="inlineDAH">DAH</label>
-              </div>
-              <div class="form-check form-check-inline">
-                <input class="form-check-input" type="checkbox" id="inlineTrockner" value="option2"> <label class="form-check-label color-000000" for="inlineTrockner">Trockner</label>
-              </div>
-            </div>
-            <div class="col-md-6 my-4">
-              <div class="form-check form-check-inline w-45">
-                <input class="form-check-input" type="checkbox" id="inlineKühlschrank" value="option1"> <label class="form-check-label color-000000" for="inlineKühlschrank">Kühlschrank</label>
-              </div>
-              <div class="form-check form-check-inline w-45">
-                <input class="form-check-input" type="checkbox" id="inlineKaffeemaschine" value="option2"> <label class="form-check-label color-000000" for="inlineKaffeemaschine">Kaffeemaschine</label>
-              </div>
-            </div>
-            <div class="section-02">
-              <h5>Artikelbeschreibung (An- & Verkauf)</h5>
-              <div class="mb-3">
-                <label for="exampleFormControlTextarea1" class="form-label">Example textarea</label> 
-                <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
-              </div>
-            </div>
-            <div>
-              <table class="table table-bordered">
-                <thead>
-                  <tr>
-                    <th>Warenbezeichnug (Reparaturauftrag)</th>
-                    <th>Menge</th>
-                    <th>Endpreis</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                  </tr>
-                  <tr>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                  </tr>
-                </tbody>
-                <tfoot>
-                  <tr>
-                    <td class="background-ffffff color-0e69a8" colspan="2">
-                      <div class="d-flex justify-content-between">
-                        <span>Auf die von uns ausgewechselten Teile gewähren wir 12 Monate Garantie. Diese Rechnung gilt als Garantieschein.</span> <span>Netto Gesamt</span>
-                      </div>
-                    </td>
-                    <td>0.00 D</td>
-                  </tr>
-                  <tr class="border-0">
-                    <td class="background-ffffff border-0" colspan="2">
-                      <div class="d-flex justify-content-between">
-                        <div class="form-check form-check-inline d-flex align-items-center">
-                          <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1"> <label for="inlineRadio1">Betrag dankend erhalten</label>
-                        </div>
-                        <div class="form-check form-check-inline d-flex align-items-center">
-                          <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2"> <label for="inlineRadio2">Ware in einwandfreiem Zustand erhalten.Vom einwandfreien Funktionieren des Gerätes habe ich mich überzeugt</label>
-                        </div><span class="color-0e69a8 z-index">+ 19% MwSt.</span>
-                      </div>
-                    </td>
-                    <td class="border-box">0.00 D</td>
-                  </tr>
-                  <tr class="border-0 background-ffffff">
-                    <td class="background-ffffff border-0">
-                      <div class="d-flex align-items-center box w-95">
-                        <div class="box-footer d-flex">
-                          <span>Unterschrift des Technikers</span> <span>Unterschrift des Kunden: Ich bestätige die Richtigkeit der Angaben und erkenne die rückseitig abgedruckten Allgemeinen Geschäftsbedingungen für Unterhaltungselektronik und Haushaltsgeräte von Handwerk - Einzelhandel an.</span>
-                        </div>
-                      </div>
-                      <div class="d-flex radio-table">
-                        <div class="form-check form-check-inline d-flex align-items-center">
-                          <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineBar" value="option1"> <label for="inlineBar">Bar</label>
-                        </div>
-                        <div class="form-check form-check-inline d-flex align-items-center">
-                          <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineEC" value="option2"> <label for="inlineEC">WEC</label>
-                        </div>
-                        <div class="form-check form-check-inline d-flex align-items-center">
-                          <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineÜberweisung" value="option2"> <label for="inlineÜberweisung">Überweisung</label>
-                        </div>
-                      </div>
-                    </td>
-                    <td class="background-ffffff color-0e69a8 border-0 ges">Gesamtbetrag</td>
-                    <td class="border-box border-1 background-0e69a8">
-                      <div>
-                        <span>0.00 D</span>
-                      </div>
-                    </td>
-                  </tr>
-                </tfoot>
-              </table>
-            </div>
-            <h6>Bankverbindung: Postbank | Kto.Nr.: 790 33 31 21 | BLZ: 100 100 10 | IBAN: DE03 1001 0010 0790 3331 21 | St.Nr.: 34 25 000 383 | Inh. M. Sc. R. Cerrahoglu</h6>
-            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
-            <table>
-              <tr>
-                <td><input type="text" name="" id=""></td>
-                <td><input type="text" name="" id=""></td>
-                <td><input type="text" name="" id=""></td>
-                <td><input type="text" name="" id=""></td>
-                <td><input type="text" name="" id=""></td>
-                <td><input type="text" name="" id=""></td>
-                <td><input type="text" name="" id=""></td>
-                <td><input type="text" name="" id=""></td>
-                <td><input type="text" name="" id=""></td>
-                <td><input type="text" name="" id=""></td>
-              </tr>
-            </table>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</body>
-</html>
+<table>
+  <tr>
+    <td>
+      <b> l G Geltungsbereich </b>
+      <p>
+        Die Allgemeinen Geschäftsbedingungen Bedingungen Gelten für alle Geschäftsbeziehungen
+        mit unseren Kunden in ihrer zum Zeitpunkt des Kaufs/Auftragserteilung gültigen Fassung.
+        Abweichende Bedingungen des Kunden erkennen wir nicht an, es sei denn, wir hätten
+        ausdrücklich schriftlich ihrer Geltung zugestimmt.
+        Der Kunde bestätigt mit seine Unterschrift, dass er diese Allgemeinen Geschäftsbedingungen
+        zur Kenntnis genommen hat. Das Ladenpersonal und die nicht geschäftsführenden Vertreter
+        des Verwenders sind nicht ermächtigt, vom Inhalt dieser Vorschriften abzuweichen.
+      </p>
+
+      <b> ll. Allgemeines </b>
+      <p>
+        1. Allen Lieferungen und Leistungen liegen diese Bedingungen, soweit nicht anderweitig
+        vertragliche Vereinbarungen vorliegen, zugrunde.
+        2. Der Auftraggeber erklärt sich durch die widerspruchslose Entgegennahme dieser
+        Geschäftsbedingungen mit deren ausschließlicher Geltung für alle Lieferungen und
+        Leistungen einverstanden.
+        Entgegenstehende oder abweichende Bedingungen des Auftraggebers werden nicht
+        anerkannt, es sei denn, der Auftragnehmer hat ihrer Geltung ausdrücklich zugestimmt.
+        3. Der Auftragnehmer behält sich an Mustern, Kostenvoranschlägen, Auftragsschein,
+        Rechnung und ähnlichen Unterlagen Eigentums- und Urheberrecht vor; diese dürfen Dritten
+        nicht zugänglich gemacht werden.
+        Der Auftraggeber verpichtet sich, vom Auftragnehmer vertrauliche Informationen und
+        Unterlagen nur mit dessen Zustimmung an Dritte weiterzugeben.
+        4.Die Darstellung unseres Sortiments in unserem Geschäftsraum stellt kein bindendes
+        Vertragsangebot dar. Mit Abgabe einer Bestellung gibt der Kunde ein verbindliches Angebot
+        ab. Wir behalten uns die freie Entscheidung über die Annahme dieses Angebotes vor. Wir
+        verpichten uns, eine etwaige Ablehnung der Bestellung unverzüglich nach Klärung der
+        Lieferbarkeit mitzuteilen. Im Falle der Nichtverfügbarkeit der Ware und/oder der nicht
+        richtigen und rechtzeitigen Selbstlieferung durch unsere Lieferanten, behalten wir uns vor,
+        vom Vertrag zurückzutreten. Unsere Kunden werden darüber unverzüglich von uns informiert.
+        Etwaige bereits erbrachte Gegenleistungen werden wir erstatten. Technische Angaben,
+        Beschreibungen und Abbildungen der Kaufgegenstände in Prospekten und sonstigen
+        Werbeinformationen sind unverbindlich.
+      </p>
+
+      <b> III. Reparaturfrist, Liefertermin </b>
+      <p>
+        1. Die Angaben über die Reparaturfristen und Liefertermine beruhen auf Schätzungen und
+        sind daher nicht verbindlich.
+        2. Die Vereinbarung einer verbindlichen Reparaturfrist bzw. eines verbindlichen Liefertermins
+        kann der Auftraggeber erst dann verlangen, wenn der Umfang der notwendigen Arbeiten
+        sowie der Liefertermin und benötigter Reparatursätze bzw. Ersatzteile genau feststeht.
+        3. Bei notwendigen zusätzlichen Reparaturarbeiten oder später erteilten Erweiterungsaufträgen
+        verlängert
+        sich die vereinbarte Reparaturfrist bzw. der Liefertermin entsprechend.
+        Des gleichen gilt bei Verzögerung der Reparatur bzw. der Liefertermins infolge höherer Gewalt
+        oder schwerwiegender, unverschuldeter und unvorhergesehener Betriebsstörungen, wie etwa
+        rechtmäßige Streiks, Aussperrung, unverschuldetes Ausbleiben von Arbeitskräften oder von
+        Zulieferungen.
+        Seitens des Auftragnehmers besteht keine Schadenersatzpicht, er ist jedoch verpichtet,
+        den Auftraggeber über diese Verzögerungen unverzüglich zu unterrichten.
+        4. Diese Regelungen stellen keine Einschränkungen von Verpichtungen des Auftragnehmers
+        zu sorgfältiger Auswahl von Fachkräften und Vorlieferanten dar. Ein gesetzliches
+        Rücktrittsrecht bleibt ebenfalls unberührt.
+        5. Wir sind zu Teillieferung berechtigt, sofern nicht ausdrücklich etwas anderes vereinbart
+        wurde. Teillieferungen gelten für Zahlungsverpichtungen, Gefahrübergang und
+        Gewährleistungspichten als selbständige Lieferungen. Der Kunde ist nicht berechtigt,
+        selbständige Teillieferungen zurückzuweisen.
+        6.Wird ein Liefertermin mit dem Auftraggeber vereinbart und diese von dem Auftraggeber
+        nicht eingehalten, so sind wir berechtigt für eine erneute Lieferung ein Betrag in Höhe von
+        50 € anzurechnen.
+        7. Zusatzkosten, die durch eine Annahmeverweigerung und Lagerung der Ware entstehen,
+        werden vom Auftraggeber getragen und mit einer Pauschale von 89,00 € in Rechnung gestellt.
+      </p>
+
+      <b> IV. Abnahme </b>
+      <p>
+        1. Die Abnahme des Reparaturgegenstandes hat durch den Auftraggeber, soweit nichts
+        anderes vereinbart worden ist, im Betrieb des Auftraggebers unverzüglich nach Zustellung zu
+        erfolgen.
+        2. Erweist sich die Reparatur bei Abnahme als nicht vertragsgemäß, so ist der Auftragnehmer
+        zur Beseitigung des Mangels verpichtet.
+        Dies gilt nicht, wenn der Mangel für die Interessen des Auftraggebers unerheblich ist oder der
+        Mangel auf einem Umstand beruht, der dem Auftraggeber zuzurechnen ist.
+        Liegt ein nicht wesentlicher Mangel vor, so kann der Auftraggeber die Abnahme nicht
+        verweigern.
+        3. Verzögert sich die Abnahme ohne Verschulden des Auftragnehmers, so gilt die Abnahme
+        nach Ablauf zweier Wochen seit Zustellung des Reparaturgegenstandes als erfolgt. Wir sind
+        nach Setzung einer Nachfrist von vierzehn Tagen berechtigt, vom vertrag zurückzutreten und
+        Schadenersatz zu verlangen.
+        4. Mit Abnahme entfällt die Haftung des Auftragnehmers für erkennbare Mängel, soweit sich
+        der Auftraggeber nicht die Geltendmachung eines bestimmten Mangels vorbehalten hat.
+        5. Soweit nichts anderes vereinbart ist, erfolgt die Abnahme des Auftragsgegenstandes
+        grundsätzlich an unserem Geschäftssitz. Wird der Auftragsgegenstand nicht innerhalb eines
+        Monats nach einer entsprechenden Auorderung abgeholt, sind wir berechtigt, nach Ablauf
+        der Frist ein Lagergeld in Höhe von 5,00 Euro pro Tag zu berechnen. Unser Recht,
+        weitergehende Mehraufwendungen für den Fall Abnahmeverzuges geltend zu machen, bleibt
+        unberührt. Nach Ablauf dieser Frist sind wir berechtigt, dem Kunden unter Verkaufsandrohung
+        eine weitere angemessene frist zur Abholung zu setzen. Nach Ablauf dieser Frist sind wir
+        berechtigt, den Auftragsgegenstand zur Deckung unsere Forderung zum Verkehrswert zu
+        veräußern. Ein etwaiger Mehrerlös wird dem Kunden ausgezahlt.
+      </p>
+
+      <b> V . Rechnungsstellung, Zahlung </b>
+      <p>
+        1. Der Auftragnehmer ist berechtigt, bei Auftragserteilung eine angemessene Vorauszahlung
+        zu verlangen. Die Höhe der Vorauszahlung richtet sich nach dem zu erwartenden Zeitaufwand
+        und dem Wert der zu beschaenden Materialien.
+        2. Wird der Auftrag auf Grund eines verbindlichen Kostenvoranschlages ausgeführt, so genügt
+        eine Bezugnahme auf den Kostenvoranschlag.
+        3. Die jeweilige gesetzliche Mehrwertsteuer geht zu Lasten des Auftraggebers.
+        Sie beinhalten im geschäftlichen Einzugsbereich für alle von einem einzelnen nicht tragbaren
+        Geräte folgende zusätzliche Lieferleistungen : Anliefern, Aufstellen, Anschließen des Gerätes
+        (ohne Material), Einstellen, Vorführen, Einweisung des Käufers in die Bedingung. Bei Widerruf
+        werden diese Zusatzleistungen nicht zurückerstattet.
+        4. Die Vergütung der Rechnung ist, soweit nichts anderes vereinbart wird, nach
+        Rechnungserhalt fällig.
+        5. Die Zurückhaltung von Zahlungen oder die Aufrechnung wegen etwaiger, vom
+        Auftragnehmer bestrittener Gegenansprüche des Auftragnehmers, ist nicht statthaft.
+        6. Unsere Forderungen sind sofort nach Rechnungserteilung zur Zahlung fällig. Teilzahlungen
+        sind nur möglich wenn sie vorher schriftlich vereinbart wurde. In solchen Fällen wird die
+        gesamt Restschuld sofort zur Zahlung fällig, wenn der Käufer mit mindestens zwei
+      </p>
+    </td>
+    <td>
+      <b> l G Geltungsbereich </b>
+      <p>
+        Die Allgemeinen Geschäftsbedingungen Bedingungen Gelten für alle Geschäftsbeziehungen
+        mit unseren Kunden in ihrer zum Zeitpunkt des Kaufs/Auftragserteilung gültigen Fassung.
+        Abweichende Bedingungen des Kunden erkennen wir nicht an, es sei denn, wir hätten
+        ausdrücklich schriftlich ihrer Geltung zugestimmt.
+        Der Kunde bestätigt mit seine Unterschrift, dass er diese Allgemeinen Geschäftsbedingungen
+        zur Kenntnis genommen hat. Das Ladenpersonal und die nicht geschäftsführenden Vertreter
+        des Verwenders sind nicht ermächtigt, vom Inhalt dieser Vorschriften abzuweichen.
+      </p>
+
+      <b> ll. Allgemeines </b>
+      <p>
+        1. Allen Lieferungen und Leistungen liegen diese Bedingungen, soweit nicht anderweitig
+        vertragliche Vereinbarungen vorliegen, zugrunde.
+        2. Der Auftraggeber erklärt sich durch die widerspruchslose Entgegennahme dieser
+        Geschäftsbedingungen mit deren ausschließlicher Geltung für alle Lieferungen und
+        Leistungen einverstanden.
+        Entgegenstehende oder abweichende Bedingungen des Auftraggebers werden nicht
+        anerkannt, es sei denn, der Auftragnehmer hat ihrer Geltung ausdrücklich zugestimmt.
+        3. Der Auftragnehmer behält sich an Mustern, Kostenvoranschlägen, Auftragsschein,
+        Rechnung und ähnlichen Unterlagen Eigentums- und Urheberrecht vor; diese dürfen Dritten
+        nicht zugänglich gemacht werden.
+        Der Auftraggeber verpichtet sich, vom Auftragnehmer vertrauliche Informationen und
+        Unterlagen nur mit dessen Zustimmung an Dritte weiterzugeben.
+        4.Die Darstellung unseres Sortiments in unserem Geschäftsraum stellt kein bindendes
+        Vertragsangebot dar. Mit Abgabe einer Bestellung gibt der Kunde ein verbindliches Angebot
+        ab. Wir behalten uns die freie Entscheidung über die Annahme dieses Angebotes vor. Wir
+        verpichten uns, eine etwaige Ablehnung der Bestellung unverzüglich nach Klärung der
+        Lieferbarkeit mitzuteilen. Im Falle der Nichtverfügbarkeit der Ware und/oder der nicht
+        richtigen und rechtzeitigen Selbstlieferung durch unsere Lieferanten, behalten wir uns vor,
+        vom Vertrag zurückzutreten. Unsere Kunden werden darüber unverzüglich von uns informiert.
+        Etwaige bereits erbrachte Gegenleistungen werden wir erstatten. Technische Angaben,
+        Beschreibungen und Abbildungen der Kaufgegenstände in Prospekten und sonstigen
+        Werbeinformationen sind unverbindlich.
+      </p>
+
+      <b> III. Reparaturfrist, Liefertermin </b>
+      <p>
+        1. Die Angaben über die Reparaturfristen und Liefertermine beruhen auf Schätzungen und
+        sind daher nicht verbindlich.
+        2. Die Vereinbarung einer verbindlichen Reparaturfrist bzw. eines verbindlichen Liefertermins
+        kann der Auftraggeber erst dann verlangen, wenn der Umfang der notwendigen Arbeiten
+        sowie der Liefertermin und benötigter Reparatursätze bzw. Ersatzteile genau feststeht.
+        3. Bei notwendigen zusätzlichen Reparaturarbeiten oder später erteilten Erweiterungsaufträgen
+        verlängert
+        sich die vereinbarte Reparaturfrist bzw. der Liefertermin entsprechend.
+        Des gleichen gilt bei Verzögerung der Reparatur bzw. der Liefertermins infolge höherer Gewalt
+        oder schwerwiegender, unverschuldeter und unvorhergesehener Betriebsstörungen, wie etwa
+        rechtmäßige Streiks, Aussperrung, unverschuldetes Ausbleiben von Arbeitskräften oder von
+        Zulieferungen.
+        Seitens des Auftragnehmers besteht keine Schadenersatzpicht, er ist jedoch verpichtet,
+        den Auftraggeber über diese Verzögerungen unverzüglich zu unterrichten.
+        4. Diese Regelungen stellen keine Einschränkungen von Verpichtungen des Auftragnehmers
+        zu sorgfältiger Auswahl von Fachkräften und Vorlieferanten dar. Ein gesetzliches
+        Rücktrittsrecht bleibt ebenfalls unberührt.
+        5. Wir sind zu Teillieferung berechtigt, sofern nicht ausdrücklich etwas anderes vereinbart
+        wurde. Teillieferungen gelten für Zahlungsverpichtungen, Gefahrübergang und
+        Gewährleistungspichten als selbständige Lieferungen. Der Kunde ist nicht berechtigt,
+        selbständige Teillieferungen zurückzuweisen.
+        6.Wird ein Liefertermin mit dem Auftraggeber vereinbart und diese von dem Auftraggeber
+        nicht eingehalten, so sind wir berechtigt für eine erneute Lieferung ein Betrag in Höhe von
+        50 € anzurechnen.
+        7. Zusatzkosten, die durch eine Annahmeverweigerung und Lagerung der Ware entstehen,
+        werden vom Auftraggeber getragen und mit einer Pauschale von 89,00 € in Rechnung gestellt.
+      </p>
+
+      <b> IV. Abnahme </b>
+      <p>
+        1. Die Abnahme des Reparaturgegenstandes hat durch den Auftraggeber, soweit nichts
+        anderes vereinbart worden ist, im Betrieb des Auftraggebers unverzüglich nach Zustellung zu
+        erfolgen.
+        2. Erweist sich die Reparatur bei Abnahme als nicht vertragsgemäß, so ist der Auftragnehmer
+        zur Beseitigung des Mangels verpichtet.
+        Dies gilt nicht, wenn der Mangel für die Interessen des Auftraggebers unerheblich ist oder der
+        Mangel auf einem Umstand beruht, der dem Auftraggeber zuzurechnen ist.
+        Liegt ein nicht wesentlicher Mangel vor, so kann der Auftraggeber die Abnahme nicht
+        verweigern.
+        3. Verzögert sich die Abnahme ohne Verschulden des Auftragnehmers, so gilt die Abnahme
+        nach Ablauf zweier Wochen seit Zustellung des Reparaturgegenstandes als erfolgt. Wir sind
+        nach Setzung einer Nachfrist von vierzehn Tagen berechtigt, vom vertrag zurückzutreten und
+        Schadenersatz zu verlangen.
+        4. Mit Abnahme entfällt die Haftung des Auftragnehmers für erkennbare Mängel, soweit sich
+        der Auftraggeber nicht die Geltendmachung eines bestimmten Mangels vorbehalten hat.
+        5. Soweit nichts anderes vereinbart ist, erfolgt die Abnahme des Auftragsgegenstandes
+        grundsätzlich an unserem Geschäftssitz. Wird der Auftragsgegenstand nicht innerhalb eines
+        Monats nach einer entsprechenden Auorderung abgeholt, sind wir berechtigt, nach Ablauf
+        der Frist ein Lagergeld in Höhe von 5,00 Euro pro Tag zu berechnen. Unser Recht,
+        weitergehende Mehraufwendungen für den Fall Abnahmeverzuges geltend zu machen, bleibt
+        unberührt. Nach Ablauf dieser Frist sind wir berechtigt, dem Kunden unter Verkaufsandrohung
+        eine weitere angemessene frist zur Abholung zu setzen. Nach Ablauf dieser Frist sind wir
+        berechtigt, den Auftragsgegenstand zur Deckung unsere Forderung zum Verkehrswert zu
+        veräußern. Ein etwaiger Mehrerlös wird dem Kunden ausgezahlt.
+      </p>
+
+      <b> V . Rechnungsstellung, Zahlung </b>
+      <p>
+        1. Der Auftragnehmer ist berechtigt, bei Auftragserteilung eine angemessene Vorauszahlung
+        zu verlangen. Die Höhe der Vorauszahlung richtet sich nach dem zu erwartenden Zeitaufwand
+        und dem Wert der zu beschaenden Materialien.
+        2. Wird der Auftrag auf Grund eines verbindlichen Kostenvoranschlages ausgeführt, so genügt
+        eine Bezugnahme auf den Kostenvoranschlag.
+        3. Die jeweilige gesetzliche Mehrwertsteuer geht zu Lasten des Auftraggebers.
+        Sie beinhalten im geschäftlichen Einzugsbereich für alle von einem einzelnen nicht tragbaren
+        Geräte folgende zusätzliche Lieferleistungen : Anliefern, Aufstellen, Anschließen des Gerätes
+        (ohne Material), Einstellen, Vorführen, Einweisung des Käufers in die Bedingung. Bei Widerruf
+        werden diese Zusatzleistungen nicht zurückerstattet.
+        4. Die Vergütung der Rechnung ist, soweit nichts anderes vereinbart wird, nach
+        Rechnungserhalt fällig.
+        5. Die Zurückhaltung von Zahlungen oder die Aufrechnung wegen etwaiger, vom
+        Auftragnehmer bestrittener Gegenansprüche des Auftragnehmers, ist nicht statthaft.
+        6. Unsere Forderungen sind sofort nach Rechnungserteilung zur Zahlung fällig. Teilzahlungen
+        sind nur möglich wenn sie vorher schriftlich vereinbart wurde. In solchen Fällen wird die
+        gesamt Restschuld sofort zur Zahlung fällig, wenn der Käufer mit mindestens zwei
+      </p>
+    </td>
+    <td>
+      <b> l G Geltungsbereich </b>
+      <p>
+        Die Allgemeinen Geschäftsbedingungen Bedingungen Gelten für alle Geschäftsbeziehungen
+        mit unseren Kunden in ihrer zum Zeitpunkt des Kaufs/Auftragserteilung gültigen Fassung.
+        Abweichende Bedingungen des Kunden erkennen wir nicht an, es sei denn, wir hätten
+        ausdrücklich schriftlich ihrer Geltung zugestimmt.
+        Der Kunde bestätigt mit seine Unterschrift, dass er diese Allgemeinen Geschäftsbedingungen
+        zur Kenntnis genommen hat. Das Ladenpersonal und die nicht geschäftsführenden Vertreter
+        des Verwenders sind nicht ermächtigt, vom Inhalt dieser Vorschriften abzuweichen.
+      </p>
+
+      <b> ll. Allgemeines </b>
+      <p>
+        1. Allen Lieferungen und Leistungen liegen diese Bedingungen, soweit nicht anderweitig
+        vertragliche Vereinbarungen vorliegen, zugrunde.
+        2. Der Auftraggeber erklärt sich durch die widerspruchslose Entgegennahme dieser
+        Geschäftsbedingungen mit deren ausschließlicher Geltung für alle Lieferungen und
+        Leistungen einverstanden.
+        Entgegenstehende oder abweichende Bedingungen des Auftraggebers werden nicht
+        anerkannt, es sei denn, der Auftragnehmer hat ihrer Geltung ausdrücklich zugestimmt.
+        3. Der Auftragnehmer behält sich an Mustern, Kostenvoranschlägen, Auftragsschein,
+        Rechnung und ähnlichen Unterlagen Eigentums- und Urheberrecht vor; diese dürfen Dritten
+        nicht zugänglich gemacht werden.
+        Der Auftraggeber verpichtet sich, vom Auftragnehmer vertrauliche Informationen und
+        Unterlagen nur mit dessen Zustimmung an Dritte weiterzugeben.
+        4.Die Darstellung unseres Sortiments in unserem Geschäftsraum stellt kein bindendes
+        Vertragsangebot dar. Mit Abgabe einer Bestellung gibt der Kunde ein verbindliches Angebot
+        ab. Wir behalten uns die freie Entscheidung über die Annahme dieses Angebotes vor. Wir
+        verpichten uns, eine etwaige Ablehnung der Bestellung unverzüglich nach Klärung der
+        Lieferbarkeit mitzuteilen. Im Falle der Nichtverfügbarkeit der Ware und/oder der nicht
+        richtigen und rechtzeitigen Selbstlieferung durch unsere Lieferanten, behalten wir uns vor,
+        vom Vertrag zurückzutreten. Unsere Kunden werden darüber unverzüglich von uns informiert.
+        Etwaige bereits erbrachte Gegenleistungen werden wir erstatten. Technische Angaben,
+        Beschreibungen und Abbildungen der Kaufgegenstände in Prospekten und sonstigen
+        Werbeinformationen sind unverbindlich.
+      </p>
+
+      <b> III. Reparaturfrist, Liefertermin </b>
+      <p>
+        1. Die Angaben über die Reparaturfristen und Liefertermine beruhen auf Schätzungen und
+        sind daher nicht verbindlich.
+        2. Die Vereinbarung einer verbindlichen Reparaturfrist bzw. eines verbindlichen Liefertermins
+        kann der Auftraggeber erst dann verlangen, wenn der Umfang der notwendigen Arbeiten
+        sowie der Liefertermin und benötigter Reparatursätze bzw. Ersatzteile genau feststeht.
+        3. Bei notwendigen zusätzlichen Reparaturarbeiten oder später erteilten Erweiterungsaufträgen
+        verlängert
+        sich die vereinbarte Reparaturfrist bzw. der Liefertermin entsprechend.
+        Des gleichen gilt bei Verzögerung der Reparatur bzw. der Liefertermins infolge höherer Gewalt
+        oder schwerwiegender, unverschuldeter und unvorhergesehener Betriebsstörungen, wie etwa
+        rechtmäßige Streiks, Aussperrung, unverschuldetes Ausbleiben von Arbeitskräften oder von
+        Zulieferungen.
+        Seitens des Auftragnehmers besteht keine Schadenersatzpicht, er ist jedoch verpichtet,
+        den Auftraggeber über diese Verzögerungen unverzüglich zu unterrichten.
+        4. Diese Regelungen stellen keine Einschränkungen von Verpichtungen des Auftragnehmers
+        zu sorgfältiger Auswahl von Fachkräften und Vorlieferanten dar. Ein gesetzliches
+        Rücktrittsrecht bleibt ebenfalls unberührt.
+        5. Wir sind zu Teillieferung berechtigt, sofern nicht ausdrücklich etwas anderes vereinbart
+        wurde. Teillieferungen gelten für Zahlungsverpichtungen, Gefahrübergang und
+        Gewährleistungspichten als selbständige Lieferungen. Der Kunde ist nicht berechtigt,
+        selbständige Teillieferungen zurückzuweisen.
+        6.Wird ein Liefertermin mit dem Auftraggeber vereinbart und diese von dem Auftraggeber
+        nicht eingehalten, so sind wir berechtigt für eine erneute Lieferung ein Betrag in Höhe von
+        50 € anzurechnen.
+        7. Zusatzkosten, die durch eine Annahmeverweigerung und Lagerung der Ware entstehen,
+        werden vom Auftraggeber getragen und mit einer Pauschale von 89,00 € in Rechnung gestellt.
+      </p>
+
+      <b> IV. Abnahme </b>
+      <p>
+        1. Die Abnahme des Reparaturgegenstandes hat durch den Auftraggeber, soweit nichts
+        anderes vereinbart worden ist, im Betrieb des Auftraggebers unverzüglich nach Zustellung zu
+        erfolgen.
+        2. Erweist sich die Reparatur bei Abnahme als nicht vertragsgemäß, so ist der Auftragnehmer
+        zur Beseitigung des Mangels verpichtet.
+        Dies gilt nicht, wenn der Mangel für die Interessen des Auftraggebers unerheblich ist oder der
+        Mangel auf einem Umstand beruht, der dem Auftraggeber zuzurechnen ist.
+        Liegt ein nicht wesentlicher Mangel vor, so kann der Auftraggeber die Abnahme nicht
+        verweigern.
+        3. Verzögert sich die Abnahme ohne Verschulden des Auftragnehmers, so gilt die Abnahme
+        nach Ablauf zweier Wochen seit Zustellung des Reparaturgegenstandes als erfolgt. Wir sind
+        nach Setzung einer Nachfrist von vierzehn Tagen berechtigt, vom vertrag zurückzutreten und
+        Schadenersatz zu verlangen.
+        4. Mit Abnahme entfällt die Haftung des Auftragnehmers für erkennbare Mängel, soweit sich
+        der Auftraggeber nicht die Geltendmachung eines bestimmten Mangels vorbehalten hat.
+        5. Soweit nichts anderes vereinbart ist, erfolgt die Abnahme des Auftragsgegenstandes
+        grundsätzlich an unserem Geschäftssitz. Wird der Auftragsgegenstand nicht innerhalb eines
+        Monats nach einer entsprechenden Auorderung abgeholt, sind wir berechtigt, nach Ablauf
+        der Frist ein Lagergeld in Höhe von 5,00 Euro pro Tag zu berechnen. Unser Recht,
+        weitergehende Mehraufwendungen für den Fall Abnahmeverzuges geltend zu machen, bleibt
+        unberührt. Nach Ablauf dieser Frist sind wir berechtigt, dem Kunden unter Verkaufsandrohung
+        eine weitere angemessene frist zur Abholung zu setzen. Nach Ablauf dieser Frist sind wir
+        berechtigt, den Auftragsgegenstand zur Deckung unsere Forderung zum Verkehrswert zu
+        veräußern. Ein etwaiger Mehrerlös wird dem Kunden ausgezahlt.
+      </p>
+
+      <b> V . Rechnungsstellung, Zahlung </b>
+      <p>
+        1. Der Auftragnehmer ist berechtigt, bei Auftragserteilung eine angemessene Vorauszahlung
+        zu verlangen. Die Höhe der Vorauszahlung richtet sich nach dem zu erwartenden Zeitaufwand
+        und dem Wert der zu beschaenden Materialien.
+        2. Wird der Auftrag auf Grund eines verbindlichen Kostenvoranschlages ausgeführt, so genügt
+        eine Bezugnahme auf den Kostenvoranschlag.
+        3. Die jeweilige gesetzliche Mehrwertsteuer geht zu Lasten des Auftraggebers.
+        Sie beinhalten im geschäftlichen Einzugsbereich für alle von einem einzelnen nicht tragbaren
+        Geräte folgende zusätzliche Lieferleistungen : Anliefern, Aufstellen, Anschließen des Gerätes
+        (ohne Material), Einstellen, Vorführen, Einweisung des Käufers in die Bedingung. Bei Widerruf
+        werden diese Zusatzleistungen nicht zurückerstattet.
+        4. Die Vergütung der Rechnung ist, soweit nichts anderes vereinbart wird, nach
+        Rechnungserhalt fällig.
+        5. Die Zurückhaltung von Zahlungen oder die Aufrechnung wegen etwaiger, vom
+        Auftragnehmer bestrittener Gegenansprüche des Auftragnehmers, ist nicht statthaft.
+        6. Unsere Forderungen sind sofort nach Rechnungserteilung zur Zahlung fällig. Teilzahlungen
+        sind nur möglich wenn sie vorher schriftlich vereinbart wurde. In solchen Fällen wird die
+        gesamt Restschuld sofort zur Zahlung fällig, wenn der Käufer mit mindestens zwei
+      </p>
+    </td>
+
+  </tr>
+</table>

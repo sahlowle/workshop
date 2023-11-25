@@ -73,14 +73,13 @@ class CustomerController extends Controller
 
         $validated['type'] = 2;
 
-        Customer::create($validated);
+        $customer = Customer::create($validated);
 
         $message = trans('Successful Added');
 
         notify()->success($message);
 
-
-        return redirect()->route('customers.index');
+        return redirect()->route('orders.create',['customer_id' => $customer->id]);
     }
 
     /**
@@ -133,8 +132,7 @@ class CustomerController extends Controller
             'lat' => 'nullable|string|max:100',
             'lng' => 'nullable|string|max:100',
         ]);
-
-
+        
         $user->update($validated);
 
         $message = trans('Successful Updated');

@@ -92,7 +92,7 @@
           <h4 class="ms-1 mb-0 text-white"> {{ $unpaid_orders }} </h4>
         </div>
         </a>
-        <p class="mb-1"> @lang('Remind Customers') </p>
+        <p class="mb-1"> @lang('Payment alert (orders)') </p>
         <p class="mb-0">
           {{-- <span class="fw-medium me-1">+18.2%</span> --}}
           <small class="text-muted"> @lang("It's time for some customers to pay up") </small>

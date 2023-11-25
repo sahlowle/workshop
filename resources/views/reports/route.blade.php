@@ -6,6 +6,7 @@
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
     @include('reports.style')
+
      </head>
      <body >
 
@@ -222,8 +223,7 @@
                     <tr>
                         <td> {{ $item->title }} </td>
                         <td> {{ $item->description }} </td>
-                        <td> {{ $item->price }} </td>
-                        
+                        <td> {{ $item->price }} </td> 
                     </tr>
                     @endforeach
                 
@@ -320,6 +320,22 @@
             St.Nr.: 34 25 000 383 | Inh. M. Sc. R. Cerrahoglu</h6>
     </div>
 
+    <script src="https://unpkg.com/jspdf@latest/dist/jspdf.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jspdf-html2canvas@latest/dist/jspdf-html2canvas.min.js"></script>
 
 
-</body></html>
+
+<script>
+    
+  html2PDF(page, {
+    jsPDF: {
+      format: 'a4',
+    },
+    imageType: 'image/jpeg',
+    output: './pdf/generate.pdf'
+  });
+</script>
+
+</body>
+</html>

@@ -24,3 +24,34 @@
 <!--/ Hoverable Table rows -->
 
 @endsection
+
+@push('datetimejs')
+    <script>
+    
+    $('#visit_date').change(function(){
+      var selected_date = $("#visit_date").val()
+      var url = "/api/orders/available/time/?selected_date="+selected_date;
+      $('#visit_time').datetimepicker('destroy');
+      $.get(url, function(data, status){
+
+        var timepicker = true;
+
+        if (data.data.length == 0) {
+          timepicker = false;
+        }
+
+        $('#visit_time').val('');
+
+        $('#visit_time').datetimepicker({
+          datepicker:false,
+          format:'H:i',
+          allowTimes:data.data,
+          timepicker:timepicker,
+        });
+
+      });
+
+    });
+
+    </script>
+@endpush

@@ -16,12 +16,12 @@
             </div>
           </div>
 
-          <div class="row mb-3">
+          {{-- <div class="row mb-3">
             <label class="col-sm-2 col-form-label" for="basic-default-company">@lang("Email")</label>
             <div class="col-sm-10">
                 {!! Form::text('email', null,  ['class' => 'form-control','placeholder'=>  trans("Email")]) !!}
             </div>
-          </div>
+          </div> --}}
 
           <div class="row mb-3">
             <label class="col-sm-2 col-form-label" for="basic-default-company">@lang("Phone")</label>
@@ -30,7 +30,7 @@
             </div>
           </div>
 
-          <div class="row mb-3">
+          {{-- <div class="row mb-3">
             <label class="col-sm-2 col-form-label" for="basic-default-company">@lang("Address")</label>
             <div class="col-sm-10">
                 {!! Form::text('address', null,  ['class' => 'form-control','placeholder'=>  trans("Address")]) !!}
@@ -42,14 +42,14 @@
             <div class="col-sm-10">
                 {!! Form::text('zone_area', null,  ['class' => 'form-control','placeholder'=>  trans("Zone Area")]) !!}
             </div>
-          </div>
+          </div> --}}
 
-          {{-- <div class="row mb-3">
+          <div class="row mb-3">
             <label class="col-sm-2 col-form-label" for="basic-default-company">@lang("Password")</label>
             <div class="col-sm-10">
                 {!! Form::password('password',  ['class' => 'form-control','placeholder'=>  trans("Password")]) !!}
             </div>
-          </div> --}}
+          </div>
          
           
           <div class="row justify-content-end">

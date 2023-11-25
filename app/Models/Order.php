@@ -21,7 +21,7 @@ class Order extends Model
     // ];
 
     protected $appends = [
-        'status_name',  'type_name', 'status_color','payment_method','pdf_link'
+        'status_name',  'type_name', 'status_color','payment_method','pdf_link','visit_date','order_visit_time'
     ];
 
     protected $casts = [
@@ -38,7 +38,11 @@ class Order extends Model
 
     public function scopeUnpaid($query)
     {
-        return $query->where('is_paid',false);
+        return $query->where([
+            'is_paid' => false,
+            'is_pay_later' => true,
+            'status' => 3
+        ]);
     }
 
     public function getAmountAttribute($value)
@@ -87,8 +91,25 @@ class Order extends Model
     {
         $id = $this->id;
 
-        return route('api.orders.pdf',$id);
-        
+        return route('api.orders.pdf',$id);  
+    }
+
+    public function getVisitDateAttribute()
+    {
+        if (! is_null($this->visit_time)) {
+            return $this->visit_time->format('Y-m-d');
+
+        }
+        return $this->visit_time;
+    }
+
+    public function getOrderVisitTimeAttribute()
+    {
+        if (! is_null($this->visit_time)) {
+            return $this->visit_time->format('H:i');
+
+        }
+        return $this->visit_time;
     }
 
     public function getStatusNameAttribute()

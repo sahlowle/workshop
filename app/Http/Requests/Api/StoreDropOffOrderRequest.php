@@ -28,6 +28,7 @@ class StoreDropOffOrderRequest extends FormRequest
         return [
             'reference_no' => ['required', 'exists:orders,reference_no'],
             'with_route' => ['required','boolean'],
+            'visit_time' => ['required'],
         ];
     }
 

@@ -10,9 +10,11 @@
       <div class="mb-3">
         <label class=" col-form-label" for="basic-default-company">@lang("Customer")</label>
         <div class="col-sm-10">
-          {!! Form::select('customer_id',$customers, null, ['required','class' => 'select2 form-control','onchange'=>'fillDetatils(event)']) !!}
+          {!! Form::select('customer_id',$customers, null, ['id' => 'customer_id','required','class' => 'select2 form-control','onchange'=>'fillDetatils(event)']) !!}
         </div>
       </div>
+
+      
 
       <div class="mb-3">
         <label class=" col-form-label" for="basic-default-name">@lang("Address")</label>
@@ -32,6 +34,13 @@
         <label class=" col-form-label" for="basic-default-name">@lang("Postal Code")</label>
         <div class="col-sm-10">
           {!! Form::text('postal_code', null, ['id'=>'postal_code','required','class' => 'form-control','placeholder'=> trans("Postal Code")]) !!}
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <label class=" col-form-label" for="basic-default-name">@lang("Zone Area")</label>
+        <div class="col-sm-10">
+          {!! Form::text('zone_area', null, ['id'=>'zone_area','class' => 'form-control','placeholder'=> trans("Zone Area")]) !!}
         </div>
       </div>
 
@@ -58,12 +67,12 @@
         </div>
       </div> --}}
 
-      <div class="mb-3">
+      {{-- <div class="mb-3">
         <label class=" col-form-label" for="basic-default-name">@lang("Block No")</label>
         <div class="col-sm-10">
           {!! Form::text('block_no', null, ['class' => 'form-control number','placeholder'=> trans("Block No")]) !!}
         </div>
-      </div>
+      </div> --}}
 
       <div class="mb-3">
         <label class=" col-form-label" for="basic-default-name">@lang("Floor Number")</label>
@@ -91,6 +100,20 @@
       </div> --}}
 
       <div class="mb-3">
+        <label class=" col-form-label" for="basic-default-name">@lang("Visit Date")</label>
+        <div class="col-sm-10">
+          {!! Form::date('visit_date', null, ['id'=>'visit_date','required','class' => 'form-control','placeholder'=> trans("Visit date")]) !!}
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <label class=" col-form-label" for="basic-default-name">@lang("Visit Time")</label>
+        <div class="col-sm-10">
+          {!! Form::text('visit_time', null, ['readonly'=>true,'id'=>'visit_time','required','class' => 'form-control','placeholder'=> trans("Visit time")]) !!}
+        </div>
+      </div>
+
+      <div class="mb-3">
         <label class=" col-form-label" for="basic-default-name">@lang("Problem Summary")</label>
         <div class="col-sm-10">
           {!! Form::textarea('description', null, ['required','rows'=>8,'class' => 'form-control','placeholder'=> trans("Description")]) !!}
@@ -115,13 +138,6 @@
         <label class=" col-form-label" for="basic-default-name">@lang("Additional Info")</label>
         <div class="col-sm-10">
           {!! Form::text('additional_info', null, ['class' => 'form-control','placeholder'=> trans("Additional Info")]) !!}
-        </div>
-      </div>
-
-      <div class="mb-3">
-        <label class=" col-form-label" for="basic-default-name">@lang("Zone Area")</label>
-        <div class="col-sm-10">
-          {!! Form::text('zone_area', null, ['id'=>'zone_area','class' => 'form-control','placeholder'=> trans("Zone Area")]) !!}
         </div>
       </div>
 
@@ -169,7 +185,6 @@
 
   </div>
 </div>
-
 @section('page-script')
 <script>
   function fillDetatils(event) {
@@ -195,9 +210,39 @@
     $('#zone_area').val(data.zone_area);
     $('#lat').val(lat);
     $('#lng').val(lng);
-
-    // alert(phone)
   });
   }
+
+  function fillDetatilsByID(id) {
+    var url = "/admin/customers/"+id;
+
+    // alert(url);
+
+    $.get(url, function(data, status){
+    // alert("Data: " + data + "\nStatus: " + status);
+
+    var phone = data.phone;
+    var address = data.address;
+    var lat = data.lat;
+    var lng = data.lng;
+
+    $('#phone').val(phone);
+    $('#order_phone_number').val(phone);
+    $('#address').val(address);
+    $('#city').val(data.city);
+    $('#postal_code').val(data.postal_code);
+    $('#zone_area').val(data.zone_area);
+    $('#lat').val(lat);
+    $('#lng').val(lng);
+  });
+  }
+
+  var customer_id =  "{{ request()->customer_id }}";
+  $('#customer_id').val(customer_id);
+
+  if (customer_id) {
+    fillDetatilsByID(customer_id);
+  }
+
 </script>
 @endsection

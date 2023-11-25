@@ -19,7 +19,7 @@ class OrderController extends Controller
     {
         $data['data'] = Order::unpaid()->has('activeCustomer')->latest()->paginate(10)->withQueryString();
 
-        $data['title'] = trans('Remind Customers');
+        $data['title'] = trans('Payment alert (orders)');
 
         return view('admin.orders.unpaid',$data);
     }
@@ -36,7 +36,7 @@ class OrderController extends Controller
         if ($request->filled('search_text')) {
             $search_text = $request->search_text;
 
-            $columns = ['reference_no','maintenance_device','brand','amount','order_phone_number'];
+            $columns = ['reference_no','address','maintenance_device','brand','amount','order_phone_number'];
 
             foreach($columns as $key => $column){
                 if ($key == 0) {
@@ -59,7 +59,7 @@ class OrderController extends Controller
             ->whereDate('created_at', '<=', $date_to);
         }
 
-        $data['data'] = $query->with('customer')->latest('id')->paginate(10)->withQueryString();
+        $data['data'] = $query->with('customer')->latest('visit_time')->paginate(10)->withQueryString();
 
         $data['title'] = trans('All Orders');
 
@@ -130,7 +130,8 @@ class OrderController extends Controller
     {
         $data['title'] = trans('Add Drop Off Order');
 
-        $data['orders'] = Order::select('reference_no','id')->where('status','!=', 3)->pluck('reference_no','reference_no');
+        $data['orders'] = Order::select('reference_no','id')->pickup()
+        ->where('status', 3)->pluck('reference_no','reference_no');
 
         $data['orders']->prepend(trans('Select..'),'');
 
@@ -147,6 +148,10 @@ class OrderController extends Controller
     {
         $validated = $request->validate([
             // 'status' => 'required|numeric|max:4',
+
+            'visit_date' => 'required',
+            'visit_time' => 'required',
+
             'description' => 'required|string|min:2|max:250',
             'address' => 'required|string|min:3',
             'customer_id' => 'required|exists:customers,id',
@@ -170,6 +175,8 @@ class OrderController extends Controller
 
         // return $request->all();
 
+        $validated['visit_time'] = $request->date('visit_date')->startOfDay()->addHours($request->integer('visit_time'))->format('Y-m-d H:i');
+
         Order::create($validated);
 
         $address_data = $request->only(['address','phone','zone_area','city','postal_code']);
@@ -180,7 +187,7 @@ class OrderController extends Controller
 
         notify()->success($message); 
         
-        return redirect()->back();
+        return redirect()->route('orders.index');
     }
 
     public function storeDropOffOrder(Request $request)
@@ -188,7 +195,11 @@ class OrderController extends Controller
         $validated = $request->validate([
             'reference_no' => 'required|exists:orders,reference_no',
             'with_route' => 'required|boolean',
+            'visit_date' => 'required',
+            'visit_time' => 'required',
         ]);
+
+        $visit_time = $request->date('visit_date')->startOfDay()->addHours($request->integer('visit_time'))->format('Y-m-d H:i');
 
         $reference_no = $request->reference_no;
 
@@ -197,7 +208,7 @@ class OrderController extends Controller
         $first_visit = Order::where('first_visit_id',$order->id)->get();
 
         if ($first_visit->isNotEmpty()) {
-            return $this->sendResponse(false,[],trans('This reference number is already exists as Dop-Off order'),404);
+           return redirect()->back()->withErrors('This reference number is already exists as Dop-Off order');
         }
 
         if ($request->with_route) {
@@ -208,6 +219,7 @@ class OrderController extends Controller
             $new_road->save();
 
             $new_order = $order->replicate()->fill([
+                'visit_time' => $visit_time,
                 'first_visit_id' => $order->id,
                 'is_visit' => true,
                 'road_id' => $new_road->id,
@@ -219,6 +231,7 @@ class OrderController extends Controller
             $new_order->save();
         } else {
             $new_order = $order->replicate()->fill([
+                'visit_time' => $visit_time,
                 'first_visit_id' => $order->id,
                 'is_visit' => true,
                 'road_id' => null,
@@ -232,10 +245,10 @@ class OrderController extends Controller
 
 
         $message = trans('Successful Added');
-
-       notify()->success($message); 
-
-       return redirect()->route('orders.today');
+        
+        notify()->success($message); 
+        
+        return redirect()->route('orders.today');
     }
 
     /**
@@ -288,6 +301,8 @@ class OrderController extends Controller
         $order = Order::findOrFail($id);
 
         $validated = $request->validate([
+            'visit_date' => 'required',
+            'visit_time' => 'required',
             'status' => 'nullable|numeric|max:4',
             'description' => 'nullable|string|min:5|max:250',
             'address' => 'nullable|string|min:3',
@@ -310,7 +325,7 @@ class OrderController extends Controller
             'zone_area' => 'nullable|string|max:100',
         ]);
 
-        // return $validated;
+        $validated['visit_time'] = $request->date('visit_date')->startOfDay()->addHours($request->integer('visit_time'))->format('Y-m-d H:i');
 
         $order->update($validated);
 
@@ -359,7 +374,9 @@ class OrderController extends Controller
     {
         $order = Order::findOrFail($id);
 
-        $pdf = Pdf::loadView('emails.invoice',['order'=> $order]); ;
+        $order->driver = $order->road?->driver;
+
+        $pdf = Pdf::loadView('reports.index',['order'=> $order]);
         
         return $pdf->stream('invoice.pdf');
     }

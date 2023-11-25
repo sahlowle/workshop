@@ -95,4 +95,6 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
 Route::get('orders/pdf/{id}',[ApiOrderController::class,'printPdf'])->name('orders.pdf');
 
+Route::get('orders/available/time',[ApiOrderController::class,'getAvailableTime']);
+
 

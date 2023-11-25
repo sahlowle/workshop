@@ -61,21 +61,22 @@ class DriverController extends Controller
     {
         $validated = $request->validate([
             'name' => 'required|string|min:3',
-            'email' => 'nullable|email|unique:users,email',
-            // 'password' => 'required|string|min:6',
+            // 'email' => 'nullable|email|unique:users,email',
+            'password' => 'required|string|min:6',
             'phone' => 'required|unique:users|min:12|max:20',
-            'address' => 'required|string|min:6',
-            'zone_area' => 'required|string|max:30',
+            'address' => 'nullable|string|min:6',
+            'zone_area' => 'nullable|string|max:30',
         ]);
 
-        $password = Str::random(8);
-
+        
         $validated['type'] = 2;
-        $validated['password'] = $password;
+
+        // $password = Str::random(8);
+        // $validated['password'] = $password;
 
         $user = User::create($validated);
 
-        $user->notify(new NewPassword($password));
+        // $user->notify(new NewPassword($password));
 
         $message = trans('Successful Added');
 
@@ -124,8 +125,8 @@ class DriverController extends Controller
 
         $validated = $request->validate([
             'name' => 'nullable|string|min:3',
-            'email' => 'nullable|email|unique:users,email,'.$id,
-            // 'password' => 'nullable|string|min:6',
+            // 'email' => 'nullable|email|unique:users,email,'.$id,
+            'password' => 'nullable|string|min:6',
             'phone' => 'nullable|min:12|max:20|unique:users,phone,'.$id,
             'address' => 'nullable|string|min:6',
             'zone_area' => 'nullable|string|max:30',

@@ -73,6 +73,12 @@
             <div> @lang('All Orders') </div>
           </a> 
         </li>
+
+        <li @class(['menu-item', 'active' => request()->routeIs('orders.unpaid') ])>
+          <a href="{{ route('orders.unpaid') }}" class="menu-link" >            
+            <div> @lang('Payment alert (orders)') </div>
+          </a> 
+        </li>
       </ul>
 
     </li>

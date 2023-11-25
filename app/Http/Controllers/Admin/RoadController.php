@@ -123,6 +123,11 @@ class RoadController extends Controller
             'orders' => 'required|array',
         ]);
 
+        if ($request->isNotFilled('driver_id')) {
+            $driver_id = getAvailableDrivers()->first();
+            $data['driver_id'] = $driver_id ? $driver_id : null;
+        }
+
         $road = Road::create($validated);
 
         Order::whereIn('id',$request->orders)->update(['road_id' => $road->id]);

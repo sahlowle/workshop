@@ -33,28 +33,28 @@
           <div class="row mb-3">
             <label class="col-sm-2 col-form-label" for="basic-default-company">@lang("Address")</label>
             <div class="col-sm-10">
-                {!! Form::text('address', null,  ['readonly','class' => 'form-control','id'=>'address','placeholder'=>  trans("Address")]) !!}
-            </div>
-          </div>
-
-          <div class="row mb-3">
-            <label class="col-sm-2 col-form-label" for="basic-default-company">@lang("Zone Area")</label>
-            <div class="col-sm-10">
-                {!! Form::text('zone_area', null,  ['class' => 'form-control','placeholder'=>  trans("Zone Area")]) !!}
+                {!! Form::text('address', null,  ['readonly','class' => 'form-control','id'=>'address','placeholder'=>  trans("Select Address from map")]) !!}
             </div>
           </div>
           
           <div class="row mb-3">
             <label class="col-sm-2 col-form-label" for="basic-default-company">@lang("City")</label>
             <div class="col-sm-10">
-                {!! Form::text('city', null,  ['class' => 'form-control','placeholder'=>  trans("City")]) !!}
+                {!! Form::text('city', null,  ['id'=>'city','class' => 'form-control','placeholder'=>  trans("City")]) !!}
             </div>
           </div>
 
           <div class="row mb-3">
             <label class="col-sm-2 col-form-label" for="basic-default-company">@lang("Postal Code")</label>
             <div class="col-sm-10">
-                {!! Form::text('postal_code', null,  ['class' => 'form-control','placeholder'=>  trans("Postal Code")]) !!}
+                {!! Form::text('postal_code', null,  ['id'=>'postal_code','class' => 'form-control','placeholder'=>  trans("Postal Code")]) !!}
+            </div>
+          </div>
+
+          <div class="row mb-3">
+            <label class="col-sm-2 col-form-label" for="basic-default-company">@lang("Zone Area")</label>
+            <div class="col-sm-10">
+                {!! Form::text('zone_area', null,  ['id'=>'zone_area','class' => 'form-control','placeholder'=>  trans("Zone Area")]) !!}
             </div>
           </div>
 

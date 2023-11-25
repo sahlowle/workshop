@@ -64,7 +64,7 @@
               </div>
               <div class="input-group input-group-merge has-validation">
                 <input id="password" type="password" class="form-control @error('password') is-invalid @enderror"
-                  name="password" required autocomplete="current-password">
+                  name="password" required autocomplete="current-password" style="border-radius: 6px 0px 0px 6px;">
 
                 @error('password')
                   <span class="invalid-feedback" role="alert">

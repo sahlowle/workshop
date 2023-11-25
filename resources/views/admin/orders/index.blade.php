@@ -78,7 +78,7 @@
           <th> @lang("Customer") </th>
           <th> @lang("Status") </th>
           <th> @lang("Amount") </th>
-          <th> @lang("Date") </th>
+          <th> @lang("Visit Time") </th>
           <th> @lang("Actions") </th>
         </tr>
       </thead>
@@ -95,11 +95,11 @@
             {{ $item->type_name }}
           </td>
           <td> {{ number_format($item->amount, 2) }}  </td>
-          <td> {{ $item->created_at->format('Y-M-d') }}  </td>
+          <td> {{ $item->visit_time }}  </td>
           <td>
-            @if ($item->amount > 0)
+            @if ($item->amount > 0 && $item->driver)
                 
-            <a class="btn btn-outline-dark  btn-sm pl-1" href="{{ route('orders.print.pdf',$item->id) }}">
+            <a class="btn btn-outline-dark  btn-sm pl-1" href="{{$item->pdf_link }}">
               <i class='bx bx-printer' style="font-size: 1.2rem"></i>
               @lang('Print Pdf')
             </a>

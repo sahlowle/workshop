@@ -74,10 +74,9 @@ Route::get('optimize/clear',function() {
 
 
 Route::get('edit/table',function() {
-    $order = Order::first()->load(['road.driver','driver','customer','reports']);
+    $order = Order::find(3)->load(['road.driver','driver','customer','reports']);
 
     $order->driver = $order->road->driver;
-
 
     // $pdf = PDF::setOptions(['isHtml5ParserEnabled' => true, 'isRemoteEnabled' => true])
     // ->loadView('reports.index', compact('order'));
@@ -91,7 +90,7 @@ Route::get('edit/table',function() {
         
     // return $pdf->download('inv.pdf');
 
-    return view('reports.route',compact('order'));
+    return view('reports.index',compact('order'));
 
     return "<h1> Added Successful </h1>";
     
