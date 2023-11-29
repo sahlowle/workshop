@@ -26,7 +26,9 @@ class StoreCustomerRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => ['required', 'string','min:3','max:80'],
+            'name' => ['required', 'string','min:3','max:120'],
+            'company_name' => ['nullable', 'string','min:3','max:120'],
+            'part_of_building' => ['nullable', 'string','min:3','max:80'],
             'email' => ['required','email','unique:customers,email','string','max:120'],
             'phone' => ['required','unique:customers,phone','string','min:12','max:20'],
             'address' => ['required','string','min:3','max:190'],

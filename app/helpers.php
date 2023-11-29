@@ -46,10 +46,11 @@ if (! function_exists('orderStatus')) {
     function orderStatus() {
         return [
             "" => trans("Select") ,
-            1 => trans("Pending") ,
-            2 => trans("On Progress") ,
-            3 => trans("Finished") ,
-            4 => trans("Canceled") ,
+            1 => trans("Pending"),
+            2 => trans("Assigned"),
+            3 => trans("Under maintenance"),
+            4 => trans("Finished"),
+            0 => trans("Canceled"),
         ];
     }
 }

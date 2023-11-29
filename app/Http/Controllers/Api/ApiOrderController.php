@@ -10,6 +10,7 @@ use App\Http\Requests\Api\DeleteFilesRequest;
 use App\Http\Requests\Api\DeleteReportRequest;
 use App\Http\Requests\Api\StoreDropOffOrderRequest;
 use App\Http\Requests\Api\StoreOrderRequest;
+use App\Http\Requests\Api\StorePickupOrderRequest;
 use App\Http\Requests\Api\UpdateOrderRequest;
 use App\Mail\SendInvoice;
 use App\Models\Customer;
@@ -102,6 +103,17 @@ class ApiOrderController extends Controller
 
     /*
     |--------------------------------------------------------------------------
+    | add store pickup order
+    |--------------------------------------------------------------------------
+    */
+    public function storePickupOrder(StorePickupOrderRequest $request)
+    {
+        $data = $request->validated();
+        $data['type'] = 1;
+    }
+
+    /*
+    |--------------------------------------------------------------------------
     | add new drop off
     |--------------------------------------------------------------------------
     */
@@ -117,7 +129,7 @@ class ApiOrderController extends Controller
             return $this->sendResponse(false,[],trans('Order Not Pickup'),404);
         }
 
-        $first_visit = Order::where('first_visit_id',$order->id)->get();
+        $first_visit = Order::where('pickup_order_ref',$order->reference_id)->get();
 
         if ($first_visit->isNotEmpty()) {
             return $this->sendResponse(false,[],trans('This reference number is already exists as Dop-Off order'),404);
@@ -137,8 +149,7 @@ class ApiOrderController extends Controller
 
             $new_order = $order->replicate()->fill([
                 'visit_time' => $visit_time,
-                'first_visit_id' => $order->id,
-                'is_visit' => true,
+                'pickup_order_ref' => $order->reference_id,
                 'road_id' => $new_road->id,
                 'status' => 1,
                 'type' => 3,
@@ -149,8 +160,7 @@ class ApiOrderController extends Controller
         } else {
             $new_order = $order->replicate()->fill([
                 'visit_time' => $visit_time,
-                'first_visit_id' => $order->id,
-                'is_visit' => true,
+                'pickup_order_ref' => $order->reference_id,
                 'road_id' => null,
                 'status' => 1,
                 'type' => 3,
@@ -172,7 +182,7 @@ class ApiOrderController extends Controller
     */
     public function show($id)
     {
-        $data =  Order::with(['files','customer','reports'])->find($id);
+        $data =  Order::with(['files','customer','items'])->find($id);
         
         if (is_null($data)) {
             return $this->sendResponse(false,[],trans('Not Found'),404);
@@ -200,7 +210,7 @@ class ApiOrderController extends Controller
 
         if ($request->filled('status') && $request->integer('status') == 3 && $type != 1) {
             
-            if (! $order->is_paid && ! $request->boolean('is_pay_later')) {
+            if (! $order->is_paid &&  $request->payment_way != 3) {
                 return $this->sendResponse(false,[],trans('Pay Order First'),401);
             }
 
@@ -211,14 +221,14 @@ class ApiOrderController extends Controller
 
         $order->update($data);
 
-        if ($request->filled('reports')){
+        if ($request->filled('items')){
 
-            $order->reports()->delete();
+            $order->items()->delete();
 
-            foreach ($request->reports as $key => $item) {
-                $order->reports()->create([
+            foreach ($request->items as $key => $item) {
+                $order->items()->create([
                     'title' => $item['title'],
-                    'description' => $item['description'],
+                    'quantity' => $item['quantity'],
                     'price' => $item['price'],
                 ]);
 
@@ -267,7 +277,7 @@ class ApiOrderController extends Controller
             return $this->sendResponse(false,[],trans('Not Found'),404);
         }
         
-        $order->load(['road.driver','driver','customer','reports']);
+        $order->load(['road.driver','driver','customer','items']);
 
         $order->driver = $order->road->driver;
 
@@ -289,7 +299,7 @@ class ApiOrderController extends Controller
 
         $order->driver = $order->road->driver;
 
-        $pdf = Pdf::loadView('reports.index',['order'=> $order]);
+        $pdf = Pdf::loadView('items.index',['order'=> $order]);
         
         return $pdf->stream('invoice.pdf');
     }
@@ -323,10 +333,10 @@ class ApiOrderController extends Controller
 
     /*
     |--------------------------------------------------------------------------
-    | Add Report
+    | Add Item
     |--------------------------------------------------------------------------
     */
-    public function addReport(AddReportRequest $request,$id)
+    public function addItem(AddReportRequest $request,$id)
     {
         $order =  Order::find($id);
         
@@ -336,7 +346,7 @@ class ApiOrderController extends Controller
 
         $data = $request->validated();
 
-        $report = $order->reports()->create($data);
+        $report = $order->items()->create($data);
 
         return $this->sendResponse(true,$report,trans("Report Added Successfully"),200);
     }
@@ -346,7 +356,7 @@ class ApiOrderController extends Controller
     | Delete Report
     |--------------------------------------------------------------------------
     */
-    public function deleteReport(DeleteReportRequest $request,$id)
+    public function deleteItem(DeleteReportRequest $request,$id)
     {
         $order =  Order::find($id);
         
@@ -354,7 +364,7 @@ class ApiOrderController extends Controller
             return $this->sendResponse(false,[],trans('Not Found'),404);
         }
 
-        $report = $order->reports()->find($request->report_id);
+        $report = $order->items()->find($request->item_id);
 
         $report->delete();
 

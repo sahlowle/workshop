@@ -26,7 +26,7 @@ class ApiCustomerController extends Controller
         
         if ($request->filled('search_text')) {
             $search_text = $request->search_text;
-            $columns = ['name','phone','email','address','city','postal_code'];
+            $columns = ['name','company_name','phone','email','address','city','postal_code'];
 
             foreach($columns as $key => $column){
                 if ($key == 0) {

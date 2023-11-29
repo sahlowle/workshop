@@ -76,7 +76,7 @@
                             @if ($order->is_paid)
                             <i class='text-success bx bx-check-circle' style="font-size: 2rem"></i>
                             @lang('Paid')
-                            @elseif ($order->is_pay_later)
+                            @elseif ($order->payment_way == 3)
                             <i class='text-primary bx bx-time' style="font-size: 2rem"></i>
                             @lang('Pay Later')
                             @else

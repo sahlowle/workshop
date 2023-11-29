@@ -19,7 +19,7 @@ class CustomerController extends Controller
 
         if ($request->filled('search_text')) {
             $search_text = $request->search_text;
-            $columns = ['name','phone','email','address','city','postal_code'];
+            $columns = ['name','phone','email','address','company_name','city','postal_code'];
 
             foreach($columns as $key => $column){
                 if ($key == 0) {
@@ -59,6 +59,8 @@ class CustomerController extends Controller
     {
         $validated = $request->validate([
             'name' => 'required|string|min:3',
+            'company_name' => 'required|string|min:3',
+            'part_of_building' => 'nullable|string|min:3',
             'email' => 'nullable|email|unique:customers,email',
             'phone' => 'required|unique:customers|min:12|max:20',
             'address' => 'required|string|max:100',
@@ -123,6 +125,8 @@ class CustomerController extends Controller
 
         $validated = $request->validate([
             'name' => 'nullable|string|min:3',
+            'company_name' => 'nullable|string|min:3',
+            'part_of_building' => 'nullable|string|min:3',
             'email' => 'nullable|email|unique:customers,email,'.$id,
             'phone' => 'nullable|min:12|max:20|unique:customers,phone,'.$id,
             'address' => 'nullable|string|max:100',

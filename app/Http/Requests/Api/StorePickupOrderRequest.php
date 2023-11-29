@@ -5,7 +5,8 @@ namespace App\Http\Requests\Api;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Http\Exceptions\HttpResponseException;
-class DeleteReportRequest extends FormRequest
+
+class StorePickupOrderRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -20,12 +21,23 @@ class DeleteReportRequest extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array<string, mixed>
+     * @return array
      */
     public function rules()
     {
         return [
-            'item_id' => 'required|exists:items,id'
+            'address' => ['required'],
+            'order_phone_number' => ['required'],
+            'postal_code' => ['required'],
+            'brand' => ['required'],
+            'devices' => ['required','array'], // Relation
+            'questions' => ['required','array'], // Relation
+            'items' => ['required','array'], // Relation
+            'vat' => ['required'],
+            'subtotal' => ['required'],
+            'total' => ['required'],
+            'paid_amount' => ['required'],
+            'payment_way' => ['required'],
         ];
     }
 

@@ -205,7 +205,7 @@ class OrderController extends Controller
 
         $order =  Order::pickup()->where('reference_no',$reference_no)->firstOrFail();
 
-        $first_visit = Order::where('first_visit_id',$order->id)->get();
+        $first_visit = Order::where('pickup_order_ref',$order->reference_no)->get();
 
         if ($first_visit->isNotEmpty()) {
            return redirect()->back()->withErrors('This reference number is already exists as Dop-Off order');
@@ -220,8 +220,7 @@ class OrderController extends Controller
 
             $new_order = $order->replicate()->fill([
                 'visit_time' => $visit_time,
-                'first_visit_id' => $order->id,
-                'is_visit' => true,
+                'pickup_order_ref' => $order->reference_id,
                 'road_id' => $new_road->id,
                 'status' => 1,
                 'type' => 3,
@@ -232,8 +231,7 @@ class OrderController extends Controller
         } else {
             $new_order = $order->replicate()->fill([
                 'visit_time' => $visit_time,
-                'first_visit_id' => $order->id,
-                'is_visit' => true,
+                'pickup_order_ref' => $order->reference_id,
                 'road_id' => null,
                 'status' => 1,
                 'type' => 3,
@@ -376,7 +374,7 @@ class OrderController extends Controller
 
         $order->driver = $order->road?->driver;
 
-        $pdf = Pdf::loadView('reports.index',['order'=> $order]);
+        $pdf = Pdf::loadView('items.index',['order'=> $order]);
         
         return $pdf->stream('invoice.pdf');
     }

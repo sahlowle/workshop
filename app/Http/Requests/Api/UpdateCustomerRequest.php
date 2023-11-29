@@ -28,6 +28,8 @@ class UpdateCustomerRequest extends FormRequest
     {
         return [
             'name' => ['nullable', 'string','min:3','max:80'],
+            'company_name' => ['nullable', 'string','min:3','max:120'],
+            'part_of_building' => ['nullable', 'string','min:3','max:80'],
             'email' => [
                 'nullable','email',
                 Rule::unique('customers')->ignore($this->route('customer'), 'id'),

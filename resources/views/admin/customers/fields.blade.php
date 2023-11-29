@@ -17,6 +17,13 @@
           </div>
 
           <div class="row mb-3">
+            <label class="col-sm-2 col-form-label" for="basic-default-name">@lang("Company name")</label>
+            <div class="col-sm-10">
+                {!! Form::text('company_name', null,  ['class' => 'form-control','placeholder'=>  trans("Company name")]) !!}
+            </div>
+          </div>
+
+          <div class="row mb-3">
             <label class="col-sm-2 col-form-label" for="basic-default-company">@lang("Email")</label>
             <div class="col-sm-10">
                 {!! Form::text('email', null,  ['class' => 'form-control','placeholder'=>  trans("Email")]) !!}
@@ -48,6 +55,13 @@
             <label class="col-sm-2 col-form-label" for="basic-default-company">@lang("Postal Code")</label>
             <div class="col-sm-10">
                 {!! Form::text('postal_code', null,  ['id'=>'postal_code','class' => 'form-control','placeholder'=>  trans("Postal Code")]) !!}
+            </div>
+          </div>
+
+          <div class="row mb-3">
+            <label class="col-sm-2 col-form-label" for="basic-default-name">@lang("Part of building")</label>
+            <div class="col-sm-10">
+                {!! Form::text('part_of_building', null,  ['class' => 'form-control','placeholder'=>  trans("Part of building")]) !!}
             </div>
           </div>
 

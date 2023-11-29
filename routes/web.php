@@ -74,7 +74,7 @@ Route::get('optimize/clear',function() {
 
 
 Route::get('edit/table',function() {
-    $order = Order::find(3)->load(['road.driver','driver','customer','reports']);
+    $order = Order::find(3)->load(['road.driver','driver','customer','items']);
 
     $order->driver = $order->road->driver;
 

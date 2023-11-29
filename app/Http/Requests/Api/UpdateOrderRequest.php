@@ -41,19 +41,17 @@ class UpdateOrderRequest extends FormRequest
             'lng' => ['nullable','numeric'],
             'customer_id' => ['nullable','exists:customers,id'],
             'amount' => ['nullable','numeric'],
-            'is_visit' => ['nullable','boolean'],
             'is_paid' => ['nullable','boolean'],
-            'first_visit_id' => ['required_if:is_visit,true','exists:orders,id'],
-            'reports' => ['nullable','array'],
+            'pickup_order_ref' => ['nullable,true','exists:orders,reference_id'],
+            'items' => ['nullable','array'],
             'status' => ['nullable','in:1,2,3,4'],
-            'payment_way' => ['nullable','in:1,2'],
+            'payment_way' => ['nullable','in:1,2,3'],
             'payment_id' => ['nullable','string','max:1024'],
             'type' => ['nullable',Rule::in([1,2,3]),],
             
             'city' => ['nullable','string','max:100'],
             'zone_area' => ['nullable','string','max:100'],
             'postal_code' => ['nullable','string','max:10'],
-            'is_pay_later' => ['nullable','boolean'],
         ];
     }
 

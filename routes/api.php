@@ -55,6 +55,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::apiResource('orders',ApiOrderController::class);
 
     /* |------ add drop Off order routes ---------| */
+    Route::post('orders/add-pickup',[ApiOrderController::class,'storePickupOrder']);
     Route::post('orders/add-drop-off',[ApiOrderController::class,'storeDropOffOrder']);
 
     /* |------ orders files routes ---------| */
@@ -63,8 +64,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('orders/send-invoice/{id}',[ApiOrderController::class,'sendInvoice']);
 
     /* |------ orders report routes ---------| */
-    Route::post('orders/add-report/{id}',[ApiOrderController::class,'addReport']);
-    Route::delete('orders/delete-report/{id}',[ApiOrderController::class,'deleteReport']);
+    Route::post('orders/add-item/{id}',[ApiOrderController::class,'addItem']);
+    Route::delete('orders/delete-item/{id}',[ApiOrderController::class,'deleteItem']);
 
      /* |------ orders get available routes ---------| */
     Route::get('orders/available/time',[ApiOrderController::class,'getAvailableTime']);

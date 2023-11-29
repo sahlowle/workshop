@@ -34,7 +34,7 @@ class HomeController extends Controller
         $data['unpaid_orders'] = Order::unpaid()->has('activeCustomer')->count();
         $data['customers_count'] = Customer::count();
         $data['drivers_count'] = User::drivers()->count();
-        $data['sales'] = Order::sum('amount');
+        $data['sales'] = Order::sum('paid_amount');
 
         // return $data;
         return view('admin.home.index',$data);

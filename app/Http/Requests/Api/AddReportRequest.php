@@ -27,7 +27,7 @@ class AddReportRequest extends FormRequest
     {
         return [
             'title' => 'required','string','max:100',
-            'description' => 'required','string','max:3000',
+            'quantity' => 'required','numeric',
             'price' => 'required','numeric'
         ];
     }

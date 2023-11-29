@@ -16,17 +16,12 @@ class Order extends Model
         'id'
     ];
 
-    // protected $hidden = [
-    //     'created_at','updated_at','deleted_at'
-    // ];
-
     protected $appends = [
         'status_name',  'type_name', 'status_color','payment_method','pdf_link','visit_date','order_visit_time'
     ];
 
     protected $casts = [
         'is_paid' => 'boolean',
-        'is_visit' => 'boolean',
         'status' => 'integer',
         'floor_number' => 'integer',
         'apartment_number' => 'integer',
@@ -34,13 +29,23 @@ class Order extends Model
         'lng' => 'float',
         'visit_time' =>  'datetime:Y-m-d H:i',
     ];
-    
+
+   
+    public function devices()
+    {
+        return $this->belongsToMany(Device::class);
+    }
+
+    public function questions()
+    {
+        return $this->belongsToMany(Question::class);
+    }
 
     public function scopeUnpaid($query)
     {
         return $query->where([
             'is_paid' => false,
-            'is_pay_later' => true,
+            'payment_way' => 3,
             'status' => 3
         ]);
     }
@@ -68,6 +73,7 @@ class Order extends Model
         return match ((int)$value) {
             1 => trans("Cash") ,
             2 => trans("Online") ,
+            2 => trans("Pay later") ,
             default => trans("Un Known") ,
        };
         
@@ -118,9 +124,10 @@ class Order extends Model
 
         return match ((int)$value) {
             1 => trans("Pending"),
-            2 => trans("On Progress"),
-            3 => trans("Finished"),
-            4 => trans("Canceled"),
+            2 => trans("Assigned"),
+            3 => trans("Under maintenance"),
+            4 => trans("Finished"),
+            0 => trans("Canceled"),
             default => trans("Pending") ,
        };
         
@@ -178,9 +185,9 @@ class Order extends Model
     }
 
     
-    public function reports()
+    public function items()
     {
-        return $this->hasMany(Report::class, 'order_id');
+        return $this->hasMany(Item::class, 'order_id');
     }
 
     protected static function booted()
