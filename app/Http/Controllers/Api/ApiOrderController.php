@@ -106,10 +106,44 @@ class ApiOrderController extends Controller
     | add store pickup order
     |--------------------------------------------------------------------------
     */
-    public function storePickupOrder(StorePickupOrderRequest $request)
+    public function storePickupOrder(StorePickupOrderRequest $request,$id)
     {
+        $order =  Order::find($id);
+
+        if (is_null($order)) {
+            return $this->sendResponse(false,[],trans('Not Found'),404);
+        }
+
         $data = $request->validated();
         $data['type'] = 1;
+
+        $order->update($data);
+
+        if ($request->filled('devices')) {
+            $order->devices()->sync($request->devices);
+        }
+
+        if ($request->filled('questions')) {
+            $order->questions()->sync($request->questions);
+        }
+
+        if ($request->filled('items')){
+
+            $order->items()->delete();
+
+            foreach ($request->items as $key => $item) {
+                $order->items()->create([
+                    'title' => $item['title'],
+                    'quantity' => $item['quantity'],
+                    'price' => $item['price'],
+                ]);
+
+            }
+        }
+
+        $message = trans('Successful Added');
+
+        return $this->sendResponse(true,$order->fresh(),$message,200);
     }
 
     /*

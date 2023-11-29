@@ -55,7 +55,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::apiResource('orders',ApiOrderController::class);
 
     /* |------ add drop Off order routes ---------| */
-    Route::post('orders/add-pickup',[ApiOrderController::class,'storePickupOrder']);
+    Route::post('orders/add-pickup/{id}',[ApiOrderController::class,'storePickupOrder']);
     Route::post('orders/add-drop-off',[ApiOrderController::class,'storeDropOffOrder']);
 
     /* |------ orders files routes ---------| */
