@@ -115,7 +115,17 @@ class ApiOrderController extends Controller
         }
 
         $data = $request->validated();
-        $data['type'] = 1;
+
+        $items = $order->items;
+
+        $subtotal = $items->sum('price');
+        $vat = $subtotal * 0.19;
+        $total = $subtotal + $vat;
+
+        $data['subtotal'] = $subtotal;
+        $data['vat'] = $vat;
+        $data['total'] = $total;
+
 
         $order->update($data);
 
@@ -127,18 +137,14 @@ class ApiOrderController extends Controller
             $order->questions()->sync($request->questions);
         }
 
-        if ($request->filled('items')){
+        if ($request->filled('paid_amount')){
 
-            $order->items()->delete();
-
-            foreach ($request->items as $key => $item) {
-                $order->items()->create([
-                    'title' => $item['title'],
-                    'quantity' => $item['quantity'],
-                    'price' => $item['price'],
+                $order->payments()->create([
+                    'paid_amount' => $request->paid_amount,
+                    'payment_way' => $request->payment_way,
+                    'payment_id' => $request->payment_id,
                 ]);
 
-            }
         }
 
         $message = trans('Successful Added');
@@ -216,7 +222,7 @@ class ApiOrderController extends Controller
     */
     public function show($id)
     {
-        $data =  Order::with(['files','customer','items'])->find($id);
+        $data =  Order::with(['files','customer','items','devices','questions'])->find($id);
         
         if (is_null($data)) {
             return $this->sendResponse(false,[],trans('Not Found'),404);
@@ -494,7 +500,7 @@ class ApiOrderController extends Controller
         $data = TimeSlot::create(
             $start_date,
             $end_date, 
-            60, 
+            15, 
             'H:i',
             $exclude_dates
         );

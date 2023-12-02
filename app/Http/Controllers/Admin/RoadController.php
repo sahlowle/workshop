@@ -22,7 +22,7 @@ class RoadController extends Controller
 
         if ($request->filled('search_text')) {
             $search_text = $request->search_text;
-            $columns = ['description','reference_no'];
+            $columns = ['reference_no'];
 
             foreach($columns as $key => $column){
                 if ($key == 0) {
@@ -60,7 +60,7 @@ class RoadController extends Controller
 
         if ($request->filled('search_text')) {
             $search_text = $request->search_text;
-            $columns = ['description','reference_no'];
+            $columns = ['reference_no'];
 
             foreach($columns as $key => $column){
                 if ($key == 0) {
@@ -118,7 +118,7 @@ class RoadController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'description' => 'required|string|min:3|max:250',
+      
             'driver_id' => 'nullable|exists:users,id',
             'orders' => 'required|array',
         ]);
@@ -200,7 +200,6 @@ class RoadController extends Controller
         $road = Road::findOrFail($id);
 
         $validated = $request->validate([
-            'description' => 'nullable|string|min:3|max:250',
             'driver_id' => 'nullable|exists:users,id',
             'orders' => 'required|array',
         ]);

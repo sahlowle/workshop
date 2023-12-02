@@ -27,37 +27,48 @@
 
 @push('datetimejs')
     <script>
+
+      function getTime(selected_date) {
+        var url = "/api/orders/available/time/?selected_date=" + selected_date;
+        
+        $('#visit_time').datetimepicker('destroy');
+
+        $.get(url, function (data, status) {
+
+          var timepicker = true;
+
+          if (data.data.length == 0) {
+            timepicker = false;
+          }
+
+          $('#visit_time').val('');
+
+          $('#visit_time').datetimepicker({
+            datepicker: false,
+            format: 'H:i',
+            allowTimes: data.data,
+            timepicker: timepicker,
+          });
+
+        });
+      }
     
     $('#visit_date').change(function(){
       var selected_date = $("#visit_date").val()
-      var url = "/api/orders/available/time/?selected_date="+selected_date;
-      $('#visit_time').datetimepicker('destroy');
-      $.get(url, function(data, status){
-        
-        console.log(data);
-
-        var timepicker = true;
-
-        if (data.data.length == 0) {
-          timepicker = false;
-        }
-
-        $('#visit_time').val('');
-
-        $('#visit_time').datetimepicker({
-          datepicker:false,
-          format:'H:i',
-          allowTimes:data.data,
-          timepicker:timepicker,
-        });
-
-      });
-
+      getTime(selected_date);
     });
 
-    var visit_time = "{{ $order->order_visit_time }}" ;
+    var customer_id = "{{ $order->customer_id }}";
+    $("#customer_id").val(customer_id);
 
-    $("#visit_time").val(visit_time);
+    var visit_time = "{{ $order->order_visit_time }}";
+    var visit_date = "{{ $order->visit_date }}" ;
+
+    getTime(visit_date);
+
+    setTimeout(() => {
+      $("#visit_time").val(visit_time);
+    }, 2000);
 
     </script>
 @endpush

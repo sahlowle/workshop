@@ -185,6 +185,11 @@ class Order extends Model
     }
 
     
+    public function payments()
+    {
+        return $this->hasMany(Payment::class, 'order_id');
+    }
+
     public function items()
     {
         return $this->hasMany(Item::class, 'order_id');

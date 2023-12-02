@@ -31,6 +31,7 @@ class StoreCustomerRequest extends FormRequest
             'part_of_building' => ['nullable', 'string','min:3','max:80'],
             'email' => ['required','email','unique:customers,email','string','max:120'],
             'phone' => ['required','unique:customers,phone','string','min:12','max:20'],
+            'telephone' => ['nullable','unique:customers,telephone','string','min:12','max:20'],
             'address' => ['required','string','min:3','max:190'],
             'zone_area' => ['nullable','string','min:3','max:30'],
             'postal_code' => ['nullable','string','min:3','max:30'],

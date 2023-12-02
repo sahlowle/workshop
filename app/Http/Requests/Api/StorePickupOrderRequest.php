@@ -26,18 +26,16 @@ class StorePickupOrderRequest extends FormRequest
     public function rules()
     {
         return [
-            'address' => ['required'],
-            'order_phone_number' => ['required'],
-            'postal_code' => ['required'],
+            'type' => ['required'],
+            'information' => ['required'],
             'brand' => ['required'],
             'devices' => ['required','array'], // Relation
             'questions' => ['required','array'], // Relation
-            'items' => ['required','array'], // Relation
-            'vat' => ['required'],
-            'subtotal' => ['required'],
-            'total' => ['required'],
+            'max_maintenance_price' => ['required'],
             'paid_amount' => ['required'],
             'payment_way' => ['required'],
+            'is_amount_received' => ['required'],
+            'is_customer_confirm' => ['required'],
         ];
     }
 

@@ -35,7 +35,7 @@ class ApiRoadController extends Controller
 
         if ($request->filled('search_text')) {
             $search_text = $request->search_text;
-            $columns = ['description','reference_no'];
+            $columns = ['reference_no'];
 
             foreach($columns as $key => $column){
                 if ($key == 0) {

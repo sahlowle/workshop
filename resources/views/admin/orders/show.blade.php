@@ -11,7 +11,26 @@
 
 <div class="row">
 
-    
+  @if ( $order->driver)
+    <div class="col-lg-8">
+        <div class="container p-2">
+          <div class="">                
+            <a class="btn btn-outline-dark  btn-sm pl-1" href="{{$order->pdf_link }}">
+              <i class='bx bx-printer' style="font-size: 1.2rem"></i>
+              @lang('Print Pdf')
+            </a>
+
+            <a class="btn btn-outline-dark  btn-sm pl-1" href="{{ route('orders.send.invoice',$order->id) }}">
+              <i class='bx bx-mail-send' style="font-size: 1.2rem"></i>
+              @lang('Send Invoice')
+            </a>
+
+          </div>
+        </div>
+    </div>
+   @endif
+
+
     <div class="col-lg-8">
         <div class="card border--dark">
             <h5 class="card-header bg--dark">
@@ -23,6 +42,15 @@
                         @lang("Refrence No")
                         <span class="fw-bold"> {{ $order->reference_no }} </span>
                     </li>
+
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                      @lang("Visit time")
+                      <span>
+                        {{ $order->visit_date }}
+                        |
+                        {{ $order->order_visit_time }} 
+                      </span>
+                  </li>
 
                     <li class="list-group-item d-flex justify-content-between align-items-center">
                         @lang("Status")
@@ -52,10 +80,6 @@
 
                     <li class="list-group-item d-flex justify-content-between align-items-center">
                         @lang("Block No")       <span>{{ $order->block_no }} </span>
-                    </li>
-
-                    <li class="list-group-item d-flex justify-content-between align-items-center">
-                        @lang("Floor Number")      <span>{{ $order->floor_number }} </span>
                     </li>
 
                     <li class="list-group-item d-flex justify-content-between align-items-center">

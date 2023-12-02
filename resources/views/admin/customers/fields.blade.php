@@ -38,9 +38,16 @@
           </div>
 
           <div class="row mb-3">
+            <label class="col-sm-2 col-form-label" for="basic-default-company">@lang("Telephone")</label>
+            <div class="col-sm-10">
+                {!! Form::tel('telephone', null,  ['class' => 'form-control number','placeholder'=>  trans("phone must be 12 number")]) !!}
+            </div>
+          </div>
+
+          <div class="row mb-3">
             <label class="col-sm-2 col-form-label" for="basic-default-company">@lang("Address")</label>
             <div class="col-sm-10">
-                {!! Form::text('address', null,  ['readonly','class' => 'form-control','id'=>'address','placeholder'=>  trans("Select Address from map")]) !!}
+                {!! Form::text('address', null,  ['readonly','class' => 'form-control','id'=>'address','placeholder'=>  trans("Select address from map")]) !!}
             </div>
           </div>
           

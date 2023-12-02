@@ -15,7 +15,7 @@ class Customer extends Model
     ];
 
     protected $appends = [
-        'is_disabled',
+        'is_disabled',"unique_name"
     ];
 
     protected $casts = [
@@ -28,6 +28,11 @@ class Customer extends Model
     public function getIsDisabledAttribute()
     {
         return $this->trashed();
+    }
+
+    public function getUniqueNameAttribute()
+    {
+        return $this->name ." (". $this->phone.")";
     }
 
 

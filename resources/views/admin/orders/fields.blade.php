@@ -11,6 +11,12 @@
         <label class=" col-form-label" for="basic-default-company">@lang("Customer")</label>
         <div class="col-sm-10">
           {!! Form::select('customer_id',$customers, null, ['id' => 'customer_id','required','class' => 'select2 form-control','onchange'=>'fillDetatils(event)']) !!}
+          <span>
+            <a href="{{ route('customers.create') }}" class="btn">
+              <i class="bx bx-plus"></i>
+              @lang('Add new')
+            </a>
+          </span>
         </div>
       </div>
 
@@ -19,7 +25,7 @@
       <div class="mb-3">
         <label class=" col-form-label" for="basic-default-name">@lang("Address")</label>
         <div class="col-sm-10">
-          {!! Form::text('address', null, ['id'=>'address','readonly','required','class' => 'form-control','placeholder'=> trans("Address")]) !!}
+          {!! Form::text('address', null, ['id'=>'address','readonly','required','class' => 'form-control','placeholder'=> trans("Select address from map")]) !!}
         </div>
       </div>
       
@@ -45,6 +51,13 @@
       </div>
 
       <div class="mb-3">
+        <label class=" col-form-label" for="basic-default-name">@lang("Floor Number")</label>
+        <div class="col-sm-10">
+          {!! Form::text('floor_number', null, ['class' => 'form-control number','placeholder'=> trans("Floor Number")]) !!}
+        </div>
+      </div>
+
+      <div class="mb-3">
         <label class=" col-form-label" for="basic-default-name">@lang("Phone")</label>
         <div class="col-sm-10">
           {!! Form::tel('phone', null, ['id'=>'phone','readonly','class' => 'form-control','placeholder'=> trans("Phone")]) !!}
@@ -60,66 +73,10 @@
 
       
 
-      {{-- <div class="mb-3">
-        <label class=" col-form-label" for="basic-default-company">@lang("Status")</label>
-        <div class="col-sm-10">
-          {!! Form::select('status',orderStatus(), null, ['required','class' => 'select2 form-control']) !!}
-        </div>
-      </div> --}}
-
-      {{-- <div class="mb-3">
-        <label class=" col-form-label" for="basic-default-name">@lang("Block No")</label>
-        <div class="col-sm-10">
-          {!! Form::text('block_no', null, ['class' => 'form-control number','placeholder'=> trans("Block No")]) !!}
-        </div>
-      </div> --}}
-
-      <div class="mb-3">
-        <label class=" col-form-label" for="basic-default-name">@lang("Floor Number")</label>
-        <div class="col-sm-10">
-          {!! Form::text('floor_number', null, ['class' => 'form-control number','placeholder'=> trans("Floor Number")]) !!}
-        </div>
-      </div>
-
-      {{-- <div class="mb-3">
-        <label class=" col-form-label" for="basic-default-name">@lang("Apartment Number")</label>
-        <div class="col-sm-10">
-          {!! Form::number('apartment_number', null, ['class' => 'form-control','placeholder'=> trans("Apartment Number")]) !!}
-        </div>
-      </div> --}}
 
     </div>
     
     <div class="col-6">
-
-      {{-- <div class="mb-3">
-        <label class=" col-form-label" for="basic-default-company">@lang("Route")</label>
-        <div class="col-sm-10">
-          {!! Form::select('road_id',$roads, null, ['required','class' => 'select2 form-control']) !!}
-        </div>
-      </div> --}}
-
-      <div class="mb-3">
-        <label class=" col-form-label" for="basic-default-name">@lang("Visit Date")</label>
-        <div class="col-sm-10">
-          {!! Form::date('visit_date', null, ['id'=>'visit_date','required','class' => 'form-control','placeholder'=> trans("Visit date")]) !!}
-        </div>
-      </div>
-
-      <div class="mb-3">
-        <label class=" col-form-label" for="basic-default-name">@lang("Visit Time")</label>
-        <div class="col-sm-10">
-          {!! Form::text('visit_time', null, ['readonly'=>true,'id'=>'visit_time','required','class' => 'form-control','placeholder'=> trans("Visit time")]) !!}
-        </div>
-      </div>
-
-      <div class="mb-3">
-        <label class=" col-form-label" for="basic-default-name">@lang("Problem Summary")</label>
-        <div class="col-sm-10">
-          {!! Form::textarea('description', null, ['required','rows'=>8,'class' => 'form-control','placeholder'=> trans("Description")]) !!}
-        </div>
-      </div>
-
       <div class="mb-3">
         <label class=" col-form-label" for="basic-default-name">@lang("Maintenance Device")</label>
         <div class="col-sm-10">
@@ -135,6 +92,13 @@
       </div>
 
       <div class="mb-3">
+        <label class=" col-form-label" for="basic-default-name">@lang("Problem Summary")</label>
+        <div class="col-sm-10">
+          {!! Form::textarea('problem_summary', null, ['required','rows'=>8,'class' => 'form-control','placeholder'=> trans("Description")]) !!}
+        </div>
+      </div>
+
+      <div class="mb-3">
         <label class=" col-form-label" for="basic-default-name">@lang("Additional Info")</label>
         <div class="col-sm-10">
           {!! Form::text('additional_info', null, ['class' => 'form-control','placeholder'=> trans("Additional Info")]) !!}
@@ -142,12 +106,18 @@
       </div>
 
       <div class="mb-3">
-        <label class=" col-form-label" for="basic-default-name">@lang("Amount")</label>
+        <label class=" col-form-label" for="basic-default-name">@lang("Visit Date")</label>
         <div class="col-sm-10">
-          {!! Form::text('amount', null, ['class' => 'form-control number','placeholder'=> trans("Amount")]) !!}
+          {!! Form::date('visit_date', null, ['id'=>'visit_date','required','class' => 'form-control','placeholder'=> trans("Visit date")]) !!}
         </div>
       </div>
-      
+
+      <div class="mb-3">
+        <label class=" col-form-label" for="basic-default-name">@lang("Visit Time")</label>
+        <div class="col-sm-10">
+          {!! Form::text('visit_time', null, ['readonly'=>true,'id'=>'visit_time','required','class' => 'form-control','placeholder'=> trans("Visit time")]) !!}
+        </div>
+      </div>
       
     </div>
     

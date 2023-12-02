@@ -97,20 +97,6 @@
           <td> {{ number_format($item->amount, 2) }}  </td>
           <td> {{ $item->visit_time }}  </td>
           <td>
-            @if ($item->amount > 0 && $item->driver)
-                
-            <a class="btn btn-outline-dark  btn-sm pl-1" href="{{$item->pdf_link }}">
-              <i class='bx bx-printer' style="font-size: 1.2rem"></i>
-              @lang('Print Pdf')
-            </a>
-
-            <a class="btn btn-outline-dark  btn-sm pl-1" href="{{ route('orders.send.invoice',$item->id) }}">
-              <i class='bx bx-mail-send' style="font-size: 1.2rem"></i>
-              @lang('Send Invoice')
-            </a>
-
-            @endif
-
             <a class="btn btn-show btn-sm pl-1" href="{{ route('orders.show',$item->id) }}">
               <i class='bx bx-show' style="font-size: 1.2rem"></i>
               @lang('Show')

@@ -40,6 +40,11 @@ class UpdateCustomerRequest extends FormRequest
                 Rule::unique('customers')->ignore($this->route('customer'), 'id'),
                 'string','min:12','max:20'
             ],
+            'telephone' => [
+                'nullable',
+                Rule::unique('customers')->ignore($this->route('customer'), 'id'),
+                'string','min:12','max:20'
+            ],
             'address' => ['nullable','string','min:3','max:190'],
             'zone_area' => ['nullable','string','min:3','max:30'],
             'postal_code' => ['nullable','string','min:3','max:30'],

@@ -115,7 +115,7 @@ class OrderController extends Controller
     {
         $data['title'] = trans('Add New Order');
 
-        $data['customers'] = Customer::select('name','id')->pluck('name','id');
+        $data['customers'] = Customer::select('name','phone','id')->get()->pluck('unique_name','id');
 
         $data['customers']->prepend(trans('Select..'),'');
 
@@ -151,8 +151,7 @@ class OrderController extends Controller
 
             'visit_date' => 'required',
             'visit_time' => 'required',
-
-            'description' => 'required|string|min:2|max:250',
+            'problem_summary' => 'required|string|min:2|max:250',
             'address' => 'required|string|min:3',
             'customer_id' => 'required|exists:customers,id',
 
@@ -173,9 +172,9 @@ class OrderController extends Controller
             'zone_area' => 'nullable|string|max:100',
         ]);
 
-        // return $request->all();
+        $visit_time = $request->date('visit_date')->format('Y-m-d'). ' ' . $request->input('visit_time');
 
-        $validated['visit_time'] = $request->date('visit_date')->startOfDay()->addHours($request->integer('visit_time'))->format('Y-m-d H:i');
+        $validated['visit_time'] = $visit_time;
 
         Order::create($validated);
 
@@ -276,7 +275,7 @@ class OrderController extends Controller
 
         $data['title'] = trans('Edit Order');
 
-        $data['customers'] = Customer::select('name','id')->pluck('name','id');
+        $data['customers'] = Customer::select('name','phone','id')->get()->pluck('unique_name','id');
 
         $data['customers']->prepend(trans('Select..'),'');
 
@@ -302,7 +301,7 @@ class OrderController extends Controller
             'visit_date' => 'required',
             'visit_time' => 'required',
             'status' => 'nullable|numeric|max:4',
-            'description' => 'nullable|string|min:5|max:250',
+            'problem_summary' => 'nullable|string|min:5|max:250',
             'address' => 'nullable|string|min:3',
             'customer_id' => 'nullable|exists:customers,id',
 
@@ -323,7 +322,9 @@ class OrderController extends Controller
             'zone_area' => 'nullable|string|max:100',
         ]);
 
-        $validated['visit_time'] = $request->date('visit_date')->startOfDay()->addHours($request->integer('visit_time'))->format('Y-m-d H:i');
+        $visit_time = $request->date('visit_date')->format('Y-m-d'). ' ' . $request->input('visit_time');
+
+        $validated['visit_time'] = $visit_time;
 
         $order->update($validated);
 

@@ -13,4 +13,8 @@ class Device extends Model
         'id'
     ];
 
+    protected $visible = [
+        'id','name'
+    ];
+
 }

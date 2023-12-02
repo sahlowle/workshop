@@ -26,7 +26,6 @@ class UpdateRoadRequest extends FormRequest
     public function rules()
     {
         return [
-            'description' => ['nullable', 'string','min:3','max:250'],
             'driver_id' => ['nullable','exists:users,id'],
             'status' => ['nullable','in:1,2,3'],
             'orders_ids' => ['nullable','array'],

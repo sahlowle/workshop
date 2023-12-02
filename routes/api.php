@@ -5,6 +5,7 @@ use App\Http\Controllers\Api\ApiCustomerController;
 use App\Http\Controllers\Api\ApiDriverController;
 use App\Http\Controllers\Api\ApiOrderController;
 use App\Http\Controllers\Api\ApiRoadController;
+use App\Http\Controllers\Api\AppController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\PaymentController;
 use Illuminate\Http\Request;
@@ -97,5 +98,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
 Route::get('orders/pdf/{id}',[ApiOrderController::class,'printPdf'])->name('orders.pdf');
 
 Route::get('orders/available/time',[ApiOrderController::class,'getAvailableTime']);
+
+Route::get('devices',[AppController::class,'devices']);
+Route::get('questions',[AppController::class,'questions']);
 
 
