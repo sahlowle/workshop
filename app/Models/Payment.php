@@ -13,4 +13,9 @@ class Payment extends Model
         'id'
     ];
 
+    protected $hidden = [
+        'created_at',
+        'updated_at',
+    ];
+
 }

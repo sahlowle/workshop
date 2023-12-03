@@ -10,11 +10,81 @@
 </h4>
 
 <div class="row">
-
-  @if ( $order->driver)
+  <x-alert/>
     <div class="col-lg-8">
         <div class="container p-2">
-          <div class="">                
+          <div class="">  
+
+            <button type="button" class="btn btn-outline-dark  btn-sm pl-1"  data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@mdo">
+              <i class='bx bxs-cog'></i>
+              @lang('Add new item')
+            </button>
+
+
+            <div class="modal fade" id="exampleModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="staticBackdropLabel">
+                      <i class='bx bxs-cog'></i>
+                      @lang('Add new item')
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">X</button>
+                  </div>
+                  <div class="modal-body">
+                    <form method="POST" action="{{ route('orders.add-item',$order->id) }}" >
+                      @csrf
+                      <div class="row">
+                        <div class="col-xxl">
+                          <div class="mb-2">
+
+                            <div class="card-body">
+
+                              <div class="row mb-3">
+                                <label class="col-sm-2 col-form-label" for="basic-default-name"> @lang('Title') </label>
+                                <div class="col-sm-10">
+                                  <input value="{{ old('title') }}" class="form-control" placeholder="@lang('Title')" name="title" type="text" required>
+                                </div>
+                              </div>
+
+                              <div class="row mb-3">
+                                <label class="col-sm-2 col-form-label" for="basic-default-company">@lang('Quantity')</label>
+                                <div class="col-sm-10">
+                                  <input value="{{ old('quantity') }}"  class="form-control" placeholder="@lang('Quantity')" name="quantity" type="number" required>
+                                </div>
+                              </div>
+
+                              <div class="row mb-3">
+                                <label class="col-sm-2 col-form-label" for="basic-default-company">@lang('Price')</label>
+                                <div class="col-sm-10">
+                                  <input value="{{ old('price') }}" class="form-control" placeholder="12 Eur" name="price" type="number" required>
+                                </div>
+                              </div>
+
+
+                              <div class="row justify-content-end">
+                                <div class="col-sm-10">
+                                  <button class="btn btn-outline-primary m-2"
+                                    href="http://localhost:8000/admin/users/create">
+                                    <i class="bx bx-save" style="font-size: 1.5rem"></i>
+                                    Save
+                                  </button>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                      </div>
+                    </form>
+                  </div>
+                  
+                </div>
+              </div>
+            </div>
+
+            
+            @if ( $order->driver)              
             <a class="btn btn-outline-dark  btn-sm pl-1" href="{{$order->pdf_link }}">
               <i class='bx bx-printer' style="font-size: 1.2rem"></i>
               @lang('Print Pdf')
@@ -24,11 +94,12 @@
               <i class='bx bx-mail-send' style="font-size: 1.2rem"></i>
               @lang('Send Invoice')
             </a>
+            @endif
 
           </div>
         </div>
     </div>
-   @endif
+   
 
 
     <div class="col-lg-8">
@@ -153,25 +224,37 @@
     
             
             <div class="card-body">
-                <div class="d-flex justify-content-between">
-                    <h6 class="card-title m-0"> @lang('Description'): </h6>
+                <div class="p-2">
+                  <div class="d-flex justify-content-between">
+                    <h6 class="font-weight-bold"> <b>  @lang('Problem Summary'): </b> </h6>
                 </div>
-                <br>
-              {{ $order->description }}
-
+                <span> 
+                  @if ($order->problem_summary )
+                  {{ $order->problem_summary }}
+                  @else
+                  N\A
+                  @endif
+                </span>
+                </div>
               <hr>
-              <br>
-                <div class="d-flex justify-content-between">
-                    <h6 class="card-title m-0"> @lang('Technician Report'): </h6>
+                <div class="p-2">
+                  <div class="d-flex justify-content-between">
+                    <h6 class="card-title m-0"> <b>  @lang('Technician Report'): </b> </h6>
                 </div>
-                <hr>
-                <br>
-              {{ $order->report }}
 
-                <div class="d-flex justify-content-between">
-                    <h6 class="card-title m-0"> @lang('Current Technician Location'): </h6>
-                </div>
+                <span>
+                  @if ($order->report)
+                  {{ $order->report }}   
+                @else
+                    N\A
+                @endif
+                </span>
+
                 <hr>
+                </div>
+                <div class="d-flex justify-content-between">
+                    <h6 class="card-title m-0"> <b> @lang('Current Technician Location'):  </b></h6>
+                </div>
                 <br>
                 @if ($order?->road?->driver && $order->road->driver->lat && $order->road->driver->lng)
 
@@ -238,6 +321,50 @@
        
     </div>
 
+    {{-- items section  --}}
+    <div class="col-lg-12">
+      <br>
+      <div class="card">
+        <h5 class="card-header">
+          <i class='bx bx-file'></i>
+          @lang('Items')
+        </h5>
+        <div class="table-responsive text-nowrap p-4">
+          <table class="table table-hover">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th> @lang("Title") </th>
+                <th> @lang("Quantity") </th>
+                <th> @lang("Price") </th>
+              </tr>
+            </thead>
+            <tbody class="table-border-bottom-0">
+              @foreach($order->items as $item)
+                <tr>
+                  <td> {{ $loop->index + 1 }} </td>
+                  <td> {{ $item->title }} </td>
+                  <td> {{ $item->quantity }} </td>
+                  <td> {{ $item->price }} </td>
+                  <td> 
+                    <button  class="btn btn-outline-danger btn-sm pl-1" onclick="deleteForm('deleteForm{{ $item->id }}')">
+                      <i class="bx bx-trash me-1"></i>
+                      @lang('Delete')
+                      <form id="deleteForm{{ $item->id }}" action="{{ route('orders.delete-item',$item->id) }}" method="POST">
+                        @method("DELETE")
+                        @csrf
+                    </form>
+                  </button>
+                </td>
+                </tr>
+              @endforeach
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    {{-- files section --}}
     <div class="col-lg-12">
         <br>
         <div class="card">

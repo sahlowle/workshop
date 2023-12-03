@@ -40,9 +40,7 @@ class FirebaseService
 
             $response = $http->post('https://fcm.googleapis.com/fcm/send',$data);
 
-            return $response->object();
+            // return $response->object();
         }
-
-        
     }
 }

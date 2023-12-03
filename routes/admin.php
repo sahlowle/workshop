@@ -63,3 +63,7 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->midd
 Route::get('/change-lang/{lang}', [HomeController::class, 'changeLang'])->name('change-lang')->middleware('prevent-back-history');
 
 Route::view('invoice','emails.invoice',['order'=> Order::first()]);
+
+
+Route::post('/orders/add-item/{id}', [OrderController::class, 'addItem'])->name('orders.add-item')->middleware('prevent-back-history');
+Route::delete('/orders/delete-item/{id}', [OrderController::class, 'deleteItem'])->name('orders.delete-item')->middleware('prevent-back-history');

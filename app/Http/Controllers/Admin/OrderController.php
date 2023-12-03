@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Mail\SendInvoice;
 use App\Models\Customer;
+use App\Models\Item;
 use App\Models\Road;
 use App\Models\User;
 use App\Models\Order;
@@ -348,6 +349,51 @@ class OrderController extends Controller
         $order->delete();
 
         $message = trans('Successful Delete');
+
+        notify()->success($message);
+
+        return redirect()->back();
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Add Item
+    |--------------------------------------------------------------------------
+    */
+    public function addItem(Request $request,$id)
+    {
+        $validated = $request->validate([
+            'title' => 'required|string|max:120',
+            'quantity' => 'required|numeric',
+            'price' => 'required|numeric',
+        ]);
+
+        $order =  Order::findOrFail($id);
+
+        $data = $validated;
+
+        $item = $order->items()->create($data);
+
+        
+        $message = trans('Successful Added');
+
+        notify()->success($message);
+
+        return redirect()->back();
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Delete Report
+    |--------------------------------------------------------------------------
+    */
+    public function deleteItem(Request $request,$id)
+    {
+        $item =  Item::findOrFail($id);
+
+        $item->delete();
+
+        $message = trans('Successful Deleted');
 
         notify()->success($message);
 

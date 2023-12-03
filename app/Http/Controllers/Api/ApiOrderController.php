@@ -222,7 +222,7 @@ class ApiOrderController extends Controller
     */
     public function show($id)
     {
-        $data =  Order::with(['files','customer','items','devices','questions'])->find($id);
+        $data =  Order::with(['files','customer','items','devices','questions','payments'])->find($id);
         
         if (is_null($data)) {
             return $this->sendResponse(false,[],trans('Not Found'),404);
