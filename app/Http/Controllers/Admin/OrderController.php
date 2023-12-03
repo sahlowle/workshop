@@ -257,7 +257,7 @@ class OrderController extends Controller
      */
     public function show($id)
     {
-        $data['order'] = Order::with(['road.driver','customer','files'])->findOrFail($id);
+        $data['order'] =  Order::with(['files','customer','items','devices','questions','payments'])->findOrFail($id);
 
         $data['title'] = trans('Order Details');
 
