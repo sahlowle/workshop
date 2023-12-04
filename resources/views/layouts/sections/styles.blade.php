@@ -66,6 +66,11 @@
     .xdsoft_datetimepicker .xdsoft_timepicker .xdsoft_time_box >div >div{
       font-size: 22px !important;
     }
+
+    .no-data {
+        background-color: rgb(241, 239, 239);
+        text-align: center; display: table-row;
+    }
 </style>
 
 

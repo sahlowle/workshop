@@ -58,6 +58,7 @@ class Order extends Model
 
         return (float) $value;
     }
+    
     public function getPaymentMethodAttribute()
     {
         $value = $this->payment_way;
@@ -76,8 +77,6 @@ class Order extends Model
             2 => trans("Pay later") ,
             default => trans("Un Known") ,
        };
-        
-        
     }
 
     public function getTypeNameAttribute()

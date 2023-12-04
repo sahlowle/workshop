@@ -322,7 +322,7 @@
     </div>
 
     {{-- items section  --}}
-    <div class="col-lg-12">
+    <div class="col-lg-7">
       <br>
       <div class="card">
         <h5 class="card-header">
@@ -339,25 +339,67 @@
                 <th> @lang("Price") </th>
               </tr>
             </thead>
-            <tbody class="table-border-bottom-0">
-              @foreach($order->items as $item)
+            <tbody class="table-border-bottom-0 ">
+
+              @forelse($order->items as $item)
                 <tr>
                   <td> {{ $loop->index + 1 }} </td>
                   <td> {{ $item->title }} </td>
                   <td> {{ $item->quantity }} </td>
                   <td> {{ $item->price }} </td>
-                  <td> 
-                    <button  class="btn btn-outline-danger btn-sm pl-1" onclick="deleteForm('deleteForm{{ $item->id }}')">
+                  <td>
+                    <button class="btn btn-outline-danger btn-sm pl-1"
+                      onclick="deleteForm('deleteForm{{ $item->id }}')">
                       <i class="bx bx-trash me-1"></i>
                       @lang('Delete')
-                      <form id="deleteForm{{ $item->id }}" action="{{ route('orders.delete-item',$item->id) }}" method="POST">
-                        @method("DELETE")
-                        @csrf
-                    </form>
-                  </button>
-                </td>
+                        <form id="deleteForm{{ $item->id }}"
+                          action="{{ route('orders.delete-item',$item->id) }}" method="POST">
+                          @method("DELETE")
+                          @csrf
+                        </form>
+                    </button>
+                  </td>
                 </tr>
-              @endforeach
+                @empty
+                <tr class="no-data">
+                  <td colspan="4"> <h2> @lang("Data not found") </h2> </td>
+                </tr>
+                @endforelse
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    {{-- Devices section  --}}
+    <div class="col-lg-5">
+      <br>
+      <div class="card">
+        <h5 class="card-header">
+          <i class='bx bx-file'></i>
+          @lang('Devices')
+        </h5>
+        <div class="table-responsive text-nowrap p-4">
+          <table class="table table-hover">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th> @lang("Name") </th>
+              </tr>
+            </thead>
+            <tbody class="table-border-bottom-0 ">
+
+              @forelse($order->devices as $item)
+                <tr>
+                  <td> {{ $loop->index + 1 }} </td>
+                  <td> {{ $item->name }} </td>
+                    
+                </tr>
+                @empty
+                <tr class="no-data">
+                  <td colspan="4"> <h2> @lang("Data not found") </h2> </td>
+                </tr>
+                @endforelse
             </tbody>
           </table>
         </div>
@@ -365,7 +407,7 @@
     </div>
 
     {{-- files section --}}
-    <div class="col-lg-12">
+    <div class="col-lg-6">
         <br>
         <div class="card">
             <h5 class="card-header">
@@ -382,7 +424,7 @@
                   </tr>
                 </thead>
                 <tbody class="table-border-bottom-0">
-                  @foreach ($order->files as $item)
+                  @forelse ($order->files as $item)
                   <tr>
                     <td> {{ $loop->index + 1 }}  </td>
                     <td> {{ $item->file_name }}  </td>
@@ -393,11 +435,86 @@
                          </a>
                     </td>
                   </tr>
-                  @endforeach
+                  @empty
+                  <tr class="no-data">
+                    <td colspan="4"> <h2> @lang("Data not found") </h2> </td>
+                  </tr>
+                  @endforelse
                 </tbody>
               </table>
             </div>
         </div>
+    </div>
+
+    {{-- Payments section  --}}
+    <div class="col-lg-6">
+      <br>
+      <div class="card">
+        <h5 class="card-header">
+          <i class='bx bx-file'></i>
+          @lang('Payments')
+        </h5>
+        <div class="table-responsive text-nowrap p-4">
+          <table class="table table-hover">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th> @lang("Paid Amount") </th>
+                <th> @lang("Payment method") </th>
+                <th> @lang("Payment Id") </th>
+              </tr>
+            </thead>
+            <tbody class="table-border-bottom-0 ">
+
+              @forelse($order->payments as $item)
+                <tr>
+                  <td> {{ $loop->index + 1 }} </td>
+                  <td> {{ $item->paid_amount }} </td>
+                  <td> {{ $item->payment_method }} </td>
+                  <td> {{ $item->payment_id }} </td>
+                </tr>
+                @empty
+                <tr class="no-data">
+                  <td colspan="4"> <h2> @lang("Data not found") </h2> </td>
+                </tr>
+                @endforelse
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    
+    {{-- Payments section  --}}
+    <div class="col-lg-6">
+      <br>
+      <div class="card">
+        <h5 class="card-header">
+          <i class='bx bx-file'></i>
+          @lang('Questions')
+        </h5>
+        <div class="table-responsive text-nowrap p-4">
+          <table class="table table-hover">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th> @lang("Name") </th>
+              </tr>
+            </thead>
+            <tbody class="table-border-bottom-0 ">
+
+              @forelse($order->questions as $item)
+                <tr>
+                  <td> {{ $loop->index + 1 }} </td>
+                  <td> {{ $item->name }} </td>
+                @empty
+                <tr class="no-data">
+                  <td colspan="4"> <h2> @lang("Data not found") </h2> </td>
+                </tr>
+                @endforelse
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
 
 
