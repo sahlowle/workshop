@@ -21,6 +21,8 @@ class Order extends Model
     ];
 
     protected $casts = [
+        'is_amount_received' => 'boolean',
+        'is_customer_confirm' => 'boolean',
         'is_paid' => 'boolean',
         'status' => 'integer',
         'floor_number' => 'integer',

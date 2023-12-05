@@ -110,9 +110,22 @@
             <div class="card-body">
                 <ul class="list-group">
                     <li class="list-group-item d-flex justify-content-between align-items-center">
-                        @lang("Refrence No")
+                        @lang("Reference No")
                         <span class="fw-bold"> {{ $order->reference_no }} </span>
                     </li>
+                    @if ($order->type == 3)   
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        @lang("Pickup Reference No")
+                        <span class="fw-bold"> {{ $order->pickup_order_ref }} </span>
+                    </li>
+                    @endif
+
+                    @if ($order->type == 3)   
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        @lang("Guarantee")
+                        <span class="fw-bold"> {{ $order->guarantee }} </span>
+                    </li>
+                    @endif
 
                     <li class="list-group-item d-flex justify-content-between align-items-center">
                       @lang("Visit time")
@@ -162,7 +175,19 @@
                     </li> --}}
 
                     <li class="list-group-item d-flex justify-content-between align-items-center">
-                        @lang("Amount")   <span>{{ $order->amount }} </span>
+                      @lang("Max Maintenance Price")   <span>{{ $order->max_maintenance_price }} </span>
+                    </li>
+
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        @lang("Vat")   <span>{{ $order->vat }} </span>
+                    </li>
+
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        @lang("Subtotal")   <span>{{ $order->subtotal }} </span>
+                    </li>
+
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        @lang("Total")   <span>{{ $order->total }} </span>
                     </li>
 
                     <li class="list-group-item d-flex justify-content-between align-items-center">
@@ -210,6 +235,36 @@
                     </li>
                     @endif
 
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        @lang("Paid amount")   
+                        <span>
+                            {{ $order->paid_amount }}
+                        </span>
+                    </li>
+
+
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                      @lang("Is amount received")
+                      <span> 
+                          @if ($order->is_amount_received)
+                          <i class='text-success bx bx-check-circle' style="font-size: 2rem"></i>
+                          @else
+                          <i class='text-danger bx bx-x-circle' style="font-size: 2rem"></i>
+                          @endif
+                      </span>
+                  </li>
+
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                      @lang("Is customer confirm")
+                      <span> 
+                          @if ($order->is_customer_confirm)
+                          <i class='text-success bx bx-check-circle' style="font-size: 2rem"></i>
+                          @else
+                          <i class='text-danger bx bx-x-circle' style="font-size: 2rem"></i>
+                          @endif
+                      </span>
+                  </li>
+
                     
                     
                     
@@ -224,18 +279,32 @@
     
             
             <div class="card-body">
-                <div class="p-2">
-                  <div class="d-flex justify-content-between">
-                    <h6 class="font-weight-bold"> <b>  @lang('Problem Summary'): </b> </h6>
+              <div class="p-2">
+                <div class="d-flex justify-content-between">
+                  <h6 class="font-weight-bold"> <b> @lang('Problem Summary'): </b> </h6>
                 </div>
-                <span> 
-                  @if ($order->problem_summary )
-                  {{ $order->problem_summary }}
+                <span>
+                  @if($order->problem_summary )
+                    {{ $order->problem_summary }}
                   @else
-                  N\A
+                    N\A
                   @endif
                 </span>
+              </div>
+              <hr>
+
+              <div class="p-2">
+                <div class="d-flex justify-content-between">
+                  <h6 class="font-weight-bold"> <b> @lang('Information'): </b> </h6>
                 </div>
+                <span>
+                  @if($order->information )
+                    {{ $order->information }}
+                  @else
+                    N\A
+                  @endif
+                </span>
+              </div>
               <hr>
                 <div class="p-2">
                   <div class="d-flex justify-content-between">
@@ -296,6 +365,8 @@
             <p class=" mb-1"> <i class='bx bx-envelope'></i>: {{ $order->customer->email }} </p>
             <p class=" mb-0"> <i class='bx bxs-phone'></i>: {{ $order->customer->phone }}</p>
             <p class=" mb-0"> <i class='bx bxs-phone'></i>: {{ $order->order_phone_number }}</p>
+            <p class=" mb-0"> <b> @lang('Postal Code') </b> : {{ $order->postal_code }}</p>
+            <p class=" mb-0"> <b> @lang('Zone Area') </b> : {{ $order->zone_area ? $order->zone_area : "N\A" }}</p>
           </div>
         </div>
     
@@ -328,7 +399,12 @@
         <h5 class="card-header">
           <i class='bx bx-file'></i>
           @lang('Items')
+          <button type="button" style="float: right" class="btn btn-outline-dark  btn-sm pl-1"  data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@mdo">
+            <i class='bx bxs-cog'></i>
+            @lang('Add new item')
+          </button>
         </h5>
+       
         <div class="table-responsive text-nowrap p-4">
           <table class="table table-hover">
             <thead>

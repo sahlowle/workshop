@@ -24,6 +24,7 @@
 
 @yield('vendor-script')
 <!-- END: Page Vendor JS-->
+
 <!-- BEGIN: Theme JS-->
 <script src="{{ asset(mix('assets/js/main.js')) }}"></script>
 
@@ -35,7 +36,8 @@
 
       Swal.fire({
         title: '@lang("Are you sure?")',
-        text: "@lang("You won't to delete this!")",
+        text: "@lang("
+        You won 't to delete this!")",
         icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
@@ -48,16 +50,16 @@
       })
     }
 
-    $(document).ready(function() {
-      
-      new DataTable('.datatable-test',{
+    $(document).ready(function () {
+
+      new DataTable('.datatable-test', {
         info: false,
         searching: false,
         ordering: false,
         paging: false,
         dom: 'Bfrtip',
         buttons: [
-        'copy', 'excel', 'pdf','print'
+          'copy', 'excel', 'pdf', 'print'
         ]
       });
 
@@ -68,11 +70,11 @@
     });
 
     $('.number').keypress(function (event) {
-    var keycode = event.which;
-    if (!(event.shiftKey == false && (keycode == 46 || keycode == 8 || keycode == 37 || keycode == 39 || (keycode >= 48 && keycode <= 57)))) {
+      var keycode = event.which;
+      if (!(event.shiftKey == false && (keycode == 46 || keycode == 8 || keycode == 37 || keycode == 39 || (keycode >= 48 && keycode <= 57)))) {
         event.preventDefault();
-    }
-});
+      }
+    });
     
 </script>
 
@@ -87,3 +89,5 @@
 @stack('datetimejs')
 
 @notifyJs
+
+

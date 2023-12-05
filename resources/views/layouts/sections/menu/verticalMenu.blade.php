@@ -7,8 +7,8 @@
         <img src="{{ asset('assets/img/logo.png') }}" style="max-height: 45px">
         {{-- @include('_partials.macros',["width"=>25,"withbg"=>'#696cff']) --}}
       </span>
-      {{-- <span class="app-brand-text demo menu-text fw-bold ms-2">{{config('variables.templateName')}}</span> --}}
     </a>
+    
 
     <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-autod-block d-xl-none">
       <i class="bx bx-chevron-left bx-sm align-middle"></i>
@@ -74,9 +74,16 @@
           </a> 
         </li>
 
+        @php
+            $unpaidOrder = \App\Models\Order::unpaid()->has('activeCustomer')->count();
+        @endphp
+
         <li @class(['menu-item', 'active' => request()->routeIs('orders.unpaid') ])>
           <a href="{{ route('orders.unpaid') }}" class="menu-link" >            
-            <div> @lang('Payment alert (orders)') </div>
+            <div> 
+              @lang('Payment alert')
+              <span class="badge rounded-pill bg-warning text-dark"> {{ $unpaidOrder }} </span>
+            </div>
           </a> 
         </li>
       </ul>
@@ -127,3 +134,23 @@
   </ul>
 
 </aside>
+
+
+    <script>
+          var state = "expanded";
+
+          function collapseSideBar() {
+            if (state == "expanded") {
+              $('.layout-menu').css({maxWidth: "4rem"});
+              $('.layout-page').css({paddingLeft: "2rem"});
+              state = "minimized";
+            } else {
+              if (state == "minimized") {
+                $('.layout-menu').removeAttr("style");
+                $('.layout-page').removeAttr("style");
+                state = "expanded";
+              }
+            }
+
+          }
+    </script>

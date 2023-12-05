@@ -36,6 +36,16 @@ $navbarDetached = ($navbarDetached ?? '');
 
       <div class="navbar-nav-right d-flex align-items-center" id="navbar-collapse">
         <!-- Search -->
+        <div class="navbar-nav align-items-center">
+          <div class="nav-item d-flex align-items-center">
+            <button class="ml-4" id="navbar-toggle" onclick="collapseSideBar()"> 
+              <i class='bx bx-menu h1' ></i> 
+            </button>
+          </div>
+        </div>
+        <!-- /Search -->
+
+        <!-- Search -->
         {{-- <div class="navbar-nav align-items-center">
           <div class="nav-item d-flex align-items-center">
             <i class="bx bx-search fs-4 lh-0"></i>
@@ -43,6 +53,7 @@ $navbarDetached = ($navbarDetached ?? '');
           </div>
         </div> --}}
         <!-- /Search -->
+
         <ul class="navbar-nav flex-row align-items-center ms-auto">
           <li class="nav-item navbar-dropdown dropdown-language dropdown me-2 me-xl-0 p-4">
             <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown">
