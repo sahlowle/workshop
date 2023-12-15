@@ -219,7 +219,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($order->reports as $item)
+                    @foreach ($order->items as $item)
                     <tr>
                         <td> {{ $item->title }} </td>
                         <td> {{ $item->description }} </td>
@@ -261,8 +261,8 @@
                         </td>
                         
                         <td class="border-box">
-                            @if ($order->reports->isNotEmpty())
-                                {{ $order->reports->sum('price')  * 0.19 }}
+                            @if ($order->items->isNotEmpty())
+                                {{ $order->items->sum('price')  * 0.19 }}
                             @else
                                 0.00
                             @endif
@@ -304,8 +304,8 @@
                         
                         <td class="border-box border-1 background-0e69a8">
                             <div>
-                                @if ($order->reports->isNotEmpty())
-                                <span>  {{ $order->reports->sum('price')  - ( $order->reports->sum('price')  * 0.19) }} D</span>
+                                @if ($order->items->isNotEmpty())
+                                <span>  {{ $order->items->sum('price')  - ( $order->items->sum('price')  * 0.19) }} D</span>
                                 @else
                                 0.00
                                 @endif

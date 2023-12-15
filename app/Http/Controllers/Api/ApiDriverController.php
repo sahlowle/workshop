@@ -25,7 +25,7 @@ class ApiDriverController extends Controller
 
         if ($request->filled('search_text')) {
             $search_text = $request->search_text;
-            $columns = ['name','phone','email','address'];
+            $columns = ['name','phone'];
 
             foreach($columns as $key => $column){
                 if ($key == 0) {

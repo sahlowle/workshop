@@ -24,6 +24,7 @@ class Order extends Model
         'is_amount_received' => 'boolean',
         'is_customer_confirm' => 'boolean',
         'is_paid' => 'boolean',
+        'is_pickup' => 'boolean',
         'status' => 'integer',
         'floor_number' => 'integer',
         'apartment_number' => 'integer',
@@ -31,6 +32,12 @@ class Order extends Model
         'lng' => 'float',
         'visit_time' =>  'datetime:Y-m-d H:i',
     ];
+
+    
+    public function guarantee()
+    {
+        return $this->belongsTo(Guarantee::class, 'guarantee_id');
+    }
 
    
     public function devices()
@@ -48,7 +55,7 @@ class Order extends Model
         return $query->where([
             'is_paid' => false,
             'payment_way' => 3,
-            'status' => 3
+            'status' => 4
         ]);
     }
 
@@ -76,7 +83,7 @@ class Order extends Model
         return match ((int)$value) {
             1 => trans("Cash") ,
             2 => trans("Online") ,
-            2 => trans("Pay later") ,
+            3 => trans("Pay later") ,
             default => trans("Un Known") ,
        };
     }
@@ -104,7 +111,7 @@ class Order extends Model
     public function getVisitDateAttribute()
     {
         if (! is_null($this->visit_time)) {
-            return $this->visit_time->format('Y-m-d');
+            return $this->visit_time->format('d.m.Y');
 
         }
         return $this->visit_time;
@@ -118,6 +125,8 @@ class Order extends Model
         }
         return $this->visit_time;
     }
+
+
 
     public function getStatusNameAttribute()
     {
@@ -140,16 +149,20 @@ class Order extends Model
         
         return match ((int)$value) {
              1 => "text-secondary" ,
-             2 => "text-warning" ,
-             3 => "text-success" ,
-             4 => "text-danger" ,
+             2 => "text-info" ,
+             3 => "text-warning" ,
+             4 => "text-success",
+             0 => "text-danger",
              default => "text-secondary" ,
         };
     }
 
     public function getPaymentFileAttribute($value)
     {
-        return url("")."/".$value;
+        if (! is_null($value)) {
+            return url("")."/".$value;
+        }
+        return null;
     }
 
     
@@ -158,6 +171,22 @@ class Order extends Model
         return $this->belongsTo(Customer::class, 'customer_id')->withTrashed()->withDefault([
             'name' => trans('No Customer'),
         ]);
+    }
+
+    public function pickupAddress()
+    {
+        return $this->hasOne(PickupAddress::class, 'order_id', 'id');
+    }
+    
+    public function pickupOrder()
+    {
+        return $this->belongsTo(Order::class, 'pickup_order_ref', 'reference_no');
+    }
+
+    
+    public function user()
+    {
+        return $this->hasOne(User::class, 'foreign_key', 'local_key');
     }
 
     public function scopePickup($query)
@@ -231,7 +260,13 @@ class Order extends Model
 
                 if ($order->is_paid && $order->is_paid != $order->getOriginal('is_paid')) {
                     $order->load('customer');
-                    Mail::to($order->customer->email)->send(new SendInvoice($order));
+
+                    $blade = "reports.pickup";
+                    if ($order->type == 3) {
+                        $blade = "reports.drop-off";
+                    }
+
+                    Mail::to($order->customer->email)->send(new SendInvoice($order,$blade));
     
                     $tokens = User::admins()->pluck('fcm_token');
     

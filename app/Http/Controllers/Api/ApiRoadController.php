@@ -77,8 +77,8 @@ class ApiRoadController extends Controller
         $data = $request->validated();
 
         if ($request->isNotFilled('driver_id')) {
-            $driver_id = getAvailableDrivers()->first();
-            $data['driver_id'] = $driver_id ? $driver_id : null;
+            $driver_id = getAvailableDrivers() ? getAvailableDrivers()->first(): null;
+            $data['driver_id'] = $driver_id;
         }
 
         $road = Road::create($data);
@@ -91,7 +91,7 @@ class ApiRoadController extends Controller
         $status = (int)$road->status;
 
         if ($status == 2) {
-            changeOrderStatus($road->id,2);
+            changeOrderStatusToAssigned($road->id);
         }
 
         $message = trans('Successful Added');
@@ -136,22 +136,35 @@ class ApiRoadController extends Controller
 
         if ($request->filled('orders_ids')) {
 
-            $road->orders()->where('status','!=',3)->update([ 'status' => 1 ]);
+            $new_orders = $request->orders_ids;
+
+
+            if ($road->orders->isNotEmpty()) {
+                $exist_orders = $road->orders->pluck('id');
+
+                $out_orders = $exist_orders->diff($new_orders)->toArray();
+
+                Order::whereIn('id',$out_orders)->update([
+                    'status' => 1
+                ]); 
+
+            }
 
             $road->orders()->update([
                 'road_id' => null,
                 'driver_id' => null,
             ]);
 
-            Order::whereIn('id',$request->orders_ids)->update([
+            Order::whereIn('id',$new_orders)->update([
                 'road_id' => $road->id,
                 'driver_id' => $road->driver_id,
             ]); 
         }
 
         $status = (int)$road->status;
+
         if ($status == 2) {
-            changeOrderStatus($road->id,2);
+            changeOrderStatusToAssigned($road->id);
         }
     
         $message = trans('Successful Updated');

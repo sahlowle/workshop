@@ -20,6 +20,7 @@
     "laravel/ui": "^4.2",
     "laravelcollective/html": "^6.4",
     "mckenziearts/laravel-notify": "^2.4",
+    "spatie/browsershot": "^3.60",
     "symfony/polyfill-iconv": "^1.28"
   },
   "require-dev": {

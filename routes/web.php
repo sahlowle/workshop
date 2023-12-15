@@ -1,7 +1,10 @@
 <?php
 
 use App\Http\Controllers\Admin\DataBaseBackupController;
+use App\Models\Device;
+use App\Models\Guarantee;
 use App\Models\Order;
+use App\Models\Question;
 use App\Models\Road;
 use App\Models\User;
 use App\Services\TimeSlot;
@@ -43,7 +46,13 @@ Route::get('restart-system-from-scratch',function() {
 
     foreach ($tables as $key => $table) {
         $name = $table->$keyName;
-        if ($name == "telescope_entries" || $name == "telescope_entries_tags" ||$name == "telescope_monitoring" ) {
+        if ($name == "telescope_entries" 
+        || $name == "telescope_entries_tags" 
+        ||$name == "telescope_monitoring"
+        ||$name == "questions"
+        ||$name == "guarantees"
+        ||$name == "devices"
+        ) {
             
         } else{
             DB::table($name)->truncate();
@@ -69,6 +78,44 @@ Route::get('optimize/clear',function() {
 
     Artisan::call('optimize:clear');
     return "<h1> Cached Successful </h1>";
+    
+});
+
+Route::get('pdf',function() {
+
+    $order = Order::has('road')->where('type',1)->first();
+    
+    $order->load(['customer','driver','files','customer','items','devices','questions','payments']);
+
+    $order->driver = $order->road->driver;
+    
+    $data['order'] = $order;
+
+    $data['devices'] = Device::all();
+    $data['questions'] = Question::all();
+    $data['guarantees'] = Guarantee::all();
+    
+    return view('reports.pickup',$data);
+    
+});
+
+Route::get('wael/pdf',function() {
+
+    $order = Order::has('road')->where('type',1)->first();
+    
+    $order->load(['customer','driver','files','customer','items','devices','questions','payments']);
+
+    $order->driver = $order->road->driver;
+    
+    $data['order'] = $order;
+
+    $data['devices'] = Device::all();
+    $data['questions'] = Question::all();
+    $data['guarantees'] = Guarantee::all();
+
+    $pdf = Pdf::loadView('pdf',$data);
+        
+    return $pdf->stream('invoice.pdf');
     
 });
 

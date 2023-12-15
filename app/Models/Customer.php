@@ -30,9 +30,23 @@ class Customer extends Model
         return $this->trashed();
     }
 
+    public function getNameAttribute($value)
+    {
+        if (is_null($value) || empty($value)) {
+            return $this->company_name;     
+        }
+
+        return $value;
+    }
+
     public function getUniqueNameAttribute()
     {
-        return $this->name ." (". $this->phone.")";
+        $name = $this->name;
+
+        if (is_null($name) || empty($name)) {
+           $name = $this->company_name;
+        }
+        return $name ." (". $this->phone.")";
     }
 
 

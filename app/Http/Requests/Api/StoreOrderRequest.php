@@ -27,14 +27,14 @@ class StoreOrderRequest extends FormRequest
     {
         return [
             'visit_time' => ['required', 'date_format:Y-m-d H:i'],
-            'problem_summary' => ['required', 'string','min:3','max:250'],
-            'address' => ['required', 'string','min:3','max:250'],
+            'problem_summary' => ['required', 'string','max:250'],
+            'address' => ['required', 'string','max:250'],
             'maintenance_device' => ['required', 'string','max:250'],
             'brand' => ['required', 'string','max:250'],
-            'additional_info' => ['nullable', 'string','min:3','max:250'],
+            'additional_info' => ['nullable', 'string','max:250'],
             'block_no' => ['nullable', 'string','max:250'],
             'order_phone_number' => ['nullable', 'string','min:12','max:20'],
-            'floor_number' => ['nullable', 'string','min:1','max:250'],
+            'floor_number' => ['nullable', 'string','max:250'],
             'apartment_number' => ['nullable', 'string','max:250'],
             'lat' => ['required','numeric'],
             'lng' => ['required','numeric'],

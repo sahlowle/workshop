@@ -38,7 +38,7 @@ $navbarDetached = ($navbarDetached ?? '');
         <!-- Search -->
         <div class="navbar-nav align-items-center">
           <div class="nav-item d-flex align-items-center">
-            <button class="ml-4" id="navbar-toggle" onclick="collapseSideBar()"> 
+            <button class="mt-3" id="navbar-toggle" onclick="collapseSideBar()"> 
               <i class='bx bx-menu h1' ></i> 
             </button>
           </div>

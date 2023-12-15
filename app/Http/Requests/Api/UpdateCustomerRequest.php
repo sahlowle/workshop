@@ -27,9 +27,9 @@ class UpdateCustomerRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => ['nullable', 'string','min:3','max:80'],
-            'company_name' => ['nullable', 'string','min:3','max:120'],
-            'part_of_building' => ['nullable', 'string','min:3','max:80'],
+            'name' => ['nullable', 'string','max:80'],
+            'company_name' => ['nullable', 'string','max:120'],
+            'part_of_building' => ['nullable', 'string','max:80'],
             'email' => [
                 'nullable','email',
                 Rule::unique('customers')->ignore($this->route('customer'), 'id'),
@@ -45,10 +45,10 @@ class UpdateCustomerRequest extends FormRequest
                 Rule::unique('customers')->ignore($this->route('customer'), 'id'),
                 'string','min:12','max:20'
             ],
-            'address' => ['nullable','string','min:3','max:190'],
-            'zone_area' => ['nullable','string','min:3','max:30'],
-            'postal_code' => ['nullable','string','min:3','max:30'],
-            'city' => ['nullable','string','min:3','max:30'],
+            'address' => ['nullable','string','max:190'],
+            'zone_area' => ['nullable','string','max:30'],
+            'postal_code' => ['nullable','string','max:30'],
+            'city' => ['nullable','string','max:30'],
             'lat' => ['nullable','max:100'],
             'lng' => ['nullable','max:100'],
         ];

@@ -66,11 +66,14 @@ class Road extends Model
 
                 $user = User::find($road->driver_id);
                 $token = $user->fcm_token;
+                
 
                 FirebaseService::sendNotification(trans('You have a new route',[], $user->lang),[
                     'id' => $road->id,
                     'type' => 'New Route',
                 ],collect([$token]));
+
+                // $road->orders()->update([ 'driver_id' => $road->driver_id]);
 
                 // $road->orders()->update([ 'status' => 2]);
             }
@@ -90,6 +93,8 @@ class Road extends Model
                     'type' => trans('New Route'),
                 ],collect([$token]));
 
+                $road->orders()->update([ 'driver_id' => $road->driver_id]);
+
             }
         });
 
@@ -98,12 +103,18 @@ class Road extends Model
 
             if ($status == 1 && ! is_null($road->driver_id)) {
                 $road->status = 2; // on progress
+                
+                $road->orders()->update([ 'driver_id' => $road->driver_id]);
+
                 $token = User::find($road->driver_id)->fcm_token;
 
-                FirebaseService::sendNotification(trans('You have a new route'),[
+                FirebaseService::sendNotification(trans('You have a new route'),
+                [
                     'id' => $road->id,
                     'type' => 'New Route',
-                ],collect([$token]));
+                ],
+                collect([$token]) );
+                
             } elseif ($road->driver_id != $road->getOriginal('driver_id')) {
                 $token = User::find($road->driver_id)->fcm_token;
 

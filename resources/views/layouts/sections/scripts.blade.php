@@ -36,13 +36,12 @@
 
       Swal.fire({
         title: '@lang("Are you sure?")',
-        text: "@lang("
-        You won 't to delete this!")",
+        text: "@lang('You want this!')",
         icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
         cancelButtonColor: '#d33',
-        confirmButtonText: '@lang("Yes, delete it!")'
+        confirmButtonText: '@lang("Yes!")'
       }).then((result) => {
         if (result.isConfirmed) {
           document.getElementById(id).submit();

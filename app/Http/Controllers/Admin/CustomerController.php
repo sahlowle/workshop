@@ -58,12 +58,12 @@ class CustomerController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'name' => 'required|string|min:3',
-            'company_name' => 'required|string|min:3',
-            'part_of_building' => 'nullable|string|min:3',
+            'name' => 'required_if:company_name,null',
+            'company_name' => 'required_if:name,null',
+            'part_of_building' => 'nullable|string',
             'email' => 'nullable|email|unique:customers,email',
             'phone' => 'required|unique:customers|min:12|max:20',
-            'telephone' => 'required|unique:customers|min:12|max:20',
+            'telephone' => 'nullable|unique:customers|min:7|max:20',
             'address' => 'required|string|max:100',
             'zone_area' => 'required|string|max:30',
             'postal_code' => 'nullable|string|max:30',
@@ -125,9 +125,9 @@ class CustomerController extends Controller
         $user = Customer::findOrFail($id);
 
         $validated = $request->validate([
-            'name' => 'nullable|string|min:3',
-            'company_name' => 'nullable|string|min:3',
-            'part_of_building' => 'nullable|string|min:3',
+            'name' => 'nullable|string',
+            'company_name' => 'nullable|string',
+            'part_of_building' => 'nullable|string',
             'email' => 'nullable|email|unique:customers,email,'.$id,
             'phone' => 'nullable|min:12|max:20|unique:customers,phone,'.$id,
             'telephone' => 'nullable|min:12|max:20|unique:customers,telephone,'.$id,

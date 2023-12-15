@@ -4,7 +4,7 @@
   <div class="app-brand demo mb-4">
     <a href="{{url('/')}}" class="app-brand-link">
       <span class="app-brand-logo demo">
-        <img src="{{ asset('assets/img/logo.png') }}" style="max-height: 45px">
+        <img id="app_logo" src="{{ asset('assets/img/logo.png') }}" style="max-height: 45px">
         {{-- @include('_partials.macros',["width"=>25,"withbg"=>'#696cff']) --}}
       </span>
     </a>
@@ -28,31 +28,15 @@
       </a>      
     </li>
 
-    <li @class(['menu-item', 'active open' => request()->routeIs('roads*') ]) >
-      <a href="javascript:void(0);" class="menu-link menu-toggle" >
-       
-        <div> 
-          <i class='menu-icon bx bx-map-alt'></i>
-          @lang('Routes')
-        </div>
-      </a>
-
-      <ul class="menu-sub">
-        <li @class(['menu-item', 'active' => request()->routeIs('roads.today') ])>
-          <a href="{{ route('roads.today') }}" class="menu-link" >            
-            <div> @lang('Today Routes') </div>
-          </a> 
-        </li>
+    <li @class(['menu-item', 'active' => request()->routeIs('customers*') ])>
+      <a href="{{ route('customers.index') }}" class="menu-link" >
         
-        <li @class(['menu-item', 'active' => request()->routeIs('roads.index') ])>
-          <a href="{{ route('roads.index') }}" class="menu-link" >            
-            <div> @lang('All Routes') </div>
-          </a> 
-        </li>
-      </ul>
-
+        <i class='menu-icon bx bx-happy'></i>
+        
+        <div> @lang('Customers') </div>
+      </a>      
     </li>
-    
+
     <li @class(['menu-item', 'active open' => request()->routeIs('orders*') ]) >
       <a href="javascript:void(0);" class="menu-link menu-toggle" >
        
@@ -90,6 +74,33 @@
 
     </li>
 
+    <li @class(['menu-item', 'active open' => request()->routeIs('roads*') ]) >
+      <a href="javascript:void(0);" class="menu-link menu-toggle" >
+       
+        <div> 
+          <i class='menu-icon bx bx-map-alt'></i>
+          @lang('Routes')
+        </div>
+      </a>
+
+      <ul class="menu-sub">
+        <li @class(['menu-item', 'active' => request()->routeIs('roads.today') ])>
+          <a href="{{ route('roads.today') }}" class="menu-link" >            
+            <div> @lang('Today Routes') </div>
+          </a> 
+        </li>
+        
+        <li @class(['menu-item', 'active' => request()->routeIs('roads.index') ])>
+          <a href="{{ route('roads.index') }}" class="menu-link" >            
+            <div> @lang('All Routes') </div>
+          </a> 
+        </li>
+      </ul>
+
+    </li>
+    
+    
+
    
 {{-- 
     <li @class(['menu-item', 'active' => request()->routeIs('orders*') ])>
@@ -101,14 +112,7 @@
       </a>      
     </li> --}}
 
-    <li @class(['menu-item', 'active' => request()->routeIs('customers*') ])>
-      <a href="{{ route('customers.index') }}" class="menu-link" >
-        
-        <i class='menu-icon bx bx-happy'></i>
-        
-        <div> @lang('Customers') </div>
-      </a>      
-    </li>
+    
 
     <li @class(['menu-item', 'active' => request()->routeIs('drivers*') ])>
       <a href="{{ route('drivers.index') }}" class="menu-link" >
@@ -143,11 +147,16 @@
             if (state == "expanded") {
               $('.layout-menu').css({maxWidth: "4rem"});
               $('.layout-page').css({paddingLeft: "2rem"});
+
+              $("#app_logo").attr("src","{{ asset('small-logo.jpg') }}");
+              $(".app-brand").css({"padding-left": "1rem"});
               state = "minimized";
             } else {
               if (state == "minimized") {
                 $('.layout-menu').removeAttr("style");
                 $('.layout-page').removeAttr("style");
+                $("#app_logo").attr("src","{{ asset('assets/img/logo.png') }}");
+                $(".app-brand").css({"padding-left": "2rem"});
                 state = "expanded";
               }
             }

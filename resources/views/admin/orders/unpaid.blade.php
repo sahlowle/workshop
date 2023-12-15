@@ -23,19 +23,22 @@
           <th> @lang("Refrence No") </th>
           <th> @lang("Customer") </th>
           <th> @lang("Status") </th>
-          <th> @lang("Amount") </th>
+          <th> @lang("Due Amount") </th>
           <th> @lang("Date") </th>
           <th> @lang("Actions") </th>
         </tr>
       </thead>
       <tbody class="table-border-bottom-0">
-        @foreach ($data as $item)
+        @forelse ($data as $item)
         <tr>
           <td> {{ $loop->index + 1 }}  </td>
           <td> {{ $item->reference_no }}  </td>
           <td> {{ $item->customer->name }}  </td>
-          <td> {{ $item->status_name }}  </td>
-          <td> {{ $item->amount ? $item->amount : 0 }}  </td>
+          <td> 
+            <i class='bx bxs-circle {{ $item->status_color }}'></i>
+            {{ $item->status_name }}
+          </td>
+          <td> {{ $item->total - $item->paid_amount }}  </td>
           <td>
             {{ $item->created_at->diffForHumans() }}
             |
@@ -49,7 +52,11 @@
 
           </td>
         </tr>
-        @endforeach
+        @empty
+        <tr class="no-data">
+          <td colspan="7"> <h2> @lang("Data not found") </h2> </td>
+        </tr>
+        @endforelse
       </tbody>
     </table>
   </div>

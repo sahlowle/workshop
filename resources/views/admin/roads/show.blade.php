@@ -26,7 +26,8 @@
                         @lang("Status")
                         <span >
                             <i class='bx bxs-circle {{ $road->status_color }}'></i>
-                            {{ $road->status_name }} </span>
+                            {{ $road->status_name }}
+                        </span>
                     </li>
 
                     <li class="list-group-item d-flex justify-content-between align-items-center">
@@ -35,7 +36,7 @@
 
                     @if ($road->driver)
                     <li class="list-group-item d-flex justify-content-between align-items-center">
-                      @lang("Driver")
+                      @lang("Technician")
                       <span>
                         <a target="_blank" href="https://maps.google.com/?q={{ $road->driver->lat }},{{ $road->driver->lng }}" class="btn btn-sm btn-primary" >
                           <i class='bx bxs-map'></i>

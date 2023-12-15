@@ -67,6 +67,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     /* |------ orders report routes ---------| */
     Route::post('orders/add-item/{id}',[ApiOrderController::class,'addItem']);
     Route::delete('orders/delete-item/{id}',[ApiOrderController::class,'deleteItem']);
+    Route::post('orders/cancel/{id}',[ApiOrderController::class,'cancelOrder']);
 
      /* |------ orders get available routes ---------| */
     Route::get('orders/available/time',[ApiOrderController::class,'getAvailableTime']);
@@ -101,5 +102,6 @@ Route::get('orders/available/time',[ApiOrderController::class,'getAvailableTime'
 
 Route::get('devices',[AppController::class,'devices']);
 Route::get('questions',[AppController::class,'questions']);
+Route::get('guarantees',[AppController::class,'guarantees']);
 
 

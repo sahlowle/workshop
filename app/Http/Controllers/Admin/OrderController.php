@@ -5,10 +5,13 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Mail\SendInvoice;
 use App\Models\Customer;
+use App\Models\Device;
+use App\Models\Guarantee;
 use App\Models\Item;
 use App\Models\Road;
 use App\Models\User;
 use App\Models\Order;
+use App\Models\Question;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -37,7 +40,7 @@ class OrderController extends Controller
         if ($request->filled('search_text')) {
             $search_text = $request->search_text;
 
-            $columns = ['reference_no','address','maintenance_device','brand','amount','order_phone_number'];
+            $columns = ['reference_no','address','maintenance_device','brand','order_phone_number'];
 
             foreach($columns as $key => $column){
                 if ($key == 0) {
@@ -77,7 +80,7 @@ class OrderController extends Controller
         if ($request->filled('search_text')) {
             $search_text = $request->search_text;
 
-            $columns = ['reference_no','maintenance_device','brand','amount','order_phone_number'];
+            $columns = ['reference_no','maintenance_device','brand','order_phone_number','visit_time'];
 
             foreach($columns as $key => $column){
                 if ($key == 0) {
@@ -116,7 +119,7 @@ class OrderController extends Controller
     {
         $data['title'] = trans('Add New Order');
 
-        $data['customers'] = Customer::select('name','phone','id')->get()->pluck('unique_name','id');
+        $data['customers'] = Customer::select('name','company_name','phone','id')->get()->pluck('unique_name','id');
 
         $data['customers']->prepend(trans('Select..'),'');
 
@@ -139,12 +142,7 @@ class OrderController extends Controller
         return view('admin.orders.create-drop-off',$data);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+    
     public function store(Request $request)
     {
         $validated = $request->validate([
@@ -152,18 +150,16 @@ class OrderController extends Controller
 
             'visit_date' => 'required',
             'visit_time' => 'required',
-            'problem_summary' => 'required|string|min:2|max:250',
-            'address' => 'required|string|min:3',
+            'problem_summary' => 'required|string|max:250',
+            'address' => 'required|string',
             'customer_id' => 'required|exists:customers,id',
 
-            'block_no' => 'nullable|string|max:20',
-            'order_phone_number' => 'required|string|min:12|max:20',
+            'order_phone_number' => 'nullable|string|min:12|max:20',
             'floor_number' => 'nullable|string|max:20',
             'apartment_number' => 'nullable|string|max:20',
             'maintenance_device' => 'required|string|max:120',
             'brand' => 'required|string|max:50',
             'additional_info' => 'nullable|string|max:400',
-            'amount' => 'nullable|numeric',
             // 'road_id' => 'required|exists:roads,id',
             'lat' => 'required|string|max:100',
             'lng' => 'required|string|max:100',
@@ -190,6 +186,78 @@ class OrderController extends Controller
         return redirect()->route('orders.index');
     }
 
+    public function addDropOffOrder(Request $request,$id)
+    {
+        $validated = $request->validate([
+            'with_route' => 'required|boolean',
+            'visit_date' => 'required',
+            'visit_time' => 'required',
+            'guarantee_id' => 'required',
+        ]);
+
+        $visit_time = $request->date('visit_date')->startOfDay()->addHours($request->integer('visit_time'))->format('Y-m-d H:i');
+
+        $order =  Order::pickup()->findOrFail($id);
+
+        $first_visit = Order::where('pickup_order_ref',$order->reference_no)->get();
+
+        if ($first_visit->isNotEmpty()) {
+           return redirect()->back()->withErrors('This reference number is already exists as Dop-Off order');
+        }
+
+        $pickupAddress = $request->only(['company_name','name','address','postal_code','phone','telephone','part_of_building']);
+
+        if ($request->with_route) { // with new route
+            $new_road = $order->road->replicate()->fill([
+                'status' => 2,
+            ]);
+
+            $new_road->save();
+
+            $new_order = $order->replicate()->fill([
+                'visit_time' => $visit_time,
+                'pickup_order_ref' => $order->reference_no,
+                'road_id' => $new_road->id,
+                'status' => 2,
+                'type' => 3,
+                'is_paid' => false,
+                'information' => $request->information,
+                'guarantee_id' => $request->guarantee_id,
+            ]);
+
+            $new_order->save();
+
+            if (count($pickupAddress) > 0) {
+                $new_order->pickupAddress()->create($pickupAddress);
+            }
+
+        } else {
+            $new_order = $order->replicate()->fill([
+                'visit_time' => $visit_time,
+                'pickup_order_ref' => $order->reference_no,
+                'road_id' => null,
+                'status' => 1,
+                'type' => 3,
+                'is_paid' => false,
+                'information' => $request->information,
+                'guarantee_id' => $request->guarantee_id,
+            ]);
+
+            $new_order->save();
+
+            if (count($pickupAddress) > 0) {
+                $new_order->pickupAddress()->create($pickupAddress);
+            }
+        }
+
+        $order->update(['status'=> 4]);
+
+        $message = trans('Successful Added');
+        
+        notify()->success($message); 
+        
+        return redirect()->route('orders.today');
+    }
     public function storeDropOffOrder(Request $request)
     {
         $validated = $request->validate([
@@ -220,7 +288,7 @@ class OrderController extends Controller
 
             $new_order = $order->replicate()->fill([
                 'visit_time' => $visit_time,
-                'pickup_order_ref' => $order->reference_id,
+                'pickup_order_ref' => $order->reference_no,
                 'road_id' => $new_road->id,
                 'status' => 1,
                 'type' => 3,
@@ -231,7 +299,7 @@ class OrderController extends Controller
         } else {
             $new_order = $order->replicate()->fill([
                 'visit_time' => $visit_time,
-                'pickup_order_ref' => $order->reference_id,
+                'pickup_order_ref' => $order->reference_no,
                 'road_id' => null,
                 'status' => 1,
                 'type' => 3,
@@ -257,9 +325,12 @@ class OrderController extends Controller
      */
     public function show($id)
     {
-        $data['order'] =  Order::with(['files','customer','items','devices','questions','payments'])->findOrFail($id);
+        $data['order'] =  Order::with(['files','pickupAddress','customer','items','devices','questions','payments','guarantee'])->findOrFail($id);
 
         $data['title'] = trans('Order Details');
+        $data['guarantees'] = Guarantee::select('id','name')->get();
+        $data['questions'] = Question::get();
+        $data['devices'] = Device::get();
 
         return view('admin.orders.show',$data);
     }
@@ -284,6 +355,9 @@ class OrderController extends Controller
 
         $data['roads']->prepend(trans('Select..'),'');
 
+        $data['guarantees'] = Guarantee::get()->pluck('name','id');
+        $data['guarantees']->prepend(trans('Select..'),'');
+
         return view('admin.orders.edit',$data);
     }
 
@@ -302,8 +376,8 @@ class OrderController extends Controller
             'visit_date' => 'required',
             'visit_time' => 'required',
             'status' => 'nullable|numeric|max:4',
-            'problem_summary' => 'nullable|string|min:5|max:250',
-            'address' => 'nullable|string|min:3',
+            'problem_summary' => 'nullable|string|max:250',
+            'address' => 'nullable|string',
             'customer_id' => 'nullable|exists:customers,id',
 
             'block_no' => 'nullable|string|max:20',
@@ -317,6 +391,7 @@ class OrderController extends Controller
             // 'road_id' => 'required|exists:roads,id',
             'lat' => 'nullable|string|max:100',
             'lng' => 'nullable|string|max:100',
+            'guarantee_id' => 'nullable',
 
             'city' => 'nullable|string|max:100',
             'postal_code' => 'nullable|string|max:100',
@@ -346,9 +421,46 @@ class OrderController extends Controller
     {
         $order = Order::findOrFail($id);
 
-        $order->delete();
+        // $order->delete();
 
-        $message = trans('Successful Delete');
+        $order->update([ 'status'=> 0 ]);
+
+        // $message = trans('Successful Delete');
+        $message = trans('Successful updated');
+
+        notify()->success($message);
+
+        return redirect()->back();
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Add Payment
+    |--------------------------------------------------------------------------
+    */
+    public function addPayment(Request $request,$id)
+    {
+        $validated = $request->validate([
+            'amount' => 'required|numeric',
+            'payment_way' => 'required|numeric',
+        ]);
+
+        $order =  Order::findOrFail($id);
+
+        $validated['paid_amount'] = $order->paid_amount + $request->amount;
+        $validated['is_paid'] = true;
+        
+        $data = $validated;
+
+        $order->update($data);
+
+        $order->payments()->create([
+            'paid_amount' => $request->amount,
+            'payment_way' => $request->payment_way,
+        ]);
+
+        
+        $message = trans('Successful Added');
 
         notify()->success($message);
 
@@ -372,8 +484,19 @@ class OrderController extends Controller
 
         $data = $validated;
 
-        $item = $order->items()->create($data);
+        $order->items()->create($data);
 
+        $items = $order->items()->get();
+
+        $subtotal = $items->sum('sub_total');
+        $vat = $subtotal * 0.19;
+        $total = $subtotal + $vat;
+
+        $data['subtotal'] = $subtotal;
+        $data['vat'] = $vat;
+        $data['total'] = $total;
+
+        $order->update($data);
         
         $message = trans('Successful Added');
 
@@ -391,7 +514,21 @@ class OrderController extends Controller
     {
         $item =  Item::findOrFail($id);
 
+        $order= Order::find($item->order_id);
+
         $item->delete();
+
+        $items = $order->items()->get();
+
+        $subtotal = $items->sum('price');
+        $vat = $subtotal * 0.19;
+        $total = $subtotal + $vat;
+
+        $data['subtotal'] = $subtotal;
+        $data['vat'] = $vat;
+        $data['total'] = $total;
+
+        $order->update($data);
 
         $message = trans('Successful Deleted');
 
@@ -406,7 +543,12 @@ class OrderController extends Controller
 
         $order->load('customer');
 
-        Mail::to($order->customer->email)->send(new SendInvoice($order));
+        $blade = "reports.pickup";
+        if ($order->type == 3) {
+            $blade = "reports.drop-off";
+         }
+
+        Mail::to($order->customer->email)->send(new SendInvoice($order,$blade));
 
         $message = trans('Successful Sent');
 
@@ -415,14 +557,59 @@ class OrderController extends Controller
         return redirect()->route('orders.index');
     }
 
+    // public function printPdf($id)
+    // {
+    //     $order = Order::findOrFail($id);
+
+    //     $order->driver = $order->road?->driver;
+
+    //     $pdf = Pdf::loadView('report.index',['order'=> $order]);
+        
+    //     return $pdf->stream('invoice.pdf');
+    // }
+
+
     public function printPdf($id)
     {
-        $order = Order::findOrFail($id);
-
-        $order->driver = $order->road?->driver;
-
-        $pdf = Pdf::loadView('items.index',['order'=> $order]);
+        $order =  Order::find($id);
         
-        return $pdf->stream('invoice.pdf');
+        if (is_null($order)) {
+            return redirect()->back()->withErrors('Not Found');
+        }
+
+        if (is_null($order->road)) {
+            return redirect()->back()->withErrors("This order doesn't have a route");
+        }
+
+        $order->load(['customer','driver','files','customer','items','devices','questions','payments']);
+
+        $order->driver = $order->road->driver;
+
+         $data['order'] = $order;
+
+        $data['devices'] = Device::all();
+        $data['questions'] = Question::all();
+        $data['guarantees'] = Guarantee::all();
+
+        // return $order;
+
+        if ( $order->type == 1 || $order->type == 2) {
+            return view('reports.pickup',$data);
+        } 
+
+        if ($order->type == 3 ) {
+            return view('reports.drop-off',$data);
+        } 
+
+        // abort(404);
+
+    
+
+        // Browsershot::url("https://nulljungle.com")->setNodeBinary('C:\Program Files\nodejs\node.exe')->save('example.pdf');
+
+        return "ddd";
+
+        $pdf = Pdf::loadView('reports.invoice',['order'=> $order]);
+        
     }
 }

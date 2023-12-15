@@ -124,8 +124,10 @@ class RoadController extends Controller
         ]);
 
         if ($request->isNotFilled('driver_id')) {
-            $driver_id = getAvailableDrivers()->first();
-            $data['driver_id'] = $driver_id ? $driver_id : null;
+
+            $driver_id = getAvailableDrivers() ? getAvailableDrivers()->first(): null;
+            // $driver_id = getAvailableDrivers()->first();
+            $validated['driver_id'] = $driver_id;
         }
 
         $road = Road::create($validated);
@@ -133,15 +135,16 @@ class RoadController extends Controller
         Order::whereIn('id',$request->orders)->update(['road_id' => $road->id]);
 
         $status = (int)$road->status;
+
         if ($status == 2) {
-            changeOrderStatus($road->id,2);
+            changeOrderStatusToAssigned($road->id);
         }
 
         $message = trans('Successful Added');
 
         notify()->success($message);
 
-        return redirect()->back();
+        return redirect()->route('roads.index');
     }
 
     /**
@@ -209,12 +212,35 @@ class RoadController extends Controller
         $road->update($validated);
 
         if ($request->filled('orders')) {
-            Order::whereIn('id',$request->orders)->update(['road_id' => $road->id]);
+
+            $new_orders = $request->orders;
+
+
+            if ($road->orders->isNotEmpty()) {
+                $exist_orders = $road->orders->pluck('id');
+
+                $out_orders = $exist_orders->diff($new_orders)->toArray();
+
+                Order::whereIn('id',$out_orders)->update([
+                    'status' => 1
+                ]); 
+
+            }
+
+            $road->orders()->update([
+                'road_id' => null,
+                'driver_id' => null,
+            ]);
+
+            Order::whereIn('id',$new_orders)->update([
+                'road_id' => $road->id,
+                'driver_id' => $road->driver_id,
+            ]); 
         }
         
         $status = (int)$road->status;
         if ($status == 2) {
-            changeOrderStatus($road->id,2);
+            changeOrderStatusToAssigned($road->id);
         }
 
 

@@ -55,19 +55,19 @@
           <th>#</th>
           <th> @lang("Name") </th>
           <th> @lang("Phone") </th>
-          <th> @lang("Zone Area") </th>
+          <th> @lang("Address") </th>
           <th> @lang("Email") </th>
           <th> @lang("Status") </th>
           <th> @lang("Actions") </th>
         </tr>
       </thead>
       <tbody class="table-border-bottom-0">
-        @foreach ($users as $item)
+        @forelse ($users as $item)
         <tr>
           <td> {{ $loop->index + 1 }}  </td>
-          <td> {{ $item->name }}  </td>
+          <td> {{ $item->name != null ? $item->name : $item->company_name }}  </td>
           <td> {{ $item->phone }}  </td>
-          <td> {{ $item->zone_area }}  </td>
+          <td> {{ \Illuminate\Support\Str::limit($item->address,20,'...') }}  </td>
           <td> {{ $item->email }}  </td>
           <td>
             @if ($item->trashed())
@@ -113,7 +113,11 @@
            
           </td>
         </tr>
-        @endforeach
+        @empty
+                <tr class="no-data">
+                  <td colspan="7"> <h2> @lang("Data not found") </h2> </td>
+                </tr>
+        @endforelse
       </tbody>
     </table>
   </div>

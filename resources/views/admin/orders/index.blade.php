@@ -12,10 +12,10 @@
   @lang("Add Pickup Order") 
 </a>
 
-<a class="btn btn-outline-primary m-2" href="{{ route('orders.drop.create') }}">
+{{-- <a class="btn btn-outline-primary m-2" href="{{ route('orders.drop.create') }}">
   <i class='bx bx-plus' style="font-size: 1.5rem"></i>
   @lang("Add Drop Off Order") 
-</a>
+</a> --}}
 
 <!-- Hoverable Table rows -->
 <div class="card">
@@ -77,16 +77,20 @@
           <th> @lang("Refrence No") </th>
           <th> @lang("Customer") </th>
           <th> @lang("Status") </th>
-          <th> @lang("Amount") </th>
-          <th> @lang("Visit Time") </th>
+          {{-- <th> @lang("Amount") </th> --}}
+          <th> @lang("Visit time") </th>
           <th> @lang("Actions") </th>
         </tr>
       </thead>
       <tbody class="table-border-bottom-0">
-        @foreach ($data as $item)
+        @forelse ($data as $item)
         <tr>
           <td> {{ $loop->index + 1 }}  </td>
-          <td> {{ $item->reference_no }}  </td>
+          <td>
+            <a  class="link-primary" href="{{ route('orders.show',$item->id) }}">
+              {{ $item->reference_no }}
+            </a>
+          </td>
           <td> {{ $item->customer->name }}  </td>
           <td> 
             <i class='bx bxs-circle {{ $item->status_color }}'></i>
@@ -94,13 +98,18 @@
             |
             {{ $item->type_name }}
           </td>
-          <td> {{ number_format($item->amount, 2) }}  </td>
-          <td> {{ $item->visit_time }}  </td>
+          {{-- <td> {{ number_format($item->amount, 2) }}  </td> --}}
+          <td> {{ $item->visit_time->format('d.m.Y H:i') }}  </td>
           <td>
+
             <a class="btn btn-show btn-sm pl-1" href="{{ route('orders.show',$item->id) }}">
               <i class='bx bx-show' style="font-size: 1.2rem"></i>
               @lang('Show')
             </a>
+
+            {{-- @if ($order->status != 4)
+                
+            @endif --}}
 
             <a class="btn btn-outline-primary btn-sm pl-1" href="{{ route('orders.edit',$item->id) }}">
               <i class='bx bx-edit' style="font-size: 1.2rem"></i>
@@ -109,7 +118,7 @@
 
             <button  class="btn btn-outline-danger btn-sm pl-1" onclick="deleteForm('deleteForm{{ $item->id }}')">
               <i class="bx bx-trash me-1"></i>
-              @lang('Delete')
+              @lang('Cancel')
               <form id="deleteForm{{ $item->id }}" action="{{ route('orders.destroy',$item->id) }}" method="POST">
                 @method("DELETE")
                 @csrf
@@ -139,7 +148,11 @@
             </div>
           </td> --}}
         </tr>
-        @endforeach
+        @empty
+        <tr class="no-data">
+          <td colspan="6"> <h2> @lang("Data not found") </h2> </td>
+        </tr>
+        @endforelse
       </tbody>
     </table>
   </div>

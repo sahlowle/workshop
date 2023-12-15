@@ -22,7 +22,7 @@ class DriverController extends Controller
 
         if ($request->filled('search_text')) {
             $search_text = $request->search_text;
-            $columns = ['name','phone','email','address'];
+            $columns = ['name','phone'];
 
             foreach($columns as $key => $column){
                 if ($key == 0) {
@@ -60,12 +60,10 @@ class DriverController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'name' => 'required|string|min:3',
+            'name' => 'required|string',
             // 'email' => 'nullable|email|unique:users,email',
             'password' => 'required|string|min:6',
-            'phone' => 'required|unique:users|min:12|max:20',
-            'address' => 'nullable|string|min:6',
-            'zone_area' => 'nullable|string|max:30',
+            'phone' => 'required|unique:users|min:12|max:20'
         ]);
 
         
@@ -124,12 +122,10 @@ class DriverController extends Controller
         $user = User::findOrFail($id);
 
         $validated = $request->validate([
-            'name' => 'nullable|string|min:3',
+            'name' => 'nullable|string',
             // 'email' => 'nullable|email|unique:users,email,'.$id,
             'password' => 'nullable|string|min:6',
             'phone' => 'nullable|min:12|max:20|unique:users,phone,'.$id,
-            'address' => 'nullable|string|min:6',
-            'zone_area' => 'nullable|string|max:30',
         ]);
 
 

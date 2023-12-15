@@ -38,7 +38,12 @@
                     <td>
                       {{ $item->reference_no }}</td>
                     <td> {{ $item->customer->name }} </td>
-                    <td> {{ $item->status }} </td>
+                    <td> 
+                      <span >
+                        <i class='bx bxs-circle {{ $road->status_color }}'></i>
+                        {{ $road->status_name }}
+                    </span>
+                    </td>
                   </tr>
                 @endforeach
               </tbody>

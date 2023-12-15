@@ -13,7 +13,7 @@
     }
 
     header {
-      background-color: #0e69a8;
+      /* background-color: #0e69a8; */
       height: 7rem
     }
 
@@ -112,12 +112,12 @@
     {{-- header --}}
     <header class="text-whiet">
         <table>
-            <tr>
-                <td>
-                    <img src="https://smart-intercom.de/assets/img/logo.png" style="max-height: 60px">
+            <tr style="width: 100%">
+                <td style="width: 100%">
+                    <img src="{{ public_path('').'/pdf-log.png' }}" style="width: 100%; max-height: 110px">
                 </td>
 
-                <td style="padding-left: 20%">
+                {{-- <td style="padding-left: 20%">
                     <p>
                         GLOBAL Reparaturservice | Stromstraße 31 |
                         <br>
@@ -125,7 +125,7 @@
                          <br>
                          | Mobil: 0171/ 15 87 826 | info@global-reparaturservice.de www.waschmaschine-reparatur-berlin.com
                     </p>
-                </td>
+                </td> --}}
             </tr>
         </table>
     </header>
@@ -358,7 +358,7 @@
         </thead>
 
         <tbody>
-            @foreach ($order->reports as $item)
+            @foreach ($order->items as $item)
                     <tr>
                         <td> {{ $item->description }} </td>
                         <td colspan="2"> {{ $item->title }} </td>
@@ -392,8 +392,8 @@
                 </td>
 
                 <td >
-                    @if ($order->reports->isNotEmpty())
-                        {{ $order->reports->sum('price') }}
+                    @if ($order->items->isNotEmpty())
+                        {{ $order->items->sum('price') }}
                     @else
                         0.00
                     @endif
@@ -423,7 +423,7 @@
                 </td>
 
                 @php
-                    $total = $order->amount + $order->reports->sum('price');
+                    $total = $order->amount + $order->items->sum('price');
                     $vat = $total  * 0.19;
                 @endphp
                 
@@ -495,13 +495,8 @@
      </p>
 
      <div class="page_break" style="text-align:left">
-        <img src="{{ asset('pdf.png') }}" style="width: 100%;
+        <img src="{{ public_path('').'/pdf.png' }}" style="width: 100%;
         height: 29.7cm; float:left">
      </div>
-
-       
-
-        
-    
 </body>
 </html>

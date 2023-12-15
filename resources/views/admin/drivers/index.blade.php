@@ -63,7 +63,7 @@
         </tr>
       </thead>
       <tbody class="table-border-bottom-0">
-        @foreach ($users as $item)
+        @forelse ($users as $item)
         <tr>
           <td> {{ $loop->index + 1 }}  </td>
           {{-- <td>
@@ -102,7 +102,12 @@
 
           </td>
         </tr>
-        @endforeach
+        @empty
+                <tr class="no-data">
+                  <td colspan="5"> <h2> @lang("Data not found") </h2> </td>
+                </tr>
+        @endforelse
+        
       </tbody>
     </table>
   </div>

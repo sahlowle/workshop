@@ -27,9 +27,9 @@ class DriverLoginRequest extends FormRequest
     {
         return [
             'phone' => ['required', 'string'],
-            'password' => ['required','string','min:5','max:30'],
-            'fcm_token' => ['required','string','min:10','max:1024'],
-            'device_type' => ['required','string','min:2','max:10'],
+            'password' => ['required','string','max:30'],
+            'fcm_token' => ['required','string','max:1024'],
+            'device_type' => ['required','string','max:10'],
         ];
     }
 

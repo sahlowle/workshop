@@ -14,25 +14,28 @@ if (! function_exists('getAvailableDrivers')) {
             $query->where('status', '!=', 3);
         })->get();
 
+
         if ($first_drivers->isNotEmpty()) {
             return $first_drivers->pluck('id');
         }
 
-        return Order::select('driver_id', DB::raw('count(*) as total'))
+        $data = Order::select('driver_id', DB::raw('count(*) as total'))
         ->whereNotNull('driver_id')
         ->groupBy('driver_id')
         ->orderBy('total')->get()
         ->makeHidden([
             'pdf_link','status_name','type_name','status_color','payment_method'
-        ])->get()->pluck('driver_id');
+        ])->pluck('driver_id');
+
+        return $data;
     }
 }
 
-if (! function_exists('changeOrderStatus')) {
-    function changeOrderStatus($road_id,$status) {
+if (! function_exists('changeOrderStatusToAssigned')) {
+    function changeOrderStatusToAssigned($road_id) {
         Order::where('road_id',$road_id)
-        ->where('status','!=',3)
-        ->update([ 'status' => $status]);
+        ->where('status',1)
+        ->update([ 'status' => 2]);
     }
 }
 
@@ -42,18 +45,26 @@ if (! function_exists('loginBackground')) {
     }
 }
 
-if (! function_exists('orderStatus')) {
-    function orderStatus() {
+if (! function_exists('editOrderStatusForPickup')) {
+    function editOrderStatusForPickup() {
         return [
             "" => trans("Select") ,
-            1 => trans("Pending"),
-            2 => trans("Assigned"),
             3 => trans("Under maintenance"),
             4 => trans("Finished"),
-            0 => trans("Canceled"),
+        ];
+    
+    }
+}
+
+if (! function_exists('paymentMethods')) {
+    function paymentMethods() {
+        return [
+            1 => trans("Cash") ,
+            2 => trans("Online") ,
         ];
     }
 }
+
 
 if (! function_exists('referenceNo')) {
     function referenceNo($prefix) {

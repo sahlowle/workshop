@@ -71,6 +71,18 @@
         background-color: rgb(241, 239, 239);
         text-align: center; display: table-row;
     }
+
+    .nav-align-top > .tab-content, .nav-align-right > .tab-content, .nav-align-bottom > .tab-content, .nav-align-left > .tab-content{
+        background-color: unset;
+    }
+
+    .nav-pills .nav-link.active, .nav-pills .nav-link.active:hover, .nav-pills .nav-link.active:focus {
+        background-color: unset;
+        color: var(--themeColor);
+        border-bottom: 5px solid;
+        border-radius: unset;
+        box-shadow: unset;
+    }
 </style>
 
 

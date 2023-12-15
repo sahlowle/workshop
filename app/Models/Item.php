@@ -20,5 +20,14 @@ class Item extends Model
         'price',
     ];
 
+    protected $appends = [
+        'sub_total', 
+    ];
+
+    public function getSubTotalAttribute()
+    {
+        return $this->quantity *  $this->price;
+    }
+
 
 }

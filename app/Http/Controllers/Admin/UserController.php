@@ -57,7 +57,7 @@ class UserController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'name' => 'required|string|min:3',
+            'name' => 'required|string',
             'email' => 'required|email|unique:users,email',
             'password' => 'required|string|min:6',
         ]);
@@ -112,7 +112,7 @@ class UserController extends Controller
         $user = User::findOrFail($id);
 
         $validated = $request->validate([
-            'name' => 'nullable|string|min:3',
+            'name' => 'nullable|string',
             'email' => 'nullable|email|unique:users,email,'.$id,
             'password' => 'nullable|string|min:6',
         ]);

@@ -27,15 +27,16 @@ class StorePickupOrderRequest extends FormRequest
     {
         return [
             'type' => ['required'],
-            'information' => ['required'],
-            'brand' => ['required'],
-            'devices' => ['required','array'], // Relation
-            'questions' => ['required','array'], // Relation
-            'max_maintenance_price' => ['required'],
-            'paid_amount' => ['required'],
-            'payment_way' => ['required'],
-            'is_amount_received' => ['required'],
-            'is_customer_confirm' => ['required'],
+            'information' => ['nullable'],
+            // 'brand' => ['required'],
+            'devices' => ['nullable','array'], // Relation
+            'questions' => ['nullable','array'], // Relation
+            'items' => ['nullable','array'], // Relation
+            'max_maintenance_price' => ['nullable'],
+            'paid_amount' => ['nullable'],
+            'payment_way' => ['nullable'],
+            'is_amount_received' => ['nullable'],
+            'is_customer_confirm' => ['nullable'],
         ];
     }
 

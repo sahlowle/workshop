@@ -26,16 +26,16 @@ class StoreCustomerRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => ['required', 'string','min:3','max:120'],
-            'company_name' => ['nullable', 'string','min:3','max:120'],
-            'part_of_building' => ['nullable', 'string','min:3','max:80'],
+            'name' => ['required_if:company_name,null'],
+            'company_name' => ['required_if:name,null'],
+            'part_of_building' => ['nullable', 'string','max:80'],
             'email' => ['required','email','unique:customers,email','string','max:120'],
-            'phone' => ['required','unique:customers,phone','string','min:12','max:20'],
-            'telephone' => ['nullable','unique:customers,telephone','string','min:12','max:20'],
-            'address' => ['required','string','min:3','max:190'],
-            'zone_area' => ['nullable','string','min:3','max:30'],
-            'postal_code' => ['nullable','string','min:3','max:30'],
-            'city' => ['nullable','string','min:3','max:30'],
+            'phone' => ['required','unique:customers,phone','min:12','max:20'],
+            'telephone' => ['nullable','unique:customers,telephone','min:12','max:20'],
+            'address' => ['required','string','max:190'],
+            'zone_area' => ['nullable','string','max:30'],
+            'postal_code' => ['nullable','string','max:30'],
+            'city' => ['nullable','string','max:30'],
             'lat' => ['nullable','max:100'],
             'lng' => ['nullable','max:100'],
         ];

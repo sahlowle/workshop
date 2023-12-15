@@ -2,7 +2,10 @@
 
 namespace App\Mail;
 
+use App\Models\Device;
+use App\Models\Guarantee;
 use App\Models\Order;
+use App\Models\Question;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
@@ -13,16 +16,25 @@ use Illuminate\Queue\SerializesModels;
 class SendInvoice extends Mailable
 {
     use Queueable, SerializesModels;
+
+    public $blade;
     public $order;
+    public $devices;
+    public $questions;
+    public $guarantees;
 
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct(Order $order)
+    public function __construct(Order $order,$blade)
     {
         $this->order = $order;
+        $this->blade = $blade;
+        $this->devices = Device::all();
+        $this->questions = Question::all();
+        $this->guarantees= Guarantee::all();
     }
 
     /**
@@ -45,7 +57,7 @@ class SendInvoice extends Mailable
     public function content()
     {
         return new Content(
-            view: 'reports.index',
+            view: $this->blade,
         );
     }
 

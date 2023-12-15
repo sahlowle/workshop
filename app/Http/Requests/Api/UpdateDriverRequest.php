@@ -27,10 +27,10 @@ class UpdateDriverRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => ['nullable', 'string','min:3','max:80'],
+            'name' => ['nullable', 'string','max:80'],
             // 'password' => ['nullable','string','min:6','max:30'],
-            'address' => ['nullable','string','min:3','max:190'],
-            'zone_area' => ['nullable','string','min:3','max:30'],
+            'address' => ['nullable','string','max:190'],
+            'zone_area' => ['nullable','string','max:30'],
             'phone' => [
                 'nullable',
                 Rule::unique('users')->ignore($this->route('driver'), 'id'),

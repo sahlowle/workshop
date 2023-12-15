@@ -10,7 +10,7 @@
       <div class="mb-3">
         <label class=" col-form-label" for="basic-default-company">@lang("Customer")</label>
         <div class="col-sm-10">
-          {!! Form::select('customer_id',$customers, null, ['id' => 'customer_id','required','class' => 'select2 form-control','onchange'=>'fillDetatils(event)']) !!}
+          {!! Form::select('customer_id',$customers, old('customer_id', null), ['id' => 'customer_id','required','class' => 'select2 form-control','onchange'=>'fillDetatils(event)']) !!}
           <span>
             <a href="{{ route('customers.create') }}" class="btn">
               <i class="bx bx-plus"></i>
@@ -19,6 +19,28 @@
           </span>
         </div>
       </div>
+
+      @if (isset($order) && $order->status == 4 && $order->type ==1)
+
+      <div class="mb-3">
+        <label class=" col-form-label" for="basic-default-company">@lang("Status")</label>
+        <div class="col-sm-10">
+          {!! Form::select('status',editOrderStatusForPickup(), null, ['required','class' => 'select2 form-control']) !!}
+        </div>
+      </div>
+
+      @endif
+
+      @if (isset($order) && $order->type ==3)
+
+      <div class="mb-3">
+        <label class=" col-form-label" for="basic-default-company">@lang("Guarantee")</label>
+        <div class="col-sm-10">
+          {!! Form::select('guarantee_id',$guarantees, null, ['required','class' => 'select2 form-control']) !!}
+        </div>
+      </div>
+
+      @endif
 
       
 
@@ -67,7 +89,7 @@
       <div class="mb-3">
         <label class=" col-form-label" for="basic-default-name">@lang("Other Phone")</label>
         <div class="col-sm-10">
-          {!! Form::tel('order_phone_number', null,  ['required','id'=>'order_phone_number','class' => 'form-control number','placeholder'=>  trans("phone must be 12 number")]) !!}
+          {!! Form::tel('order_phone_number', null,  ['id'=>'order_phone_number','class' => 'form-control number','placeholder'=>  trans("phone must be 12 number")]) !!}
         </div>
       </div>
 
@@ -173,7 +195,7 @@
     var lng = data.lng;
 
     $('#phone').val(phone);
-    $('#order_phone_number').val(phone);
+    // $('#order_phone_number').val(phone);
     $('#address').val(address);
     $('#city').val(data.city);
     $('#postal_code').val(data.postal_code);
@@ -197,7 +219,7 @@
     var lng = data.lng;
 
     $('#phone').val(phone);
-    $('#order_phone_number').val(phone);
+    // $('#order_phone_number').val(phone);
     $('#address').val(address);
     $('#city').val(data.city);
     $('#postal_code').val(data.postal_code);

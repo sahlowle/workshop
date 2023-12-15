@@ -27,7 +27,7 @@ class UpdateAdminRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => ['nullable', 'string','min:3','max:80'],
+            'name' => ['nullable', 'string','max:80'],
             // 'email' => ['nullable','email','unique:users,email','string','max:120'],
             'password' => ['nullable','string','min:6','max:30'],
 

@@ -33,14 +33,14 @@
           <div class="row mb-3">
             <label class="col-sm-2 col-form-label" for="basic-default-company">@lang("Phone")</label>
             <div class="col-sm-10">
-                {!! Form::tel('phone', null,  ['required','class' => 'form-control number','placeholder'=>  trans("phone must be 12 number")]) !!}
+                {!! Form::tel('phone', null,  ['class' => 'form-control number','placeholder'=>  trans("phone must be 12 number")]) !!}
             </div>
           </div>
 
           <div class="row mb-3">
             <label class="col-sm-2 col-form-label" for="basic-default-company">@lang("Telephone")</label>
             <div class="col-sm-10">
-                {!! Form::tel('telephone', null,  ['class' => 'form-control number','placeholder'=>  trans("phone must be 12 number")]) !!}
+                {!! Form::tel('telephone', null,  ['class' => 'form-control number','placeholder'=>  trans("telephone must be 7 number")]) !!}
             </div>
           </div>
 
@@ -66,16 +66,16 @@
           </div>
 
           <div class="row mb-3">
-            <label class="col-sm-2 col-form-label" for="basic-default-name">@lang("Part of building")</label>
+            <label class="col-sm-2 col-form-label" for="basic-default-company">@lang("Zone Area")</label>
             <div class="col-sm-10">
-                {!! Form::text('part_of_building', null,  ['class' => 'form-control','placeholder'=>  trans("Part of building")]) !!}
+                {!! Form::text('zone_area', null,  ['id'=>'zone_area','class' => 'form-control','placeholder'=>  trans("Zone Area")]) !!}
             </div>
           </div>
 
           <div class="row mb-3">
-            <label class="col-sm-2 col-form-label" for="basic-default-company">@lang("Zone Area")</label>
+            <label class="col-sm-2 col-form-label" for="basic-default-name">@lang("Part of building")</label>
             <div class="col-sm-10">
-                {!! Form::text('zone_area', null,  ['id'=>'zone_area','class' => 'form-control','placeholder'=>  trans("Zone Area")]) !!}
+                {!! Form::text('part_of_building', null,  ['class' => 'form-control','placeholder'=>  trans("Part of building")]) !!}
             </div>
           </div>
 

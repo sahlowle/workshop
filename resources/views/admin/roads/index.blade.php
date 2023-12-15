@@ -77,10 +77,14 @@
         </tr>
       </thead>
       <tbody class="table-border-bottom-0">
-        @foreach ($data as $item)
+        @forelse ($data as $item)
         <tr>
           <td> {{ $loop->index + 1 }}  </td>
-          <td> {{ $item->reference_no }}  </td>
+          <td>
+            <a  class="link-primary" href="{{ route('roads.show',$item->id) }}">
+              {{ $item->reference_no }}
+            </a>
+          </td>
           <td> {{ $item->driver ? $item->driver->name: trans('No Technician') }}  </td>
           <td> {{ $item->status_name }}  </td>
           <td>
@@ -126,7 +130,11 @@
             </div>
           </td> --}}
         </tr>
-        @endforeach
+        @empty
+        <tr class="no-data">
+          <td colspan="5"> <h2> @lang("Data not found") </h2> </td>
+        </tr>
+        @endforelse
       </tbody>
     </table>
   </div>

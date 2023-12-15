@@ -28,14 +28,14 @@ class UpdateOrderRequest extends FormRequest
     {
         return [
             'visit_time' => ['nullable', 'date_format:Y-m-d H:i'],
-            'problem_summary' => ['nullable', 'string','min:3','max:250'],
-            'address' => ['nullable', 'string','min:3','max:250'],
+            'problem_summary' => ['nullable', 'string','max:250'],
+            'address' => ['nullable', 'string','max:250'],
             'maintenance_device' => ['nullable', 'string','max:250'],
             'brand' => ['nullable', 'string','max:250'],
             'additional_info' => ['nullable', 'string','max:250'],
             'block_no' => ['nullable', 'string','max:250'],
             'order_phone_number' => ['nullable', 'string','min:12','max:20'],
-            'floor_number' => ['nullable', 'string','min:1','max:250'],
+            'floor_number' => ['nullable', 'string','max:250'],
             'apartment_number' => ['nullable', 'string','max:250'],
             'lat' => ['nullable','numeric'],
             'lng' => ['nullable','numeric'],
@@ -46,6 +46,7 @@ class UpdateOrderRequest extends FormRequest
             'items' => ['nullable','array'],
             'status' => ['nullable','in:1,2,3,4'],
             'payment_way' => ['nullable','in:1,2,3'],
+            'paid_amount' => ['nullable','numeric'],
             'payment_id' => ['nullable','string','max:1024'],
             'type' => ['nullable',Rule::in([1,2,3]),],
             

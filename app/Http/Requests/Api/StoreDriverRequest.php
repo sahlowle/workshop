@@ -26,12 +26,12 @@ class StoreDriverRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => ['required', 'string','min:3','max:80'],
+            'name' => ['required', 'string','max:80'],
             // 'email' => ['required','email:rfc,dns','unique:users,email','string','max:120'],
             'password' => ['required','string','min:6','max:30'],
             'phone' => ['required','unique:users,phone','string','min:12','max:20'],
-            'address' => ['nullable','string','min:3','max:190'],
-            'zone_area' => ['nullable','string','min:3','max:30'],
+            'address' => ['nullable','string','max:190'],
+            'zone_area' => ['nullable','string','max:30'],
         ];
     }
 

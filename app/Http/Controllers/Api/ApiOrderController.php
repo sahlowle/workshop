@@ -14,13 +14,18 @@ use App\Http\Requests\Api\StorePickupOrderRequest;
 use App\Http\Requests\Api\UpdateOrderRequest;
 use App\Mail\SendInvoice;
 use App\Models\Customer;
+use App\Models\Device;
+use App\Models\Guarantee;
+use App\Models\Item;
 use App\Models\Order;
+use App\Models\Question;
 use App\Services\TimeSlot;
 use App\Traits\FileSaveTrait;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Spatie\Browsershot\Browsershot;
 
 class ApiOrderController extends Controller
 {
@@ -38,6 +43,7 @@ class ApiOrderController extends Controller
         if ($request->filled('without_route')) {
             $query->whereDoesntHave('road');
             $query->has('activeCustomer');
+            $query->where('status','!=',0);
         }
 
         if ($request->filled('today')) {
@@ -116,6 +122,21 @@ class ApiOrderController extends Controller
 
         $data = $request->validated();
 
+
+        if ($request->filled('items')){
+
+            // $order->items()->delete();
+
+            foreach ($request->items as $key => $item) {
+                $order->items()->create([
+                    'title' => $item['title'],
+                    'quantity' => $item['quantity'],
+                    'price' => $item['price'],
+                ]);
+
+            }
+        }
+
         $items = $order->items;
 
         $subtotal = $items->sum('price');
@@ -125,6 +146,7 @@ class ApiOrderController extends Controller
         $data['subtotal'] = $subtotal;
         $data['vat'] = $vat;
         $data['total'] = $total;
+        $data['is_pickup'] = true;
 
 
         $order->update($data);
@@ -169,7 +191,7 @@ class ApiOrderController extends Controller
             return $this->sendResponse(false,[],trans('Order Not Pickup'),404);
         }
 
-        $first_visit = Order::where('pickup_order_ref',$order->reference_id)->get();
+        $first_visit = Order::where('pickup_order_ref',$order->reference_no)->get();
 
         if ($first_visit->isNotEmpty()) {
             return $this->sendResponse(false,[],trans('This reference number is already exists as Dop-Off order'),404);
@@ -180,6 +202,8 @@ class ApiOrderController extends Controller
             return $this->sendResponse(false,[],trans('Sorry, Pickup orders must be finished first'),401);
         }
 
+        $pickupAddress = $request->only(['company_name','name','address','postal_code','phone','telephone','part_of_building']);
+
         if ($request->with_route) {
             $new_road = $order->road->replicate()->fill([
                 'status' => 2,
@@ -189,26 +213,41 @@ class ApiOrderController extends Controller
 
             $new_order = $order->replicate()->fill([
                 'visit_time' => $visit_time,
-                'pickup_order_ref' => $order->reference_id,
+                'pickup_order_ref' => $order->reference_no,
                 'road_id' => $new_road->id,
-                'status' => 1,
+                'status' => 2,
                 'type' => 3,
                 'is_paid' => false,
+                'information' => $request->information,
+                'guarantee_id' => $request->guarantee_id,
             ]);
 
             $new_order->save();
+
+            if (count($pickupAddress) > 0) {
+                $new_order->pickupAddress()->create($pickupAddress);
+            }
+
         } else {
             $new_order = $order->replicate()->fill([
                 'visit_time' => $visit_time,
-                'pickup_order_ref' => $order->reference_id,
+                'pickup_order_ref' => $order->reference_no,
                 'road_id' => null,
                 'status' => 1,
                 'type' => 3,
                 'is_paid' => false,
+                'guarantee_id' => $request->guarantee_id,
+                'information' => $request->information,
             ]);
 
             $new_order->save();
+
+            if (count($pickupAddress) > 0) {
+                $new_order->pickupAddress()->create($pickupAddress);
+            }
         }
+
+        $order->update(['status'=> 4]);
 
         $message = trans('Successful Added');
 
@@ -222,15 +261,38 @@ class ApiOrderController extends Controller
     */
     public function show($id)
     {
-        $data =  Order::with(['files','customer','items','devices','questions','payments'])->find($id);
-        
-        if (is_null($data)) {
+        $order =  Order::find($id);
+
+        if (is_null($order)) {
             return $this->sendResponse(false,[],trans('Not Found'),404);
         }
 
+        if ($order->type == 3) {
+            
+            $pickupOrder = Order::with(['files','customer','items','devices','questions','payments','pickupAddress'])
+            ->where('reference_no',$order->pickup_order_ref)
+            ->first();
+
+            $data = collect($order);
+
+            $data['files'] = $pickupOrder?->files;
+            $data['customer'] = $pickupOrder?->customer;
+            $data['items'] = $pickupOrder?->items;
+            $data['devices'] = $pickupOrder?->devices;
+            $data['questions'] = $pickupOrder?->questions;
+            $data['payments'] = $pickupOrder?->payments;
+            $data['guarantee'] = $order->guarantee;
+            $data['pickupAddress'] = $order->pickupAddress;
+
+            $message = trans('Successful Retrieved');
+            return $this->sendResponse(true,$data,$message,200);
+        }
+        
+        $order->load(['files','customer','items','devices','questions','payments','pickupAddress']);
+
         $message = trans('Successful Retrieved');
 
-        return $this->sendResponse(true,$data,$message,200);
+        return $this->sendResponse(true,$order,$message,200);
     }
 
     /*
@@ -261,6 +323,16 @@ class ApiOrderController extends Controller
 
         $order->update($data);
 
+        if ($request->filled('paid_amount')) {
+            $order->increment('paid_amount',$request->paid_amount);
+
+            $order->payments()->create([
+                'paid_amount' => $request->paid_amount,
+                'payment_way' => $request->payment_way,
+                'payment_id' => $request->payment_id,
+            ]);
+        }
+
         if ($request->filled('items')){
 
             $order->items()->delete();
@@ -282,12 +354,36 @@ class ApiOrderController extends Controller
 
     /*
     |--------------------------------------------------------------------------
+    | cancel order
+    |--------------------------------------------------------------------------
+    */
+    public function cancelOrder($id)
+    {
+        $order =  Order::find($id);
+        
+        if (is_null($order)) {
+            return $this->sendResponse(false,[],trans('Not Found'),404);
+        }
+        
+
+        $order->update([ 'status'=> 0 ]);
+    
+        $message = trans('Successful Updated');
+
+        return $this->sendResponse(true,$order,$message,200);
+
+    }
+
+    /*
+    |--------------------------------------------------------------------------
     | delete item
     |--------------------------------------------------------------------------
     */
     public function destroy($id)
     {
         $order =  Order::find($id);
+
+        return $this->sendResponse(false,[],trans('Not Found'),404);
         
         if (is_null($order)) {
             return $this->sendResponse(false,[],trans('Not Found'),404);
@@ -321,7 +417,12 @@ class ApiOrderController extends Controller
 
         $order->driver = $order->road->driver;
 
-        Mail::to($order->customer->email)->send(new SendInvoice($order));
+        $blade = "reports.pickup";
+        if ($order->type == 3) {
+           $blade = "reports.drop-off";
+        }
+
+        Mail::to($order->customer->email)->send(new SendInvoice($order,$blade));
 
         $message = trans('Successful Sent');
 
@@ -330,16 +431,46 @@ class ApiOrderController extends Controller
     }
 
     public function printPdf($id)
-    {
+    { 
         $order =  Order::find($id);
         
         if (is_null($order)) {
             return $this->sendResponse(false,[],trans('Not Found'),404);
         }
 
+        if (is_null($order->road)) {
+            return $this->sendResponse(false,[],trans("This order doesn't have a route "),404);
+        }
+
+        $order->load(['customer','driver','files','customer','items','devices','questions','payments']);
+
         $order->driver = $order->road->driver;
 
-        $pdf = Pdf::loadView('items.index',['order'=> $order]);
+         $data['order'] = $order;
+
+        $data['devices'] = Device::all();
+        $data['questions'] = Question::all();
+        $data['guarantees'] = Guarantee::all();
+
+        // return $order;
+
+        if ( $order->type == 1 || $order->type == 2) {
+            return view('reports.pickup',$data);
+        } 
+
+        if ($order->type == 2 ) {
+            return view('reports.drop-off',$data);
+        } 
+
+        abort(404);
+
+    
+
+        // Browsershot::url("https://nulljungle.com")->setNodeBinary('C:\Program Files\nodejs\node.exe')->save('example.pdf');
+
+        return "ddd";
+
+        $pdf = Pdf::loadView('reports.invoice',['order'=> $order]);
         
         return $pdf->stream('invoice.pdf');
     }
@@ -388,6 +519,19 @@ class ApiOrderController extends Controller
 
         $report = $order->items()->create($data);
 
+        $items = Item::where('order_id',$order->id)->get();
+
+        $subtotal = $items->sum('sub_total');
+        $vat = $subtotal * 0.19;
+        $total = $subtotal + $vat;
+
+        $data['subtotal'] = $subtotal;
+        $data['vat'] = $vat;
+        $data['total'] = $total;
+
+
+        $order->update($data);
+
         return $this->sendResponse(true,$report,trans("Report Added Successfully"),200);
     }
 
@@ -407,6 +551,19 @@ class ApiOrderController extends Controller
         $report = $order->items()->find($request->item_id);
 
         $report->delete();
+
+        $items = Item::where('order_id',$order->id)->get();
+
+        $subtotal = $items->sum('price');
+        $vat = $subtotal * 0.19;
+        $total = $subtotal + $vat;
+
+        $data['subtotal'] = $subtotal;
+        $data['vat'] = $vat;
+        $data['total'] = $total;
+
+
+        $order->update($data);
 
         return $this->sendResponse(true,$report,trans("Report Deleted Successfully"),200);
     }
@@ -483,9 +640,13 @@ class ApiOrderController extends Controller
 
         if ($selected_date->isToday()) {
             $current_hour = now()->hour;
-            if ($current_hour <= 18) {
+            if ($current_hour <= 18 && $current_hour>= 8) {
                 $start_hour = $current_hour;
-            } else {
+            }
+            elseif($current_hour < 8){
+                $start_hour = 8;
+            }
+            else {
                 return $this->sendResponse(true,$data,"Available time retrieved  Successfully",200);
             }
         } elseif ($selected_date->isPast()) {

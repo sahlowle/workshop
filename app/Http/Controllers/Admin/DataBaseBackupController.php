@@ -103,7 +103,7 @@ class DataBaseBackupController extends Controller
         $user = User::findOrFail($id);
 
         $validated = $request->validate([
-            'name' => 'nullable|string|min:3',
+            'name' => 'nullable|string',
             'email' => 'nullable|email|unique:users,email,'.$id,
             'password' => 'nullable|string|min:6',
         ]);

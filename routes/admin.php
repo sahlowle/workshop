@@ -35,6 +35,7 @@ Route::resource('customers', CustomerController::class)->middleware('prevent-bac
  /* |------ add drop Off order routes ---------| */
  Route::get('orders/create/drop/off',[OrderController::class,'createDropOffOrder'])->name('orders.drop.create')->middleware('prevent-back-history');
  Route::post('orders/store/drop/off',[OrderController::class,'storeDropOffOrder'])->name('orders.drop.store')->middleware('prevent-back-history');
+ Route::post('orders/add/drop/off/{id}',[OrderController::class,'addDropOffOrder'])->name('orders.drop.add')->middleware('prevent-back-history');
 
 //today roads
 Route::get('roads/only/today', [RoadController::class, 'today'])->name('roads.today')->middleware('prevent-back-history');
@@ -67,3 +68,5 @@ Route::view('invoice','emails.invoice',['order'=> Order::first()]);
 
 Route::post('/orders/add-item/{id}', [OrderController::class, 'addItem'])->name('orders.add-item')->middleware('prevent-back-history');
 Route::delete('/orders/delete-item/{id}', [OrderController::class, 'deleteItem'])->name('orders.delete-item')->middleware('prevent-back-history');
+
+Route::post('/orders/add-payment/{id}', [OrderController::class, 'addPayment'])->name('orders.add-payment')->middleware('prevent-back-history');
