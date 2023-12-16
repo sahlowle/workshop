@@ -135,7 +135,7 @@
                               {!! Form::date('visit_date', null, [
                                 'id'=>'visit_date','required',
                                 'class' => 'form-control',
-                                'min' => date('Y-m-d'),
+                                'min' => $order->visit_time->format('Y-m-d'),
                                 'placeholder'=> trans("Visit date")
                                 ]) !!}
                             </div>
@@ -460,19 +460,21 @@
   
                       <li class="list-group-item d-flex justify-content-between align-items-center">
                         @lang("Max Maintenance Price")
-                        <span> {{ $order->max_maintenance_price ? number_format($order->max_maintenance_price,0)  : "N\A" }} </span>
+                        <span>
+                           {{ $order->max_maintenance_price ? number_format($order->max_maintenance_price,0)  : "N\A" }} €
+                          </span>
                       </li>
   
                       <li class="list-group-item d-flex justify-content-between align-items-center">
-                          @lang("Vat")   <span>{{ $order->vat ? number_format($order->vat,2) : 0}} </span>
+                          @lang("Vat")   <span>{{ $order->vat ? number_format($order->vat,2) : 0}} € </span>
                       </li>
   
                       <li class="list-group-item d-flex justify-content-between align-items-center">
-                          @lang("Subtotal")   <span>{{ $order->subtotal ? number_format($order->subtotal,2) :0 }} </span>
+                          @lang("Subtotal")   <span>{{ $order->subtotal ? number_format($order->subtotal,2) :0 }} € </span>
                       </li>
   
                       <li class="list-group-item d-flex justify-content-between align-items-center">
-                          @lang("Total")   <span>{{ $order->total ? number_format($order->total,2) : 0 }} </span>
+                          @lang("Total")   <span>{{ $order->total ? number_format($order->total,2) : 0 }} € </span>
                       </li>
   
                       <li class="list-group-item d-flex justify-content-between align-items-center">
@@ -523,7 +525,7 @@
                       <li class="list-group-item d-flex justify-content-between align-items-center">
                           @lang("Paid amount")   
                           <span>
-                              {{ $order->paid_amount? number_format($order->paid_amount,2) : 0 }}
+                              {{ $order->paid_amount? number_format($order->paid_amount,2) : 0 }} €
                           </span>
                       </li>
                   </ul>
@@ -980,7 +982,7 @@
                   @forelse($order->payments as $item)
                     <tr>
                       <td> {{ $loop->index + 1 }} </td>
-                      <td> {{ number_format($item->paid_amount,2) }} </td>
+                      <td> {{ number_format($item->paid_amount,2) }} € </td>
                       <td> {{ $item->payment_method }} </td>
                       <td> {{ $item->payment_id ? $item->payment_id : "N\A"}} </td>
                     </tr>

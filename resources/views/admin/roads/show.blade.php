@@ -30,10 +30,6 @@
                         </span>
                     </li>
 
-                    <li class="list-group-item d-flex justify-content-between align-items-center">
-                        @lang("Description")    <span>{{ $road->description }}</span>
-                    </li>
-
                     @if ($road->driver)
                     <li class="list-group-item d-flex justify-content-between align-items-center">
                       @lang("Technician")

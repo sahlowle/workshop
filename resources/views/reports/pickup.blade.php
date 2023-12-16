@@ -72,14 +72,14 @@
                 </td>
             </tr>
             
-            {{-- <tr>
+            <tr>
                 <th>
                     <span>Plz.</span>
                 </th>
                 <td>
                     <span class="wordbr" contenteditable> {{ $order->postal_code }}  </span>
                 </td>
-            </tr> --}}
+            </tr>
             <tr>
                 <th>
                     <span>Gbd.teil</span>
@@ -164,7 +164,7 @@
                         <tr>
                             <td style=" text-align: center;font-size: 20px; ">
                                 <span class="wordbr" contenteditable> 
-                                    {{ number_format($order->subtotal,2)}}
+                                    {{ number_format($order->subtotal,2)}} €
                                 </span>
                             </td>
                         </tr>
@@ -184,7 +184,7 @@
                                     <span>Menge</span>
                                 </th>
                                 <th>
-                                    <span>Endpreis</span>
+                                    <span>Preis</span>
                                 </th>
                             </tr>
                         </thead>
@@ -217,7 +217,7 @@
                                             </th>
                                             <td>
                                                 <span class="wordbr" contenteditable="">
-                                                    {{ number_format($order->paid_amount,2)}}
+                                                    {{ number_format($order->paid_amount,2)}} €
                                                 </span>
                                             </td>
                                             <td class="euro">
@@ -230,7 +230,7 @@
                                             </th>
                                             <td>
                                                 <span class="wordbr" contenteditable="">
-                                                    {{ number_format($order->max_maintenance_price,2)}}
+                                                    {{ number_format($order->max_maintenance_price,2)}} €
                                                 </span>
                                             </td>
                                             <td class="euro">
@@ -255,7 +255,7 @@
                             <tr>
                                 <td style=" text-align: center;font-size: 20px; ">
 										<span class="wordbr" contenteditable>
-                                           {{ number_format($order->vat,2)}}
+                                           {{ number_format($order->vat,2)}} €
                                         </span>
                                 </td>
                             </tr>
@@ -267,7 +267,7 @@
                             <tr>
                                 <td style=" text-align: center;font-size: 20px; ">
                                     <span class="wordbr" contenteditable>
-                                        {{ number_format($order->total,2)}}
+                                        {{ number_format($order->total,2)}} €
                                     </span>
                                 </td>
                             </tr>
@@ -295,7 +295,7 @@
             </div>
             <div class="check2" style="justify-content: space-between;">
                 <div class="check-group4">
-                    <input type="checkbox" id="Betrag"  @checked($order->is_amount_received)>
+                    <input type="checkbox" id="Betrag"  @checked($order->is_amount_received) >
                     <label for="Betrag">Betrag dankend erhalten</label>
                 </div>
                 <div class="check-group4">

@@ -459,6 +459,15 @@ class OrderController extends Controller
             'payment_way' => $request->payment_way,
         ]);
 
+        if ($order->type == 3) {
+            $pickupOrder = Order::where('reference_no',$order->pickup_order_ref)->first();
+
+            $pickupOrder->update([
+                'is_paid' => true,
+                'paid_amount' => $pickupOrder->total,
+            ]);
+        }
+
         
         $message = trans('Successful Added');
 

@@ -6,6 +6,10 @@
     @include('reports.style-pickup')
 </head>
 
+@php
+    $mainOrder = $order;
+@endphp
+
 <body id="photo">
     <header>
         <div class="container">
@@ -145,6 +149,7 @@
                         <span>Firma</span>
                     </th>
                     <td>
+
                         <span class="wordbr" contenteditable>
                             {{ $order->pickupAddress ? $order->pickupAddress->company_name : "N\A"}}
                         </span>
@@ -293,83 +298,31 @@
                                     <span>Menge</span>
                                 </th>
                                 <th style="width: 7%;text-align: center;">
-                                    <span>Endpreis</span>
+                                    <span>Preis</span>
                                 </th>
                             </tr>
                         </thead>
                         <tbody>
+                            @foreach ($order->items as $item)
                             <tr>
                                 <td>
-                                    <a class="cut">-</a>
-                                    <span class="wordbr" contenteditable></span>
+                                    <span class="wordbr" >
+                                        {{ $item->title }}
+                                    </span>
                                 </td>
                                 <td>
-                                    <span class="wordbr" contenteditable></span>
+                                    <span class="wordbr" >
+                                        {{ $item->quantity }}
+                                    </span>
                                 </td>
                                 <td>
-                                    <span class="wordbr" contenteditable></span>
+                                    <span class="wordbr" >
+                                        {{ number_format($item->price,2) }}
+                                    </span>
                                 </td>
                             </tr>
-                            <tr>
-                                <td>
-                                    <a class="cut">-</a>
-                                    <span class="wordbr" contenteditable></span>
-                                </td>
-                                <td>
-                                    <span class="wordbr" contenteditable></span>
-                                </td>
-                                <td>
-                                    <span class="wordbr" contenteditable></span>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <a class="cut">-</a>
-                                    <span class="wordbr" contenteditable></span>
-                                </td>
-                                <td>
-                                    <span class="wordbr" contenteditable></span>
-                                </td>
-                                <td>
-                                    <span class="wordbr" contenteditable></span>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <a class="cut">-</a>
-                                    <span class="wordbr" contenteditable></span>
-                                </td>
-                                <td>
-                                    <span class="wordbr" contenteditable></span>
-                                </td>
-                                <td>
-                                    <span class="wordbr" contenteditable></span>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <a class="cut">-</a>
-                                    <span class="wordbr" contenteditable></span>
-                                </td>
-                                <td>
-                                    <span class="wordbr" contenteditable></span>
-                                </td>
-                                <td>
-                                    <span class="wordbr" contenteditable></span>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <a class="cut">-</a>
-                                    <span class="wordbr" contenteditable></span>
-                                </td>
-                                <td>
-                                    <span class="wordbr" contenteditable></span>
-                                </td>
-                                <td>
-                                    <span class="wordbr" contenteditable></span>
-                                </td>
-                            </tr>
+                            @endforeach
+                           
                         </tbody>
                     </table>
 
@@ -392,7 +345,9 @@
                         </div>
                         <div class="column" style="width: 10%;padding: 0">
                             <div class="box" style="width:100%;padding: 12px 9.4px 6px 10px;text-align: center;">
-                                <p style="font-size: 1.4rem;font-family: 'Open Sans', sans-serif;font-weight: 100;color: #000000;" contenteditable>0.00€</p>
+                                <p style="font-size: 0.7rem;font-family: 'Open Sans', sans-serif;font-weight: 100;color: #000000;">
+                                    {{ number_format($order->subtotal,2) }} €
+                                </p>
                             </div>
 
                         </div>
@@ -409,13 +364,13 @@
                     <div class="row" style=" width: 100%; ">
                         <div class="column2" style="width: 17%;margin-top: 16px;">
                             <div class="check-group4" style=" padding: 0; width: 100%;margin-bottom: 0; ">
-                                <input type="checkbox" id="Betrag">
+                                <input type="checkbox" id="Betrag" @checked($order->is_amount_received)>
                                 <label for="Betrag">Betrag dankend erhalten</label>
                             </div>
                         </div>
                         <div class="column2" style="width: 60%;margin-top: 16px;">
                             <div class="check-group4" style=" padding: 0; width:100%;margin-bottom: 0; ">
-                                <input type="checkbox" id="Ware">
+                                <input type="checkbox" id="Ware" @checked($order->is_customer_confirm) >
                                 <label for="Ware">Ware in einwandfreiem Zustand erhalten.Vom einwandfreien Funktionieren des Gerätes habe ich mich überzeugt </label>
                             </div>
                         </div>
@@ -424,7 +379,9 @@
                         </div>
                         <div class="column2" style="width:9.9%;">
                             <div class="box" style="width:100%;padding: 12px 10px 6px 10px;text-align: center; ">
-                                <p style="font-size: 1.4rem;font-family: 'Open Sans', sans-serif;font-weight: 100;color: #000000;" contenteditable>0.00€</p>
+                                <p style="font-size: 0.7rem;font-family: 'Open Sans', sans-serif;font-weight: 100;color: #000000;" contenteditable>
+                                    {{ number_format($order->vat,2) }} €
+                                </p>
                             </div>
                         </div>
                     </div>
@@ -455,7 +412,9 @@
                             </div>
                             <div class="column2" style=" width: 38.2% ">
                                 <div class="box" style="width:100%;padding: 12px 10px 6px 10px;text-align: center;border-bottom: 4px solid #1074bc;">
-                                    <p style="font-size: 1.4rem;font-family: 'Open Sans', sans-serif;font-weight: 100;color: #000000;" contenteditable>0.00€</p>
+                                    <p style="font-size: 0.7rem;font-family: 'Open Sans', sans-serif;font-weight: 100;color: #000000;" contenteditable>
+                                        {{ number_format($order->total,2) }} €
+                                    </p>
                                 </div>
                             </div>
                         </div>
@@ -463,14 +422,14 @@
 
                         <div class="check2" style=" margin-top: 6%; ">
                             <div class="check-group3" style="padding-right: 6px;;">
-                                <input type="checkbox" id="Bar">
+                                <input type="checkbox" id="Bar" @checked($mainOrder->payment_way ==1)  >
                                 <label for="Bar">Bar</label>
                             </div>
-                            <div class="check-group3" style="padding-right: 9px;">
+                            <div class="check-group3" style="padding-right: 9px;"@checked($mainOrder->payment_way ==2)  >
                                 <input type="checkbox" id="EC">
                                 <label for="EC">EC</label>
                             </div>
-                            <div class="check-group3" style="padding-right: 0px;">
+                            <div class="check-group3" style="padding-right: 0px;" @checked($mainOrder->payment_way ==3)  >
                                 <input type="checkbox" id="Überweisung">
                                 <label for="Überweisung">Überweisung</label>
                             </div>

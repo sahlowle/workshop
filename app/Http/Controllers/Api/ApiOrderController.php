@@ -139,7 +139,7 @@ class ApiOrderController extends Controller
 
         $items = $order->items;
 
-        $subtotal = $items->sum('price');
+        $subtotal = $items->sum('sub_total');
         $vat = $subtotal * 0.19;
         $total = $subtotal + $vat;
 
@@ -323,15 +323,44 @@ class ApiOrderController extends Controller
 
         $order->update($data);
 
-        if ($request->filled('paid_amount')) {
-            $order->increment('paid_amount',$request->paid_amount);
+        if ($request->filled('payment_way') && $order->type == 3) {
+
+            $total = $order->total - $order->paid_amount;
 
             $order->payments()->create([
-                'paid_amount' => $request->paid_amount,
+                'paid_amount' => $total,
                 'payment_way' => $request->payment_way,
                 'payment_id' => $request->payment_id,
             ]);
+
+            $order->update([
+                'is_paid' => true,
+                'paid_amount' => $order->total,
+            ]);
+
+            $pickupOrder = Order::where('reference_no',$order->pickup_order_ref)->first();
+
+            $pickupOrder->update([
+                'is_paid' => true,
+                'paid_amount' => $pickupOrder->total,
+            ]);
+            
+
+        } elseif($request->filled('payment_way')) {
+            $total = $order->total - $order->paid_amount;
+
+            $order->payments()->create([
+                'paid_amount' => $total,
+                'payment_way' => $request->payment_way,
+                'payment_id' => $request->payment_id,
+            ]);
+
+            $order->update([
+                'is_paid' => true,
+                'paid_amount' => $order->total,
+            ]);
         }
+
 
         if ($request->filled('items')){
 
@@ -581,6 +610,8 @@ class ApiOrderController extends Controller
             return $this->sendResponse(false,[],trans('Not Found'),404);
         }
 
+        $orderFile = [];
+
         if ($request->hasFile('files')) {
             
             $files = $request->file('files');
@@ -588,7 +619,7 @@ class ApiOrderController extends Controller
             foreach ($files as $file) {
                 $path = $this->uploadFile('order_files',$file);
                 
-                $order->files()->create([
+                $orderFile = $order->files()->create([
                     'file_name' => basename($path),
                     'path_name' => $path,
                 ]);
@@ -596,7 +627,7 @@ class ApiOrderController extends Controller
             }
         } 
 
-        return $this->sendResponse(true,$order->files,trans("Files Added Successfully"),200);
+        return $this->sendResponse(true,$orderFile,trans("Files Added Successfully"),200);
     }
 
     /*
