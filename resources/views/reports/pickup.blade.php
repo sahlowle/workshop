@@ -23,19 +23,19 @@
     <article>
         <div class="check">
             <div class="check-group">
-                <input type="checkbox" id="1" onclick="selectOnlyThis(this.id)"  @checked($order->type == 1) >
+                <input type="checkbox" id="1" onclick="selectOnlyThis(this.id)"  @checked($order->order_mode == 1) >
                 <label for="1">Reparaturauftrag</label>
             </div>
             <div class="check-group">
-                <input type="checkbox" id="2" onclick="selectOnlyThis(this.id)"  @checked($order->type == 3) >
+                <input type="checkbox" id="2" onclick="selectOnlyThis(this.id)"  @checked($order->order_mode == 2) >
                 <label for="2">Rechnung</label>
             </div>
             <div class="check-group">
-                <input type="checkbox" id="3" onclick="selectOnlyThis(this.id)">
+                <input type="checkbox" id="3" onclick="selectOnlyThis(this.id)"  @checked($order->order_mode == 3) >
                 <label for="3">Verkauf</label>
             </div>
             <div class="check-group">
-                <input type="checkbox" id="4" onclick="selectOnlyThis(this.id)"  @checked($order->type == 2) >
+                <input type="checkbox" id="4" onclick="selectOnlyThis(this.id)"  @checked($order->order_mode == 4) >
                 <label for="4">Ankauf</label>
             </div>
         </div>

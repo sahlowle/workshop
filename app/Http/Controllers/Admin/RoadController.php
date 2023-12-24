@@ -7,6 +7,7 @@ use App\Models\Order;
 use App\Models\Road;
 use App\Models\User;
 use Carbon\Carbon;
+use Carbon\Exceptions\InvalidFormatException;
 use Illuminate\Http\Request;
 
 class RoadController extends Controller
@@ -36,13 +37,22 @@ class RoadController extends Controller
         }
 
         if ($request->filled(['date_from','date_to'])) {
+            
+            $parse = true;
+            try {
+                $date = @Carbon::parse($request->date_from);
+                $date = @Carbon::parse($request->date_to);
+            } catch (InvalidFormatException $ex) {
+                $parse = false;
+            }
 
-            $date_from = $request->date('date_from');
-            $date_to = $request->date('date_to');
-
-            $query
-            ->whereDate('created_at', '>=', $date_from)
-            ->whereDate('created_at', '<=', $date_to);
+            if ($parse) {
+                $date_from = $request->date('date_from');
+                $date_to = $request->date('date_to');
+                $query
+                ->whereDate('created_at', '>=', $date_from)
+                ->whereDate('created_at', '<=', $date_to);
+            }
         }
 
         $data['data'] = $query->with('driver')->latest('id')->paginate(10)->withQueryString();
@@ -75,12 +85,21 @@ class RoadController extends Controller
 
         if ($request->filled(['date_from','date_to'])) {
 
-            $date_from = $request->date('date_from');
-            $date_to = $request->date('date_to');
+            $parse = true;
+            try {
+                $date = @Carbon::parse($request->date_from);
+                $date = @Carbon::parse($request->date_to);
+            } catch (InvalidFormatException $ex) {
+                $parse = false;
+            }
 
-            $query
-            ->whereDate('created_at', '>=', $date_from)
-            ->whereDate('created_at', '<=', $date_to);
+            if ($parse) {
+                $date_from = $request->date('date_from');
+                $date_to = $request->date('date_to');
+                $query
+                ->whereDate('created_at', '>=', $date_from)
+                ->whereDate('created_at', '<=', $date_to);
+            }
         }
 
 
@@ -132,7 +151,10 @@ class RoadController extends Controller
 
         $road = Road::create($validated);
 
-        Order::whereIn('id',$request->orders)->update(['road_id' => $road->id]);
+        Order::whereIn('id',$request->orders)->update([
+            'road_id' => $road->id,
+            'driver_id' => $road->driver_id,
+        ]);
 
         $status = (int)$road->status;
 

@@ -24,17 +24,17 @@
 
       <div class="col-3">
         <div class="mb-3">
-          <label class=" col-form-label" for="basic-default-name">@lang("From date")</label>
+          <label class=" col-form-label" for="basic-default-name">@lang("From")</label>
           <div class="col-sm-10">
-            <input class="form-control" name="date_from" type="date" value="{{ request()->date_from }}">
+            <input class="form-control customDate" name="date_from" type="text" value="{{ request()->date_from }}">
           </div>
         </div>
       </div>
       <div class="col-3">
         <div class="mb-3">
-          <label class=" col-form-label" for="basic-default-name">@lang("To date")</label>
+          <label class=" col-form-label" for="basic-default-name">@lang("To")</label>
           <div class="col-sm-10">
-            <input  class="form-control" name="date_to" type="date" value="{{ request()->date_to }}">
+            <input  class="form-control customDate" name="date_to" type="text" value="{{ request()->date_to }}">
           </div>
         </div>
       </div>

@@ -39,76 +39,96 @@
                 <form method="POST" action="{{ route('orders.drop.add',$order->id) }}" >
                   @csrf
                   <div class="row">
-                    <div class="col-6">
+                    <div class="col-4">
+                      <h4> @lang('Customer Adresse') </h4>
+
+                      <div class="mb-2">
+
+                        <div class="card-body">
+
+                          <div class="">
+                            <label class="form-label" for="basic-default-name"> @lang('Company Name') </label>
+                            <input value="{{ $order->customer->company_name }}" disabled class="form-control" type="text" >
+                          </div>
+
+                          <div>
+                            <label class="form-label" for="basic-default-name"> @lang('Name') </label>
+                            <input value="{{ $order->customer->name }}" disabled  class="form-control" type="text" >  
+                          </div>
+
+                          <div>
+                            <label class="form-label" for="basic-default-name"> @lang('Address') </label>
+                            <input value="{{ $order->customer->address }}" disabled  class="form-control" type="text" >
+                          </div>
+
+                          <div >
+                            <label class="form-label" for="basic-default-name"> @lang('Postal Code') </label>
+                            <input value="{{ $order->customer->postal_code }}" disabled  class="form-control" type="number" min="1" >
+                          </div>
+
+                          <div >
+                            <label class="form-label" for="basic-default-name"> @lang('Phone') </label>
+                            <input value="{{ $order->customer->phone }}" disabled  class="form-control" type="number" min="1" >
+                          </div>
+
+                          <div >
+                            <label class="form-label" for="basic-default-name"> @lang('Telephone') </label>
+                            <input value="{{ $order->customer->telephone }}" disabled  class="form-control" type="number" min="1" >
+                          </div>
+
+                          <div >
+                            <label class="form-label" for="basic-default-name"> @lang('Part Of Buliding') </label>
+                            <input value="{{ $order->customer->part_of_building }}" disabled  class="form-control" type="text">
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-4">
                       <h4> @lang('Leist Adresse') </h4>
 
                       <div class="mb-2">
 
                         <div class="card-body">
 
-                          <div class="row mb-3">
-                            <label class="col-sm-2 col-form-label" for="basic-default-name"> @lang('Company Name') </label>
-                            <div class="col-sm-10">
-                              <input value="{{ old('company_name') }}" class="form-control" placeholder="@lang('Company Name')" name="company_name" type="text" >
-                            </div>
+                          <div class="">
+                            <label class="form-label" for="basic-default-name"> @lang('Company Name') </label>
+                            <input value="{{ old('company_name') }}" class="form-control" placeholder="@lang('Company Name')" name="company_name" type="text" >
                           </div>
 
-                          <div class="row mb-3">
-                            <label class="col-sm-2 col-form-label" for="basic-default-name"> @lang('Name') </label>
-                            <div class="col-sm-10">
-                              <input placeholder="@lang('Name')" name="name"  value="{{ old('name') }}" class="form-control" type="text" >
-                            </div>
+                          <div>
+                            <label class="form-label" for="basic-default-name"> @lang('Name') </label>
+                            <input placeholder="@lang('Name')" name="name"  value="{{ old('name') }}" class="form-control" type="text" >  
                           </div>
 
-                          <div class="row mb-3">
-                            <label class="col-sm-2 col-form-label" for="basic-default-name"> @lang('Address') </label>
-                            <div class="col-sm-10">
-                              <input placeholder="@lang('Address')" name="address"  value="{{ old('address') }}" class="form-control" type="text" >
-                            </div>
+                          <div>
+                            <label class="form-label" for="basic-default-name"> @lang('Address') </label>
+                            <input placeholder="@lang('Address')" name="address"  value="{{ old('address') }}" class="form-control" type="text" >
                           </div>
 
-                          <div class="row mb-3">
-                            <label class="col-sm-2 col-form-label" for="basic-default-name"> @lang('Postal Code') </label>
-                            <div class="col-sm-10">
-                              <input placeholder="@lang('Postal Code')" name="postal_code"  value="{{ old('postal_code') }}" class="form-control" type="number" >
-                            </div>
+                          <div >
+                            <label class="form-label" for="basic-default-name"> @lang('Postal Code') </label>
+                            <input placeholder="@lang('Postal Code')" name="postal_code"  value="{{ old('postal_code') }}" class="form-control" type="number" min="1" >
                           </div>
 
-                          <div class="row mb-3">
-                            <label class="col-sm-2 col-form-label" for="basic-default-name"> @lang('Phone') </label>
-                            <div class="col-sm-10">
-                              <input placeholder="@lang('Phone')" name="phone"  value="{{ old('phone') }}" class="form-control" type="number" >
-                            </div>
+                          <div >
+                            <label class="form-label" for="basic-default-name"> @lang('Phone') </label>
+                            <input placeholder="@lang('Phone')" name="phone"  value="{{ old('phone') }}" class="form-control" type="number" min="1" >
                           </div>
 
-                          <div class="row mb-3">
-                            <label class="col-sm-2 col-form-label" for="basic-default-name"> @lang('Telephone') </label>
-                            <div class="col-sm-10">
-                              <input placeholder="@lang('Telephone')" name="telephone"  value="{{ old('telephone') }}" class="form-control" type="number" >
-                            </div>
+                          <div >
+                            <label class="form-label" for="basic-default-name"> @lang('Telephone') </label>
+                            <input placeholder="@lang('Telephone')" name="telephone"  value="{{ old('telephone') }}" class="form-control" type="number" min="1" >
                           </div>
 
-                          <div class="row mb-3">
-                            <label class="col-sm-2 col-form-label" for="basic-default-name"> @lang('Part Of Buliding') </label>
-                            <div class="col-sm-10">
-                              <input placeholder="@lang('Part Of Buliding')" name="part_of_building"  value="{{ old('part_of_building') }}" class="form-control" type="text">
-                            </div>
-                          </div>
-
-
-
-                          <div class="row justify-content-end">
-                            <div class="col-sm-10">
-                              <button class="btn btn-outline-primary m-2" type="submit">
-                                <i class="bx bx-save" style="font-size: 1.5rem"></i>
-                                Save
-                              </button>
-                            </div>
+                          <div >
+                            <label class="form-label" for="basic-default-name"> @lang('Part Of Buliding') </label>
+                            <input placeholder="@lang('Part Of Buliding')" name="part_of_building"  value="{{ old('part_of_building') }}" class="form-control" type="text">
                           </div>
                         </div>
                       </div>
                     </div>
-                    <div class="col-6">
+
+                    <div class="col-4">
                       <div class="mb-2">
 
                         <div class="card-body">
@@ -132,9 +152,9 @@
                           <div class="row mb-3">
                             <label class=" col-form-label" for="basic-default-name">@lang("Visit Date")</label>
                             <div class="col-sm-10">
-                              {!! Form::date('visit_date', null, [
+                              {!! Form::text('visit_date', null, [
                                 'id'=>'visit_date','required',
-                                'class' => 'form-control',
+                                'class' => 'form-control customDate',
                                 'min' => $order->visit_time->format('Y-m-d'),
                                 'placeholder'=> trans("Visit date")
                                 ]) !!}
@@ -164,6 +184,15 @@
                                 @endforeach
 
                               </select>
+                            </div>
+                          </div>
+
+                          <div class="row justify-content-end">
+                            <div class="col-sm-10">
+                              <button class="btn btn-outline-primary m-2" type="submit">
+                                <i class="bx bx-save" style="font-size: 1.5rem"></i>
+                                Save
+                              </button>
                             </div>
                           </div>
 
@@ -216,7 +245,7 @@
               <div class="modal-header">
                 <h5 class="modal-title" id="staticBackdropLabel">
                   <i class='bx bxs-cog'></i>
-                  @lang('Add new item')
+                  @lang('Add new price')
                 </h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">X</button>
               </div>
@@ -239,14 +268,14 @@
                           <div class="row mb-3">
                             <label class="col-sm-2 col-form-label" for="basic-default-company">@lang('Quantity')</label>
                             <div class="col-sm-10">
-                              <input value="{{ old('quantity') }}"  class="form-control" placeholder="@lang('Quantity')" name="quantity" type="number" required>
+                              <input value="{{ old('quantity') }}"  class="form-control" placeholder="@lang('Quantity')" name="quantity" type="number" min="1" required>
                             </div>
                           </div>
 
                           <div class="row mb-3">
                             <label class="col-sm-2 col-form-label" for="basic-default-company"> @lang('Price') </label>
                             <div class="col-sm-10">
-                              <input value="{{ old('price') }}" class="form-control" placeholder="@lang('Price')" name="price" type="number" required>
+                              <input value="{{ old('price') }}" class="form-control" placeholder="@lang('Price')" name="price" type="number" min="1" required>
                             </div>
                           </div>
 
@@ -316,7 +345,7 @@
                           <div class="row mb-3">
                             <label class="col-sm-2 col-form-label" for="basic-default-name"> @lang('Due amount') </label>
                             <div class="col-sm-10">
-                              <input value="{{ $order->total - $order->paid_amount }}" readonly class="form-control" placeholder="@lang('Due amount')" name="amount" type="number" required>
+                              <input value="{{ $order->total - $order->paid_amount }}" readonly class="form-control" placeholder="@lang('Due amount')" name="amount" type="number" min="1" required>
                             </div>
                           </div>
 
@@ -517,7 +546,7 @@
                       <li class="list-group-item d-flex justify-content-between align-items-center">
                           @lang("Payment ID")   
                           <span>
-                              {{ $order->payment_id }}
+                              {{ $order->payment_id ? $order->payment_id : "N\A"}}
                           </span>
                       </li>
                       @endif
@@ -607,7 +636,10 @@
   
           <div class="card mb-4">
             <div class="card-header">
-              <h6 class="card-title m-0">@lang("Customer details"): </h6>
+              <h4 class="card-title m-0 h4">
+                <i class='bx bx-info-circle'></i>
+                @lang("Customer details"):
+              </h4>
             </div>
             <div class="card-body">
               <div class="d-flex justify-content-start align-items-center mb-4">
@@ -621,14 +653,19 @@
                   <small class="text-muted"> @lang("Phone"): {{ $order->customer->phone }}</small>
               </div>
               </div>
-              <div class="d-flex justify-content-between">
-                <h6> <i class='bx bx-info-circle'></i> @lang("Contact info"): </h6>
-              </div>
-              <br>
+              
+              @if ($order->customer->email)
               <p class=" mb-1"> <i class='bx bx-envelope'></i>: {{ $order->customer->email }} </p>
-              <p class=" mb-0"> <i class='bx bxs-phone'></i>: {{ $order->order_phone_number }}</p>
-              <p class=" mb-0"> <i class='bx bxs-phone'></i>: {{ $order->customer->telephone }}</p>
-              <p class=" mb-0"> <b> @lang('Postal Code') </b> : {{ $order->postal_code }}</p>
+              @endif
+              @if ($order->order_phone_number)
+              <p class=" mb-0"> <b> @lang('Order phone') </b> : {{ $order->order_phone_number }}</p>
+              @endif
+
+              @if ($order->customer->telephone)
+              <p class=" mb-0"> <b> @lang('Telephone') </b> : {{ $order->customer->telephone }}</p>
+              @endif
+
+              <p class=" mb-0"> <b> @lang('Postal Code') </b> : {{ $order->postal_code ? $order->postal_code : "N\A"}} </p>
               <p class=" mb-0"> <b> @lang('Zone Area') </b> : {{ $order->zone_area ? $order->zone_area : "N\A" }}</p>
             </div>
           </div>
@@ -645,7 +682,7 @@
               <hr>
               <br>
   
-              <a target="_blank" href="https://maps.google.com/?q={{ $order->lat }},{{ $order->lng }}" class="btn btn-primary" >
+              <a target="_blank" href="https://maps.google.com/?q={{ urlencode($order->address) }}" class="btn btn-primary" >
                   <i class='bx bxs-map'></i>
                   @lang('Show In Map')
               </a>
@@ -738,15 +775,12 @@
             <h5 class="card-header">
               <i class='bx bx-file'></i>
               @lang('Items')
-
-                @if($order->status == 4)
-
-
-                @else
+              
+                @if($order->status == 3)
                   <button type="button" style="float: right" class="btn btn-outline-dark  btn-sm pl-1"
                     data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@mdo">
                     <i class='bx bxs-cog'></i>
-                    @lang('Add new item')
+                    @lang('Add new price')
                   </button>
                 @endif
 
@@ -860,7 +894,7 @@
                 <thead>
                   <tr>
                     <th> @lang("Name") </th>
-                    <th> @lang('Answered') </th>
+                    <th> @lang('Selected') </th>
                   </tr>
                 </thead>
                 <tbody class="table-border-bottom-0 ">
@@ -895,14 +929,14 @@
           <div class="card">
             <h5 class="card-header">
               <i class='bx bx-file'></i>
-              @lang('Questions')
+              @lang('Notes')
             </h5>
             <div class="table-responsive text-nowrap p-4">
               <table class="table table-hover">
                 <thead>
                   <tr>
                     <th> @lang("Name") </th>
-                    <th> @lang('Answered') </th>
+                    <th> @lang('Selected') </th>
                   </tr>
                 </thead>
                 <tbody class="table-border-bottom-0 ">
@@ -971,28 +1005,54 @@
               <table class="table table-hover">
                 <thead>
                   <tr>
-                    <th>#</th>
                     <th> @lang("Paid Amount") </th>
                     <th> @lang("Payment method") </th>
-                    <th> @lang("Payment Id") </th>
+                    <th> @lang("Payment Id") </th> 
+                    <th> @lang("Payment Date") </th> 
                   </tr>
                 </thead>
                 <tbody class="table-border-bottom-0 ">
+                   @isset($mainOrder)
+                       @foreach ($mainOrder->payments as $item)
+                       <tr>
+                        <td> {{ number_format($item->paid_amount,2) }} € </td>
+                        <td> {{ $item->payment_method }} </td>
+                        <td> {{ $item->payment_id ? $item->payment_id : "N\A"}} </td>
+                        <td> {{ $item->created_at->format('d.m.Y H:i')}} </td>
+                      </tr>
+                       @endforeach
+                   @endisset
 
-                  @forelse($order->payments as $item)
-                    <tr>
-                      <td> {{ $loop->index + 1 }} </td>
-                      <td> {{ number_format($item->paid_amount,2) }} € </td>
-                      <td> {{ $item->payment_method }} </td>
-                      <td> {{ $item->payment_id ? $item->payment_id : "N\A"}} </td>
-                    </tr>
-                  @empty
-                    <tr class="no-data">
-                      <td colspan="4">
-                        <h2> @lang("Data not found") </h2>
-                      </td>
-                    </tr>
-                  @endforelse
+                   @isset($order)
+                       @foreach ($order->payments as $item)
+                       <tr>
+                        <td> {{ number_format($item->paid_amount,2) }} € </td>
+                        <td> {{ $item->payment_method }} </td>
+                        <td> {{ $item->payment_id ? $item->payment_id : "N\A"}} </td>
+                        <td> {{ $item->created_at->format('d.m.Y H:i')}} </td>
+                      </tr>
+                       @endforeach
+                   @endisset
+
+                   @if(isset($mainOrder))
+                      @if ($order->payments->isEmpty() && $mainOrder->payments->isEmpty())
+                         <tr class="no-data">
+                           <td colspan="4">
+                             <h2> @lang("Data not found") </h2>
+                           </td>
+                         </tr>
+                      @endif
+                   @else
+                      @if ($order->payments->isEmpty())
+                      <tr class="no-data">
+                        <td colspan="4">
+                          <h2> @lang("Data not found") </h2>
+                        </td>
+                      </tr>
+                   @endif
+                  @endif
+
+                 
                 </tbody>
               </table>
             </div>

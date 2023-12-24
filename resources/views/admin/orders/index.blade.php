@@ -26,19 +26,52 @@
   <form method="GET">
     <div class="row p-4">
 
+      <div class="col-12 pb-4">
+        <h4 class="fw-medium d-block"> @lang('Filter order by type') </h4>
+
+        <div class="form-check form-check-inline mt-3">
+          <input class="form-check-input" type="radio" name="type" id="inlineRadio4" value="" @checked(request()->isNotFilled('type')) >
+          <label class="form-check-label px-2" for="inlineRadio4">
+            @lang("All")
+          </label>
+        </div>
+
+        <div class="form-check form-check-inline mt-3">
+          <input class="form-check-input" type="radio" name="type" id="inlineRadio1" value="1" @checked(request()->type == 1) >
+          <label class="form-check-label px-2" for="inlineRadio1">
+            @lang("Pick up")
+          </label>
+        </div>
+
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="radio" name="type" id="inlineRadio2" value="2" @checked(request()->type == 2) >
+          <label class="form-check-label px-2" for="inlineRadio2">
+            @lang("On site")
+          </label>
+        </div>
+
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="radio" name="type" id="inlineRadio3" value="3" @checked(request()->type == 3) >
+          <label class="form-check-label px-2" for="inlineRadio3">
+            @lang("Drop off")
+          </label>
+        </div>
+
+      </div>
+
       <div class="col-3">
         <div class="mb-3">
-          <label class=" col-form-label" for="basic-default-name">@lang("From date")</label>
+          <label class=" col-form-label" for="basic-default-name">@lang("From")</label>
           <div class="col-sm-10">
-            <input placeholder="dd-mm-yyyy" class="form-control" name="date_from" type="date" value="{{ request()->date_from }}">
+            <input class="form-control customDate" name="date_from" type="text" value="{{ request()->date_from }}">
           </div>
         </div>
       </div>
       <div class="col-3">
         <div class="mb-3">
-          <label class=" col-form-label" for="basic-default-name">@lang("To date")</label>
+          <label class=" col-form-label" for="basic-default-name">@lang("To")</label>
           <div class="col-sm-10">
-            <input  class="form-control" name="date_to" type="date" value="{{ request()->date_to }}">
+            <input  class="form-control customDate" name="date_to" type="text" value="{{ request()->date_to }}">
           </div>
         </div>
       </div>
@@ -76,6 +109,7 @@
           <th>#</th>
           <th> @lang("Refrence No") </th>
           <th> @lang("Customer") </th>
+          <th> @lang("Technician") </th>
           <th> @lang("Status") </th>
           {{-- <th> @lang("Amount") </th> --}}
           <th> @lang("Visit time") </th>
@@ -92,6 +126,7 @@
             </a>
           </td>
           <td> {{ $item->customer->name }}  </td>
+          <td> {{ $item->driver->name }}  </td>
           <td> 
             <i class='bx bxs-circle {{ $item->status_color }}'></i>
             {{ $item->status_name }}
@@ -150,7 +185,7 @@
         </tr>
         @empty
         <tr class="no-data">
-          <td colspan="6"> <h2> @lang("Data not found") </h2> </td>
+          <td colspan="7"> <h2> @lang("Data not found") </h2> </td>
         </tr>
         @endforelse
       </tbody>

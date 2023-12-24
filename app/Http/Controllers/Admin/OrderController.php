@@ -15,6 +15,7 @@ use App\Models\Question;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Carbon\Exceptions\InvalidFormatException;
 use Illuminate\Support\Facades\Mail;
 
 class OrderController extends Controller
@@ -55,15 +56,28 @@ class OrderController extends Controller
 
         if ($request->filled(['date_from','date_to'])) {
 
-            $date_from = $request->date('date_from');
-            $date_to = $request->date('date_to');
+            $parse = true;
+            try {
+                $date = @Carbon::parse($request->date_from);
+                $date = @Carbon::parse($request->date_to);
+            } catch (InvalidFormatException $ex) {
+                $parse = false;
+            }
 
-            $query
-            ->whereDate('created_at', '>=', $date_from)
-            ->whereDate('created_at', '<=', $date_to);
+            if ($parse) {
+                $date_from = $request->date('date_from');
+                $date_to = $request->date('date_to');
+                $query
+                ->whereDate('created_at', '>=', $date_from)
+                ->whereDate('created_at', '<=', $date_to);
+            }
         }
 
-        $data['data'] = $query->with('customer')->latest('visit_time')->paginate(10)->withQueryString();
+        if ($request->filled('type')) {
+            $query->whereType($request->type);
+        }
+
+        $data['data'] = $query->with('customer','driver')->latest('visit_time')->paginate(10)->withQueryString();
 
         $data['title'] = trans('All Orders');
 
@@ -80,7 +94,7 @@ class OrderController extends Controller
         if ($request->filled('search_text')) {
             $search_text = $request->search_text;
 
-            $columns = ['reference_no','maintenance_device','brand','order_phone_number','visit_time'];
+            $columns = ['reference_no','address','maintenance_device','brand','order_phone_number'];
 
             foreach($columns as $key => $column){
                 if ($key == 0) {
@@ -95,12 +109,25 @@ class OrderController extends Controller
 
         if ($request->filled(['date_from','date_to'])) {
 
-            $date_from = $request->date('date_from');
-            $date_to = $request->date('date_to');
+            $parse = true;
+            try {
+                $date = @Carbon::parse($request->date_from);
+                $date = @Carbon::parse($request->date_to);
+            } catch (InvalidFormatException $ex) {
+                $parse = false;
+            }
 
-            $query
-            ->whereDate('created_at', '>=', $date_from)
-            ->whereDate('created_at', '<=', $date_to);
+            if ($parse) {
+                $date_from = $request->date('date_from');
+                $date_to = $request->date('date_to');
+                $query
+                ->whereDate('created_at', '>=', $date_from)
+                ->whereDate('created_at', '<=', $date_to);
+            }
+        }
+
+        if ($request->filled('type')) {
+            $query->whereType($request->type);
         }
 
         $data['data'] = $query->with('customer')->latest('id')->paginate(10)->withQueryString();
@@ -193,11 +220,18 @@ class OrderController extends Controller
             'visit_date' => 'required',
             'visit_time' => 'required',
             'guarantee_id' => 'required',
+            'phone' => 'nullable|size:12',
+            'telephone' => 'nullable|min:7',
         ]);
 
         $visit_time = $request->date('visit_date')->startOfDay()->addHours($request->integer('visit_time'))->format('Y-m-d H:i');
 
         $order =  Order::pickup()->findOrFail($id);
+
+        
+        if ($order->items->isEmpty()) {
+            return redirect()->back()->withErrors('This order does not have prices');
+        }
 
         $first_visit = Order::where('pickup_order_ref',$order->reference_no)->get();
 
@@ -208,17 +242,23 @@ class OrderController extends Controller
         $pickupAddress = $request->only(['company_name','name','address','postal_code','phone','telephone','part_of_building']);
 
         if ($request->with_route) { // with new route
+
+            $driver_id = getAvailableDrivers() ? getAvailableDrivers()->first(): null;
+
             $new_road = $order->road->replicate()->fill([
-                'status' => 2,
+                'status' => is_null($driver_id) ? 1 : 2,
+                'driver_id' => $driver_id
             ]);
 
             $new_road->save();
 
             $new_order = $order->replicate()->fill([
                 'visit_time' => $visit_time,
+                'driver_id' => $driver_id,
                 'pickup_order_ref' => $order->reference_no,
+                'status' => is_null($driver_id) ? 1 : 2,
+                'driver_id' => $driver_id,
                 'road_id' => $new_road->id,
-                'status' => 2,
                 'type' => 3,
                 'is_paid' => false,
                 'information' => $request->information,
@@ -236,6 +276,7 @@ class OrderController extends Controller
                 'visit_time' => $visit_time,
                 'pickup_order_ref' => $order->reference_no,
                 'road_id' => null,
+                'driver_id' => null,
                 'status' => 1,
                 'type' => 3,
                 'is_paid' => false,
@@ -258,6 +299,7 @@ class OrderController extends Controller
         
         return redirect()->route('orders.today');
     }
+
     public function storeDropOffOrder(Request $request)
     {
         $validated = $request->validate([
@@ -423,7 +465,24 @@ class OrderController extends Controller
 
         // $order->delete();
 
-        $order->update([ 'status'=> 0 ]);
+        if ($order->status == 0) {
+            $message = trans('Successful updated');
+
+            notify()->success($message);
+    
+            return redirect()->back();
+        }
+
+        $order->update([
+            'status'=> 0
+        ]);
+
+        if ($order->type == 3) {
+            $pickupOrder = Order::where('reference_no',$order->pickup_order_ref)->first();
+            $pickupOrder->update([ 'status'=> 3 ]);
+            //
+            $order->update([ 'pickup_order_ref'=> null ]);
+        }
 
         // $message = trans('Successful Delete');
         $message = trans('Successful updated');

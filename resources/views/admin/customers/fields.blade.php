@@ -61,7 +61,7 @@
           <div class="row mb-3">
             <label class="col-sm-2 col-form-label" for="basic-default-company">@lang("Postal Code")</label>
             <div class="col-sm-10">
-                {!! Form::text('postal_code', null,  ['id'=>'postal_code','class' => 'form-control','placeholder'=>  trans("Postal Code")]) !!}
+                {!! Form::number('postal_code', null,  ['id'=>'postal_code','class' => 'form-control','placeholder'=>  trans("Postal Code")]) !!}
             </div>
           </div>
 

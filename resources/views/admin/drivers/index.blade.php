@@ -58,7 +58,7 @@
           {{-- <th> @lang("Image") </th> --}}
           <th> @lang("Name") </th>
           <th> @lang("Phone") </th>
-          <th> @lang("Routes Count") </th>
+          <th> @lang("Orders Count") </th>
           <th> @lang("Actions") </th>
         </tr>
       </thead>
@@ -73,7 +73,7 @@
           </td> --}}
           <td> {{ $item->name }}  </td>
           <td> {{ $item->phone }}  </td>
-          <td> {{ $item->roads_count }} </td>
+          <td> {{ $item->orders_count }} </td>
 
 
           <td>

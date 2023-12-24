@@ -187,6 +187,10 @@ class ApiOrderController extends Controller
 
         $order =  Order::pickup()->where('reference_no',$reference_no)->first();
 
+        if ($order->items->isEmpty()) {
+            return $this->sendResponse(false,[],trans('This order does not have prices'),404);
+        }
+
         if (is_null($order)) {
             return $this->sendResponse(false,[],trans('Order Not Pickup'),404);
         }
@@ -204,18 +208,23 @@ class ApiOrderController extends Controller
 
         $pickupAddress = $request->only(['company_name','name','address','postal_code','phone','telephone','part_of_building']);
 
-        if ($request->with_route) {
+        if ($request->with_route) { // with new route
+
+            $driver_id = getAvailableDrivers() ? getAvailableDrivers()->first(): null;
+
             $new_road = $order->road->replicate()->fill([
-                'status' => 2,
+                'status' => is_null($driver_id) ? 1 : 2,
+                'driver_id' => $driver_id
             ]);
 
             $new_road->save();
 
             $new_order = $order->replicate()->fill([
+                'driver_id' => $driver_id,
                 'visit_time' => $visit_time,
                 'pickup_order_ref' => $order->reference_no,
                 'road_id' => $new_road->id,
-                'status' => 2,
+                'status' => is_null($driver_id) ? 1 : 2,
                 'type' => 3,
                 'is_paid' => false,
                 'information' => $request->information,
@@ -233,6 +242,7 @@ class ApiOrderController extends Controller
                 'visit_time' => $visit_time,
                 'pickup_order_ref' => $order->reference_no,
                 'road_id' => null,
+                'driver_id' => null,
                 'status' => 1,
                 'type' => 3,
                 'is_paid' => false,
@@ -306,13 +316,21 @@ class ApiOrderController extends Controller
         
         if (is_null($order)) {
             return $this->sendResponse(false,[],trans('Not Found'),404);
-        }
+        } 
 
         $type = (int) $order->type;
 
-        if ($request->filled('status') && $request->integer('status') == 3 && $type != 1) {
+        $status = $request->integer('status');
+
+        if ($order->type != 3 && ($status== 4)) {
+           if ($order->items->isEmpty()) {
+            return $this->sendResponse(false,[],trans('No prices added'),401);
+           }
+        }
+
+        if ($request->filled('status') && $request->integer('status') == 4 && $type != 1 ) {
             
-            if (! $order->is_paid &&  $request->payment_way != 3) {
+            if (! $order->is_paid &&  $order->payment_way != 3) {
                 return $this->sendResponse(false,[],trans('Pay Order First'),401);
             }
 
@@ -322,44 +340,6 @@ class ApiOrderController extends Controller
         $data = $request->validated();
 
         $order->update($data);
-
-        if ($request->filled('payment_way') && $order->type == 3) {
-
-            $total = $order->total - $order->paid_amount;
-
-            $order->payments()->create([
-                'paid_amount' => $total,
-                'payment_way' => $request->payment_way,
-                'payment_id' => $request->payment_id,
-            ]);
-
-            $order->update([
-                'is_paid' => true,
-                'paid_amount' => $order->total,
-            ]);
-
-            $pickupOrder = Order::where('reference_no',$order->pickup_order_ref)->first();
-
-            $pickupOrder->update([
-                'is_paid' => true,
-                'paid_amount' => $pickupOrder->total,
-            ]);
-            
-
-        } elseif($request->filled('payment_way')) {
-            $total = $order->total - $order->paid_amount;
-
-            $order->payments()->create([
-                'paid_amount' => $total,
-                'payment_way' => $request->payment_way,
-                'payment_id' => $request->payment_id,
-            ]);
-
-            $order->update([
-                'is_paid' => true,
-                'paid_amount' => $order->total,
-            ]);
-        }
 
 
         if ($request->filled('items')){
@@ -374,6 +354,83 @@ class ApiOrderController extends Controller
                 ]);
 
             }
+
+            $items = Item::where('order_id',$order->id)->get();
+
+            $subtotal = $items->sum('sub_total');
+            $vat = $subtotal * 0.19;
+            $total = $subtotal + $vat;
+    
+            $data['subtotal'] = $subtotal;
+            $data['vat'] = $vat;
+            $data['total'] = $total;
+    
+    
+            $order->update($data);
+        }
+
+        $order = $order->fresh();
+
+
+        if ($request->filled('payment_way') && $order->type == 3) {
+
+            if ($request->integer('payment_way') != 3) {
+           
+               $total = $order->total - $order->paid_amount;
+
+                $order->payments()->create([
+                'paid_amount' => $total,
+                'payment_way' => $request->payment_way,
+                'payment_id' => $request->payment_id,
+                ]);
+
+                $order->update([
+                'is_paid' => true,
+                'paid_amount' => $order->total,
+                ]);
+
+               $pickupOrder = Order::where('reference_no',$order->pickup_order_ref)->first();
+
+               $pickupOrder->update([
+                'is_paid' => true,
+                'paid_amount' => $pickupOrder->total,
+               ]);
+
+            } else{
+                $order->update([
+                    'is_paid' => false
+                ]);
+            }
+            
+        }
+        elseif($request->filled('payment_way')) {
+
+            if ($request->integer('payment_way') != 3) {
+
+            if ($request->filled('paid_amount')) {
+                $paid_amount = $request->float('paid_amount');
+            } else {
+                $paid_amount = $order->total - $order->paid_amount;
+            }
+
+            $is_paid = ($order->paid_amount + $paid_amount) == $order->total? true: false;
+            
+
+            $order->payments()->create([
+                'paid_amount' => $paid_amount,
+                'payment_way' => $request->payment_way,
+                'payment_id' => $request->payment_id,
+            ]);
+
+            $order->update([
+                'is_paid' => $is_paid,
+                'paid_amount' => $order->paid_amount + $paid_amount,
+            ]);
+        } else{
+            $order->update([
+                'is_paid' => false
+            ]);
+        }
         }
     
         $message = trans('Successful Updated');

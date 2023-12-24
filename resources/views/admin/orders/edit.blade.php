@@ -62,7 +62,10 @@
     $("#customer_id").val(customer_id);
 
     var visit_time = "{{ $order->order_visit_time }}";
-    var visit_date = "{{ $order->visit_date }}" ;
+    var visit_date = "{{ \Carbon\Carbon::create($order->visit_date)->format('Y-m-d') }}" ;
+
+    $('#visit_date').val(visit_date);
+
 
     getTime(visit_date);
 

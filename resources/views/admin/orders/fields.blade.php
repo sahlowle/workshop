@@ -19,15 +19,25 @@
           </span>
         </div>
       </div>
+      
+      
 
       @if (isset($order) && $order->status == 4 && $order->type ==1)
+      @php
+           $first_visit = \App\Models\Order::where('pickup_order_ref',$order->reference_no)->first();
+      @endphp
 
+      @if ($first_visit && $first_visit->status == 4)
+
+      @else
       <div class="mb-3">
         <label class=" col-form-label" for="basic-default-company">@lang("Status")</label>
         <div class="col-sm-10">
           {!! Form::select('status',editOrderStatusForPickup(), null, ['required','class' => 'select2 form-control']) !!}
         </div>
       </div>
+
+      @endif
 
       @endif
 
@@ -61,7 +71,7 @@
       <div class="mb-3">
         <label class=" col-form-label" for="basic-default-name">@lang("Postal Code")</label>
         <div class="col-sm-10">
-          {!! Form::text('postal_code', null, ['id'=>'postal_code','required','class' => 'form-control','placeholder'=> trans("Postal Code")]) !!}
+          {!! Form::number('postal_code', null, ['id'=>'postal_code','required','class' => 'form-control','placeholder'=> trans("Postal Code")]) !!}
         </div>
       </div>
 
@@ -130,7 +140,7 @@
       <div class="mb-3">
         <label class=" col-form-label" for="basic-default-name">@lang("Visit Date")</label>
         <div class="col-sm-10">
-          {!! Form::date('visit_date', null, ['id'=>'visit_date','required','class' => 'form-control','placeholder'=> trans("Visit date")]) !!}
+          {!! Form::text('visit_date', null, ['id'=>'visit_date','required','class' => 'form-control customDate','placeholder'=> trans("Visit date")]) !!}
         </div>
       </div>
 

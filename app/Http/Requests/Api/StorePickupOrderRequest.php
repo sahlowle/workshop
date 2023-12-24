@@ -5,6 +5,7 @@ namespace App\Http\Requests\Api;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Validation\Rule;
 
 class StorePickupOrderRequest extends FormRequest
 {
@@ -28,6 +29,7 @@ class StorePickupOrderRequest extends FormRequest
         return [
             'type' => ['required'],
             'information' => ['nullable'],
+            'order_mode' => ['nullable',Rule::in([1,2,3,4])],
             // 'brand' => ['required'],
             'devices' => ['nullable','array'], // Relation
             'questions' => ['nullable','array'], // Relation

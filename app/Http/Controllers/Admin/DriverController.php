@@ -32,7 +32,7 @@ class DriverController extends Controller
                 }
             }
         }
-        $data['users'] = $query->withCount('roads')->paginate(10)->withQueryString();
+        $data['users'] = $query->withCount('orders')->paginate(10)->withQueryString();
 
         $data['title'] = trans('Technician');
 

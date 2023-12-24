@@ -8,10 +8,11 @@ use Illuminate\Support\Facades\DB;
 
 if (! function_exists('getAvailableDrivers')) {
     function getAvailableDrivers() {
+
         $drivers = User::drivers();
         
         $first_drivers =  $drivers->whereDoesntHave('roads', function (Builder $query) {
-            $query->where('status', '!=', 3);
+            $query->where('status', '!=', 4);
         })->get();
 
 

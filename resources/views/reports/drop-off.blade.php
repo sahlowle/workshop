@@ -355,11 +355,6 @@
                     <a class="add">+</a>
                 </div>
 
-
-
-
-
-
                 <div class="check2" style="justify-content: space-between;">
                     <div class="row" style=" width: 100%; ">
                         <div class="column2" style="width: 17%;margin-top: 16px;">

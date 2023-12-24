@@ -74,6 +74,12 @@
         event.preventDefault();
       }
     });
+
+    $('.customDate').datetimepicker({
+      timepicker:false,
+      mask:true,
+      format:'d.m.Y'
+    });
     
 </script>
 

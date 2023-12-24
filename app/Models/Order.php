@@ -201,7 +201,7 @@ class Order extends Model
 
     public function driver()
     {
-        return $this->belongsTo(User::class, 'driver_id');
+        return $this->belongsTo(User::class, 'driver_id')->withDefault(['name'=>trans("No Technician")]);
     }
 
     public function road()
@@ -261,12 +261,12 @@ class Order extends Model
                 if ($order->is_paid && $order->is_paid != $order->getOriginal('is_paid')) {
                     $order->load('customer');
 
-                    $blade = "reports.pickup";
-                    if ($order->type == 3) {
-                        $blade = "reports.drop-off";
-                    }
+                    // $blade = "reports.pickup";
+                    // if ($order->type == 3) {
+                    //     $blade = "reports.drop-off";
+                    // }
 
-                    Mail::to($order->customer->email)->send(new SendInvoice($order,$blade));
+                    // Mail::to($order->customer->email)->send(new SendInvoice($order,$blade));
     
                     $tokens = User::admins()->pluck('fcm_token');
     

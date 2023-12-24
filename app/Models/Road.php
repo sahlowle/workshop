@@ -93,7 +93,7 @@ class Road extends Model
                     'type' => trans('New Route'),
                 ],collect([$token]));
 
-                $road->orders()->update([ 'driver_id' => $road->driver_id]);
+                // $road->orders()->update([ 'driver_id' => $road->driver_id]);
 
             }
         });
