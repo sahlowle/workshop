@@ -32,7 +32,11 @@
         @forelse ($data as $item)
         <tr>
           <td> {{ $loop->index + 1 }}  </td>
-          <td> {{ $item->reference_no }}  </td>
+          <td>
+            <a href="{{ route('orders.show',$item->id) }}" class="link-primary">
+              {{ $item->reference_no }}
+            </a>
+          </td>
           <td> {{ $item->customer->name }}  </td>
           <td> 
             <i class='bx bxs-circle {{ $item->status_color }}'></i>

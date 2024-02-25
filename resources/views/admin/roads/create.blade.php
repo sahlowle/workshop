@@ -25,25 +25,53 @@
                 <tr>
                   <th>#</th>
                   <th> @lang("Refrence No") </th>
+                  <th> @lang("Maintenance Device") </th>
                   <th> @lang("Customer") </th>
+                  <th> @lang("Technician") </th>
+                  <th> @lang("Visit Time") </th>
                   <th> @lang("Status") </th>
                 </tr>
               </thead>
               <tbody class="table-border-bottom-0">
-                @foreach ($orders as $item)
+                @forelse ($orders as $item)
                 <tr>
                   <td>
                     <input class="form-check-input" type="checkbox" name="orders[]" value="{{ $item->id }}"  >
                   </td>
+
                   <td> 
-                    {{ $item->reference_no }}</td>
-                  <td> {{ $item->customer->name }}  </td>
+                    <a href="{{ route('orders.show',$item->id) }}" class="link-primary">
+                      {{ $item->reference_no }}
+                    </a>
+                  </td>
+
+                  <td> {{ $item->maintenance_device }}  </td>
                   <td>
-                    <i class='bx bxs-circle {{ $item->status_color }}'></i>
-                    {{ $item->status_name }}
-                </td>
+                    <p> {{ $item->customer->name }} </p>
+                    <p> {{ $item->customer->phone ? $item->customer->phone : $item->customer->order_phone_number }} </p>
+                  </td>
+
+                  <td>
+                    @if ($item->driver)
+                    <p> {{ $item->driver->name }} </p>
+                    <p> {{ $item->driver->phone }} </p>
+                    @else
+                    N\A
+                    @endif
+                  </td>
+
+                  <td> {{ $item->visit_time->format('d.m.Y H:i') }}  </td>
+  
+                  <td>
+                      <i class='bx bxs-circle {{ $item->status_color }}'></i>
+                      {{ $item->status_name }}
+                  </td>
                 </tr>
-                @endforeach
+                @empty
+                <tr class="no-data">
+                  <td colspan="7"> <h2> @lang("Data not found") </h2> </td>
+                </tr>
+                @endforelse
               </tbody>
             </table>
           </div>

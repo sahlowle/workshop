@@ -45,7 +45,7 @@ class StoreOrderRequest extends FormRequest
 
             'city' => ['nullable','string','max:100'],
             'zone_area' => ['nullable','string','max:100'],
-            'postal_code' => ['nullable','string','max:10'],
+            'postal_code' => ['required','numeric'],
             'payment_way' => ['nullable','in:1,2,3'],
         ];
     }

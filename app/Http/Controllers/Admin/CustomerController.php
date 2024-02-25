@@ -66,10 +66,10 @@ class CustomerController extends Controller
             'telephone' => 'nullable|unique:customers|min:7|max:20',
             'address' => 'required|string|max:100',
             'zone_area' => 'required|string|max:30',
-            'postal_code' => 'nullable|string|max:30',
+            'postal_code' => 'required|string|max:30',
             'city' => 'nullable|string|max:30',
-            'lat' => 'nullable|string|max:100',
-            'lng' => 'nullable|string|max:100',
+            'lat' => 'required|string|max:100',
+            'lng' => 'required|string|max:100',
         ]);
 
         // return $request->all();
@@ -130,7 +130,7 @@ class CustomerController extends Controller
             'part_of_building' => 'nullable|string',
             'email' => 'nullable|email|unique:customers,email,'.$id,
             'phone' => 'nullable|min:12|max:20|unique:customers,phone,'.$id,
-            'telephone' => 'nullable|min:12|max:20|unique:customers,telephone,'.$id,
+            'telephone' => 'nullable|min:7|max:20|unique:customers,telephone,'.$id,
             'address' => 'nullable|string|max:100',
             'zone_area' => 'nullable|string|max:30',
             'postal_code' => 'nullable|string|max:30',

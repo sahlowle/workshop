@@ -52,6 +52,8 @@ class OrderController extends Controller
             }
 
             $query->orWhereRelation('customer','name','LIKE', '%' . $search_text . '%');
+            $query->orWhereRelation('driver','name','LIKE', '%' . $search_text . '%');
+            $query->orWhereRelation('driver','phone','LIKE', '%' . $search_text . '%');
         }
 
         if ($request->filled(['date_from','date_to'])) {
@@ -68,13 +70,17 @@ class OrderController extends Controller
                 $date_from = $request->date('date_from');
                 $date_to = $request->date('date_to');
                 $query
-                ->whereDate('created_at', '>=', $date_from)
-                ->whereDate('created_at', '<=', $date_to);
+                ->whereDate('visit_time', '>=', $date_from)
+                ->whereDate('visit_time', '<=', $date_to);
             }
         }
 
         if ($request->filled('type')) {
             $query->whereType($request->type);
+        }
+
+        if ($request->filled('status') && $request->integer('status') != -1) {
+            $query->whereStatus($request->status);
         }
 
         $data['data'] = $query->with('customer','driver')->latest('visit_time')->paginate(10)->withQueryString();
@@ -105,6 +111,8 @@ class OrderController extends Controller
             }
 
             $query->orWhereRelation('customer','name','LIKE', '%' . $search_text . '%');
+            $query->orWhereRelation('driver','name','LIKE', '%' . $search_text . '%');
+            $query->orWhereRelation('driver','phone','LIKE', '%' . $search_text . '%');
         }
 
         if ($request->filled(['date_from','date_to'])) {
@@ -121,8 +129,8 @@ class OrderController extends Controller
                 $date_from = $request->date('date_from');
                 $date_to = $request->date('date_to');
                 $query
-                ->whereDate('created_at', '>=', $date_from)
-                ->whereDate('created_at', '<=', $date_to);
+               ->whereDate('visit_time', '>=', $date_from)
+               ->whereDate('visit_time', '<=', $date_to);
             }
         }
 
@@ -130,7 +138,11 @@ class OrderController extends Controller
             $query->whereType($request->type);
         }
 
-        $data['data'] = $query->with('customer')->latest('id')->paginate(10)->withQueryString();
+        if ($request->filled('status') && $request->integer('status') != -1) {
+            $query->whereStatus($request->status);
+        }
+
+        $data['data'] = $query->with('customer')->latest('visit_time')->paginate(10)->withQueryString();
 
         $data['title'] = trans('Today Orders');
 
@@ -192,7 +204,7 @@ class OrderController extends Controller
             'lng' => 'required|string|max:100',
 
             'city' => 'nullable|string|max:100',
-            'postal_code' => 'nullable|string|max:100',
+            'postal_code' => 'required|string|max:100',
             'zone_area' => 'nullable|string|max:100',
         ]);
 
@@ -202,9 +214,11 @@ class OrderController extends Controller
 
         Order::create($validated);
 
-        $address_data = $request->only(['address','phone','zone_area','city','postal_code']);
+        $address_data = $request->only(['address','order_phone_number','zone_area','city','postal_code','lat','lng']);
 
-        Customer::find($request->customer_id)->update(array_filter($address_data));
+        if ($request->filled(['address','lat','lng','postal_code'])) {
+            Customer::find($request->customer_id)->update(array_filter($address_data));
+        }
 
         $message = trans('Successful Added');
 
@@ -367,8 +381,8 @@ class OrderController extends Controller
      */
     public function show($id)
     {
-        $data['order'] =  Order::with(['files','pickupAddress','customer','items','devices','questions','payments','guarantee'])->findOrFail($id);
-
+        $data['order'] =  Order::with(['files','dropOrder','pickupAddress','customer','items','devices','questions','payments','guarantee'])->findOrFail($id);
+        // return $data['order']->dropOrder->id;
         $data['title'] = trans('Order Details');
         $data['guarantees'] = Guarantee::select('id','name')->get();
         $data['questions'] = Question::get();

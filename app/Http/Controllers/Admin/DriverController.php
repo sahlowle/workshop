@@ -18,7 +18,7 @@ class DriverController extends Controller
     public function index(Request $request)
     {
 
-        $query = User::query()->drivers();
+        $query = User::query()->withTrashed()->drivers();
 
         if ($request->filled('search_text')) {
             $search_text = $request->search_text;
@@ -152,6 +152,19 @@ class DriverController extends Controller
         $user->delete();
 
         $message = trans('Successful Delete');
+
+        notify()->success($message);
+
+        return redirect()->route('drivers.index');
+    }
+
+    public function reStore($id)
+    {
+        $user = User::withTrashed()->findOrFail($id);
+
+        $user->restore();
+
+        $message = trans('Successful Enabled');
 
         notify()->success($message);
 

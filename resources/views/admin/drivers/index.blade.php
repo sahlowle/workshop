@@ -9,10 +9,10 @@
 
 <a class="btn btn-outline-primary m-2" href="{{ route('drivers.create') }}">
   <i class='bx bx-plus' style="font-size: 1.5rem"></i>
-  @lang("Add New") 
+  @lang("Add New Technician") 
 </a>
 
-<a class="btn btn-outline-primary m-2" href="{{ route('drivers.map-location') }}">
+<a class="btn btn-outline-primary m-2" href="{{ $users->isNotEmpty() ? route('drivers.map-location') : '#' }}" >
   <i class='bx bx-map' style="font-size: 1.5rem"></i>
   @lang("Show all technicians in map") 
 </a>
@@ -71,7 +71,14 @@
               <img src="https://demos.themeselection.com/sneat-bootstrap-html-laravel-admin-template/demo/assets/img/avatars/1.png" alt="Avatar">
             </div>
           </td> --}}
-          <td> {{ $item->name }}  </td>
+          <td>
+            @if ($item->trashed())
+              <i class='bx bx-block' style="font-size: 1.2rem; color:red"></i>
+            @else
+              <i class='bx bx-check-circle' style="font-size: 1.2rem; color:#0d6efd"></i>
+            @endif
+            {{ $item->name }} 
+          </td>
           <td> {{ $item->phone }}  </td>
           <td> {{ $item->orders_count }} </td>
 
@@ -89,15 +96,23 @@
               @lang('Edit')
             </a>
 
-            <button class="btn btn-outline-danger btn-sm pl-1" onclick="deleteForm('deleteForm{{ $item->id }}')">
+            @if ($item->trashed())
+            <a class="btn btn-show btn-sm pl-1" href="{{ route('drivers.active',$item->id) }}">
+              <i class='bx bx-check-circle' style="font-size: 1.2rem"></i>
+              @lang('Enable')
+            </a>
+            @else
+
+            <button  class="btn btn-outline-danger btn-sm pl-1" onclick="deleteForm('deleteForm{{ $item->id }}')">
               <i class="bx bx-trash me-1"></i>
-              @lang('Delete')
-                <form id="deleteForm{{ $item->id }}"
-                  action="{{ route('drivers.destroy',$item->id) }}" method="POST">
-                  @method("DELETE")
-                  @csrf
-                </form>
-            </button>
+              @lang('Disable')
+              <form id="deleteForm{{ $item->id }}" action="{{ route('drivers.destroy',$item->id) }}" method="POST">
+                @method("DELETE")
+                @csrf
+            </form>
+          </button>
+
+          @endif
 
 
           </td>

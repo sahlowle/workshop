@@ -70,7 +70,7 @@
 <script
 {{-- src = "https://maps.googleapis.com/maps/api/js?key=AIzaSyDqJDhzkyerG250Du1U9tUpPKtqPgim564&callback=initAutocomplete&libraries=places&v=weekly" --}}
 
-src = "https://maps.googleapis.com/maps/api/js?key=AIzaSyBrfjwqJ1lK61Q_SpHjz4aIjjdh9Oh96eA&callback=initAutocomplete&libraries=places&v=weekly"
+src = "https://maps.googleapis.com/maps/api/js?key=AIzaSyCoJKpAvlnZ6XPiEtuk2iGaiDoF5SAd9FQ&callback=initAutocomplete&libraries=places&v=weekly"
 defer >
 </script>
 

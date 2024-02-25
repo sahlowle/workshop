@@ -19,12 +19,14 @@ use App\Models\Guarantee;
 use App\Models\Item;
 use App\Models\Order;
 use App\Models\Question;
+use App\Models\User;
 use App\Services\TimeSlot;
 use App\Traits\FileSaveTrait;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\DB;
 use Spatie\Browsershot\Browsershot;
 
 class ApiOrderController extends Controller
@@ -43,7 +45,7 @@ class ApiOrderController extends Controller
         if ($request->filled('without_route')) {
             $query->whereDoesntHave('road');
             $query->has('activeCustomer');
-            $query->where('status','!=',0);
+            $query->where('status',1);
         }
 
         if ($request->filled('today')) {
@@ -64,6 +66,8 @@ class ApiOrderController extends Controller
             }
 
             $query->orWhereRelation('customer','name','LIKE', '%' . $search_text . '%');
+            $query->orWhereRelation('driver','name','LIKE', '%' . $search_text . '%');
+            $query->orWhereRelation('driver','phone','LIKE', '%' . $search_text . '%');
         }
 
         if ($request->filled(['date_from','date_to'])) {
@@ -72,8 +76,8 @@ class ApiOrderController extends Controller
             $date_to = $request->date('date_to');
 
             $query
-            ->whereDate('created_at', '>=', $date_from)
-            ->whereDate('created_at', '<=', $date_to);
+           ->whereDate('visit_time', '>=', $date_from)
+           ->whereDate('visit_time', '<=', $date_to);
         }
 
         $per_page = $request->filled('per_page') ? $request->per_page : 10;
@@ -92,15 +96,24 @@ class ApiOrderController extends Controller
     */
     public function store(StoreOrderRequest $request)
     {
+
+        $customer = Customer::find($request->customer_id);
+
+        if (is_null($customer)) {
+            return $this->sendResponse(false,[],trans('Not Found'),404);
+        }
+
         $data = $request->validated();
 
         $data['status'] = 1; // pending
 
         $order = Order::create($data);
 
-        $address_data = $request->only(['address','phone','zone_area','city','postal_code']);
+        $address_data = $request->only(['address','part_of_building','zone_area','city','postal_code','lat','lng']);
 
-        Customer::find($request->customer_id)->update(array_filter($address_data));
+        if ($request->filled(['address','lat','lng','postal_code'])) {
+            $customer->update(array_filter($address_data));
+        }
 
         $message = trans('Successful Added');
 
@@ -160,13 +173,13 @@ class ApiOrderController extends Controller
         }
 
         if ($request->filled('paid_amount')){
-
                 $order->payments()->create([
                     'paid_amount' => $request->paid_amount,
                     'payment_way' => $request->payment_way,
                     'payment_id' => $request->payment_id,
                 ]);
 
+                $order->increment('paid_amount',$request->paid_amount);
         }
 
         $message = trans('Successful Added');
@@ -187,10 +200,6 @@ class ApiOrderController extends Controller
 
         $order =  Order::pickup()->where('reference_no',$reference_no)->first();
 
-        if ($order->items->isEmpty()) {
-            return $this->sendResponse(false,[],trans('This order does not have prices'),404);
-        }
-
         if (is_null($order)) {
             return $this->sendResponse(false,[],trans('Order Not Pickup'),404);
         }
@@ -201,6 +210,9 @@ class ApiOrderController extends Controller
             return $this->sendResponse(false,[],trans('This reference number is already exists as Dop-Off order'),404);
         }
 
+        if ($order->items->isEmpty()) {
+            return $this->sendResponse(false,[],trans('This order does not have prices'),404);
+        }
         
         if ($order->status != 3) {
             return $this->sendResponse(false,[],trans('Sorry, Pickup orders must be finished first'),401);
@@ -323,9 +335,9 @@ class ApiOrderController extends Controller
         $status = $request->integer('status');
 
         if ($order->type != 3 && ($status== 4)) {
-           if ($order->items->isEmpty()) {
-            return $this->sendResponse(false,[],trans('No prices added'),401);
-           }
+            if ($order->items->isEmpty()) {
+                return $this->sendResponse(false,[],trans('No prices added'),401);
+            }
         }
 
         if ($request->filled('status') && $request->integer('status') == 4 && $type != 1 ) {
@@ -413,8 +425,7 @@ class ApiOrderController extends Controller
                 $paid_amount = $order->total - $order->paid_amount;
             }
 
-            $is_paid = ($order->paid_amount + $paid_amount) == $order->total? true: false;
-            
+            $is_paid = ($order->paid_amount + $paid_amount) == $order->total? true: false;    
 
             $order->payments()->create([
                 'paid_amount' => $paid_amount,
@@ -718,18 +729,61 @@ class ApiOrderController extends Controller
     {
         $selected_date = $request->date('selected_date');
         
-        $exclude_dates = Order::whereDate('visit_time','>=', $selected_date->toDateString())->pluck('visit_time')->toArray();
+        // $exclude_dates = Order::whereDate('visit_time','>=', $selected_date->toDateString())
+        // ->pluck('visit_time');
+
+        // $exclude_dates = $exclude_dates->toArray();
 
         $data = [];
 
-        $start_hour = 8;
+        $orders = Order::select(['visit_time',DB::raw('count(*) as total')])
+        ->whereDate('visit_time','>=', $selected_date->toDateString())
+        ->groupBy('visit_time')
+        ->get();
+
+        
+        if ($orders->isNotEmpty()) {
+            $driver_count = User::drivers()->count();
+
+            $orders = $orders->filter(function ($item) use($driver_count) {
+                return $item->total >= $driver_count;
+            });
+
+        }
+
+
+        $exclude_dates = [];
+
+        if ($orders) {
+            $exclude_dates = $orders->pluck('visit_time')->toArray();
+        }
 
         
 
+        $start_hour = 8;
+
+        $minute = 0;
+        
         if ($selected_date->isToday()) {
             $current_hour = now()->hour;
-            if ($current_hour <= 18 && $current_hour>= 8) {
+
+            if ($current_hour <= 18 && $current_hour >= 8) {
                 $start_hour = $current_hour;
+                $minute = now()->minute;
+
+                if ($minute <= 15) {
+                    $minute = 15;
+                }
+                elseif ($minute <= 30) {
+                    $minute = 30;
+                }
+                elseif ($minute <= 45){
+                    $minute = 45;
+                }
+                elseif ($minute <= 59) {
+                    $minute = 0;
+                    $start_hour += 1;
+                }
             }
             elseif($current_hour < 8){
                 $start_hour = 8;
@@ -741,10 +795,17 @@ class ApiOrderController extends Controller
             return $this->sendResponse(true,$data,"Available time retrieved  Successfully",200);
         }
 
-        $end_hour = 18 - $start_hour;
+        $start_date = $selected_date->startOfDay()
+        ->addHours($start_hour)
+        ->addMinutes($minute)
+        ->format('Y-m-d H:i');
 
-        $start_date = $selected_date->startOfDay()->addHours($start_hour)->format('Y-m-d H:i');
-        $end_date = $selected_date->addHours($end_hour)->format('Y-m-d H:i');
+        $end_hour = 18 - $start_hour;
+        
+        $end_date = $selected_date
+        ->addHours($end_hour)
+        ->startOfHour()
+        ->format('Y-m-d H:i');
         
         $data = TimeSlot::create(
             $start_date,

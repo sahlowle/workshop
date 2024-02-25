@@ -29,19 +29,21 @@
 <script src="{{ asset(mix('assets/js/main.js')) }}"></script>
 
 <script>
+  
     function deleteForm(id) {
       // if (confirm('Sure?')) {
       //   document.getElementById(id).submit();
       // }
 
       Swal.fire({
-        title: '@lang("Are you sure?")',
-        text: "@lang('You want this!')",
+        title: '@lang("Are you sure you want to delete this?")',
+        text: "",
         icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: '@lang("Yes!")'
+        // cancelButtonColor: '#d33',
+        confirmButtonText: '@lang("Yes!")',
+        cancelButtonText: '@lang("No!")'
       }).then((result) => {
         if (result.isConfirmed) {
           document.getElementById(id).submit();
@@ -75,10 +77,13 @@
       }
     });
 
+    jQuery.datetimepicker.setLocale('de');
+
     $('.customDate').datetimepicker({
       timepicker:false,
       mask:true,
-      format:'d.m.Y'
+      format:'d.m.Y',
+      dayOfWeekStart: 1 // Start with Monday
     });
     
 </script>

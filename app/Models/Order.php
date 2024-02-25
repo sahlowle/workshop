@@ -105,7 +105,11 @@ class Order extends Model
     {
         $id = $this->id;
 
-        return route('api.orders.pdf',$id);  
+        if ($id) {
+            return route('api.orders.pdf',$id); 
+        }
+
+        return null;
     }
 
     public function getVisitDateAttribute()
@@ -177,6 +181,11 @@ class Order extends Model
     {
         return $this->hasOne(PickupAddress::class, 'order_id', 'id');
     }
+
+    public function dropOrder()
+    {
+        return $this->hasOne(Order::class, 'pickup_order_ref', 'reference_no');
+    }
     
     public function pickupOrder()
     {
@@ -201,7 +210,7 @@ class Order extends Model
 
     public function driver()
     {
-        return $this->belongsTo(User::class, 'driver_id')->withDefault(['name'=>trans("No Technician")]);
+        return $this->belongsTo(User::class, 'driver_id')->withTrashed()->withDefault(['name'=>trans("No Technician")]);
     }
 
     public function road()
@@ -227,6 +236,13 @@ class Order extends Model
 
     protected static function booted()
     {
+        static::retrieved(function ($order) {
+            if ($order->total > 0 && $order->paid_amount >= $order->total) {
+                $order->is_paid = true;
+                $order->save();
+            }
+        });
+
         static::creating(function ($order) {
             // $order->reference_no = 'OF-' . date("Ymd") . '-' . date("his");
             $order->reference_no = referenceNo('OF');
@@ -241,15 +257,21 @@ class Order extends Model
 
                     if ($user->hasRole('admin')) {
                         $user = User::find($order->road->driver_id);
-                        $token = $user->fcm_token;
+
+                        if (! is_null($user)) {
+                            $token = $user->fcm_token;
                         
-                        FirebaseService::sendNotification(trans('Amount of order was changed',[],$user->lang),[
-                            'id' => $order->id,
-                            'type' => 'Order amount changed',
-                        ],collect([$token]));
+                            FirebaseService::sendNotification(trans('Amount of order was changed',[],$user->lang),[
+                                'id' => $order->id,
+                                'type' => 'Order amount changed',
+                            ],collect([$token]));
+                        }
+                        
 
                     } elseif($user->hasRole('driver')) {
                          $tokens = User::admins()->pluck('fcm_token');
+
+                         if($tokens->isNotEmpty())
                          FirebaseService::sendNotification(trans('Amount of order was changed'),[
                             'id' => $order->id,
                             'type' => 'Order amount changed',
@@ -269,7 +291,8 @@ class Order extends Model
                     // Mail::to($order->customer->email)->send(new SendInvoice($order,$blade));
     
                     $tokens = User::admins()->pluck('fcm_token');
-    
+
+                    if($tokens->isNotEmpty())
                     FirebaseService::sendNotification(trans('You have paid order'),[
                         'id' => $order->id,
                         'type' => 'Paid Order',

@@ -164,7 +164,7 @@
                           <div class="row mb-3">
                             <label class=" col-form-label" for="basic-default-name">@lang("Visit Time")</label>
                             <div class="col-sm-10">
-                              {!! Form::text('visit_time', null, ['readonly'=>true,'id'=>'visit_time','required','class' => 'form-control','placeholder'=> trans("Visit time")]) !!}
+                              {!! Form::text('visit_time', null, ['id'=>'visit_time','required','class' => 'readonly form-control','placeholder'=> trans("Visit time")]) !!}
                             </div>
                           </div>
 
@@ -228,6 +228,7 @@
                     $('#visit_time').datetimepicker({
                       datepicker: false,
                       format: 'H:i',
+                      hours12:false,
                       allowTimes: data.data,
                       timepicker: timepicker,
                     });
@@ -245,7 +246,7 @@
               <div class="modal-header">
                 <h5 class="modal-title" id="staticBackdropLabel">
                   <i class='bx bxs-cog'></i>
-                  @lang('Add new price')
+                  @lang('Add new service')
                 </h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">X</button>
               </div>
@@ -259,9 +260,9 @@
                         <div class="card-body">
 
                           <div class="row mb-3">
-                            <label class="col-sm-2 col-form-label" for="basic-default-name"> @lang('Title') </label>
+                            <label class="col-sm-2 col-form-label" for="basic-default-name"> @lang('Service') </label>
                             <div class="col-sm-10">
-                              <input value="{{ old('title') }}" class="form-control" placeholder="@lang('Title')" name="title" type="text" required>
+                              <input value="{{ old('title') }}" class="form-control" placeholder="@lang('Service')" name="title" type="text" required>
                             </div>
                           </div>
 
@@ -428,10 +429,26 @@
                           @lang("Reference No")
                           <span class="fw-bold"> {{ $order->reference_no }} </span>
                       </li>
-                      @if ($order->type == 3)   
+
+                      @if ($order->type == 1 && $order->dropOrder)   
+                      <li class="list-group-item d-flex justify-content-between align-items-center">
+                          @lang("Drop off")
+                          <span class="fw-bold">
+                            <a  class="link-primary" href="{{ route('orders.show',$order->dropOrder->id) }}">
+                              {{ $order->dropOrder->reference_no }}
+                            </a>
+                          </span>
+                      </li>
+                      @endif
+
+                      @if ($order->type == 3 && $order->pickupOrder)   
                       <li class="list-group-item d-flex justify-content-between align-items-center">
                           @lang("Pickup Reference No")
-                          <span class="fw-bold"> {{ $order->pickup_order_ref }} </span>
+                          <span class="fw-bold">
+                            <a  class="link-primary" href="{{ route('orders.show',$order->pickupOrder->id) }}">
+                              {{ $order->pickup_order_ref }}
+                            </a>
+                          </span>
                       </li>
                       @endif
   
@@ -477,11 +494,14 @@
                       <li class="list-group-item d-flex justify-content-between align-items-center">
                           @lang("Address")    <span>{{ $order->address }}</span>
                       </li>
-  
-                      <li class="list-group-item d-flex justify-content-between align-items-center">
+
+                      @if ($order->floor_number )
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
                           @lang("Floor Number")
                           <span>{{ $order->floor_number ? $order->floor_number : "N\A"}} </span>
-                      </li>
+                        </li>
+                      @endif
+                      
   
                       {{-- <li class="list-group-item d-flex justify-content-between align-items-center">
                           @lang("Apartment Number")   <span>{{ $order->apartment_number }} </span>
@@ -490,7 +510,7 @@
                       <li class="list-group-item d-flex justify-content-between align-items-center">
                         @lang("Max Maintenance Price")
                         <span>
-                           {{ $order->max_maintenance_price ? number_format($order->max_maintenance_price,0)  : "N\A" }} €
+                           {{ $order->max_maintenance_price ? number_format($order->max_maintenance_price,0)." €"  : "N\A" }} 
                           </span>
                       </li>
   
@@ -700,7 +720,11 @@
         @php
           if ($order->type==3) {
              $mainOrder = $order;
-             $order = \App\Models\Order::where('reference_no',$order->pickup_order_ref)->first();
+             $pickupOrder = \App\Models\Order::where('reference_no',$order->pickup_order_ref)->first();
+
+             if (! is_null($pickupOrder)) {
+              $order = $pickupOrder;
+             }
           }
         @endphp
 
@@ -774,13 +798,13 @@
           <div class="card">
             <h5 class="card-header">
               <i class='bx bx-file'></i>
-              @lang('Items')
+              @lang('Services')
               
                 @if($order->status == 3)
                   <button type="button" style="float: right" class="btn btn-outline-dark  btn-sm pl-1"
                     data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@mdo">
                     <i class='bx bxs-cog'></i>
-                    @lang('Add new price')
+                    @lang('Add new service')
                   </button>
                 @endif
 
@@ -791,7 +815,7 @@
                 <thead>
                   <tr>
                     <th>#</th>
-                    <th> @lang("Title") </th>
+                    <th> @lang("Service") </th>
                     <th> @lang("Quantity") </th>
                     <th> @lang("Price") </th>
                   </tr>
@@ -1064,24 +1088,14 @@
   </div>
 </div>
 
-<div class="row">
-  
 
+@endsection
 
-
-
-
-
-    
-    
-
-
-
-    
-
-    
-</div>
-
-
-
+@section('page-script')
+<script>
+      $(".readonly").on('keydown', function(e){
+        if(e.keyCode != 9) // ignore tab
+            e.preventDefault();
+    });
+</script>
 @endsection

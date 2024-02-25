@@ -46,6 +46,31 @@ if (! function_exists('loginBackground')) {
     }
 }
 
+if (! function_exists('orderStatuses')) {
+    function orderStatuses() {
+        return [
+            -1 => trans("Select") ,
+            1 => trans("Pending"),
+            2 => trans("Assigned"),
+            3 => trans("Under maintenance"),
+            4 => trans("Finished"),
+            0 => trans("Canceled"),
+        ];
+    
+    }
+}
+if (! function_exists('roadStatuses')) {
+    function roadStatuses() {
+        return [
+            "" => trans("Select") ,
+            1 => trans("Opened") ,
+            2 => trans("Assigned") ,
+            3 => trans("Finished") ,
+        ];
+    
+    }
+}
+
 if (! function_exists('editOrderStatusForPickup')) {
     function editOrderStatusForPickup() {
         return [

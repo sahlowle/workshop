@@ -27,6 +27,32 @@
 
 @push('datetimejs')
     <script>
+
+function getTime(selected_date) {
+  var url = "/api/orders/available/time/?selected_date=" + selected_date;
+
+  $('#visit_time').datetimepicker('destroy');
+
+  $.get(url, function (data, status) {
+
+    var timepicker = true;
+
+    if (data.data.length == 0) {
+      timepicker = false;
+    }
+
+    $('#visit_time').val('');
+
+    $('#visit_time').datetimepicker({
+      datepicker: false,
+      format: 'H:i',
+      hours12:false,
+      allowTimes: data.data,
+      timepicker: timepicker,
+    });
+
+  });
+}
     
     $('#visit_date').change(function(){
       var selected_date = $("#visit_date").val()
@@ -52,6 +78,21 @@
       });
 
     });
+    
+    
+    @if (count($errors) > 0)
+  
+  var visit_date =  "{{ old('visit_date') }}";
+
+  if (visit_date) {
+    getTime(visit_date);
+  }
+
+  var visit_time =  "{{ old('visit_time') }}";
+  if(visit_time)
+  $('#visit_time').val(visit_time);
+
+  @endif
 
     </script>
 @endpush

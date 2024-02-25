@@ -9,7 +9,7 @@
 
 <a class="btn btn-outline-primary m-2" href="{{ route('customers.create') }}">
   <i class='bx bx-plus' style="font-size: 1.5rem"></i>
-  @lang("Add New") 
+  @lang("Add New Customer") 
 </a>
 
 <!-- Hoverable Table rows -->

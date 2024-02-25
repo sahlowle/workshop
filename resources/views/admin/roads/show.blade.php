@@ -34,14 +34,31 @@
                     <li class="list-group-item d-flex justify-content-between align-items-center">
                       @lang("Technician")
                       <span>
+                        
+                      | {{ $road->driver->name }}
+                      |
+                      {{ $road->driver->phone }}
+                      |
+                      @if ($road->driver && $road->driver->lat && $road->driver->lng)
                         <a target="_blank" href="https://maps.google.com/?q={{ $road->driver->lat }},{{ $road->driver->lng }}" class="btn btn-sm btn-primary" >
                           <i class='bx bxs-map'></i>
                           @lang('Show Technician Location')
                         </a> 
-                      | {{ $road->driver->name }}
+                        @else
+                        <span>
+                          @lang('Location not set')
+                        </span>
+                        @endif
                       </span>
                   </li>
-                    @endif
+                  @else
+                  <li class="list-group-item d-flex justify-content-between align-items-center">
+                    @lang("Technician")
+                    <span>
+                      @lang("No Technician")
+                    </span>
+                  </li>
+                  @endif
 
                 </ul>
             </div>
@@ -60,8 +77,11 @@
                     <thead>
                       <tr>
                         <th>#</th>
-                        <th> @lang("Refrence No") </th>
+                        <th> @lang("Maintenance Device") </th>
                         <th> @lang("Customer") </th>
+                        <th> @lang("Technician") </th>
+                        <th> @lang("Visit Time") </th>
+                        <th> @lang("Refrence No") </th>
                         <th> @lang("Status") </th>
                         <th> @lang("Actions") </th>
                       </tr>
@@ -70,8 +90,26 @@
                       @foreach ($road->orders as $item)
                       <tr>
                         <td> {{ $loop->index + 1 }}  </td>
-                        <td> {{ $item->reference_no }}  </td>
-                        <td> {{ $item->customer->name }}  </td>
+                        <td> {{ $item->maintenance_device }}  </td>
+                        <td>
+                          <p> {{ $item->customer->name }} </p>
+                          <p> {{ $item->customer->phone ? $item->customer->phone : $item->customer->order_phone_number }} </p>
+                        </td>
+
+                        <td>
+                          @if ($item->driver)
+                          <p> {{ $item->driver->name }} </p>
+                          <p> {{ $item->driver->phone }} </p>
+                          @else
+                          N\A
+                          @endif
+                        </td>
+                        <td> {{ $item->visit_time->format('d.m.Y H:i') }}  </td>
+                        <td> 
+                          <a href="{{ route('orders.show',$item->id) }}" class="link-primary">
+                            {{ $item->reference_no }}
+                          </a>
+                        </td>
                         <td>
                             <i class='bx bxs-circle {{ $item->status_color }}'></i>
                             {{ $item->status_name }}

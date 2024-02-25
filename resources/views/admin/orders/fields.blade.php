@@ -57,7 +57,7 @@
       <div class="mb-3">
         <label class=" col-form-label" for="basic-default-name">@lang("Address")</label>
         <div class="col-sm-10">
-          {!! Form::text('address', null, ['id'=>'address','readonly','required','class' => 'form-control','placeholder'=> trans("Select address from map")]) !!}
+          {!! Form::text('address', null, ['id'=>'address','readonly','required','onclick'=>'document.getElementById("googleMap").scrollIntoView({ behavior: "smooth" })','class' => 'form-control','placeholder'=> trans("Select address from map")]) !!}
         </div>
       </div>
       
@@ -245,6 +245,18 @@
   if (customer_id) {
     fillDetatilsByID(customer_id);
   }
+
+  @if (count($errors) > 0)
+
+  if (customer_id) {
+    fillDetatilsByID(customer_id);
+  }
+
+  
+var customer_id =  "{{ old('customer_id') }}";
+$('#customer_id').val(customer_id);
+
+  @endif
 
 </script>
 @endsection

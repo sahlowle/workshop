@@ -31,6 +31,14 @@ class StoreDropOffOrderRequest extends FormRequest
             'visit_time' => ['required'],
             'guarantee_id' => ['required'],
             'information' => ['required'],
+
+            'name' => ['nullable'],
+            'company_name' => ['nullable'],
+            'address' => ['nullable'],
+            'postal_code' => ['nullable','numeric'],
+            'phone' => ['nullable'],
+            'telephone' => ['nullable'],
+            'part_of_building' => ['nullable'],
         ];
     }
 

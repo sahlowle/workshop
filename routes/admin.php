@@ -56,6 +56,9 @@ Route::get('drivers/map/location', [DriverController::class, 'mapLocation'])->na
 //restore customer
 Route::get('customers/active/{id}', [CustomerController::class, 'reStore'])->name('customers.active')->middleware('prevent-back-history');
 
+//restore customer
+Route::get('drivers/active/{id}', [DriverController::class, 'reStore'])->name('drivers.active')->middleware('prevent-back-history');
+
 
 Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->middleware('prevent-back-history')->name('index');
 

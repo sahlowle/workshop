@@ -23,7 +23,7 @@
     <i class="bx bxs-calendar-check"></i>
     {{ $title }}
   </h5>
-  <form method="GET">
+  <form method="GET" autocomplete="off">
     <div class="row p-4">
 
       <div class="col-12 pb-4">
@@ -59,7 +59,7 @@
 
       </div>
 
-      <div class="col-3">
+      <div class="col-2">
         <div class="mb-3">
           <label class=" col-form-label" for="basic-default-name">@lang("From")</label>
           <div class="col-sm-10">
@@ -67,11 +67,24 @@
           </div>
         </div>
       </div>
-      <div class="col-3">
+      <div class="col-2">
         <div class="mb-3">
           <label class=" col-form-label" for="basic-default-name">@lang("To")</label>
           <div class="col-sm-10">
             <input  class="form-control customDate" name="date_to" type="text" value="{{ request()->date_to }}">
+          </div>
+        </div>
+      </div>
+
+      <div class="col-3">
+        <div class="mb-3">
+          <label class=" col-form-label" for="basic-default-name">@lang("Status")</label>
+          <div class="col-sm-10">
+            <select name="status" class="form-control">
+              @foreach (orderStatuses() as $key => $item)
+              <option value="{{ $key }}" @selected($key == request()->input('status',-1) ) > {{ $item }} </option>
+              @endforeach
+            </select>
           </div>
         </div>
       </div>
@@ -108,6 +121,7 @@
         <tr>
           <th>#</th>
           <th> @lang("Refrence No") </th>
+          <th> @lang("Maintenance Device") </th>
           <th> @lang("Customer") </th>
           <th> @lang("Technician") </th>
           <th> @lang("Status") </th>
@@ -125,8 +139,19 @@
               {{ $item->reference_no }}
             </a>
           </td>
-          <td> {{ $item->customer->name }}  </td>
-          <td> {{ $item->driver->name }}  </td>
+          <td> {{ $item->maintenance_device }}  </td>
+          <td>
+            <p> {{ $item->customer->name }} </p>
+            <p> {{ $item->customer->phone ? $item->customer->phone : $item->customer->order_phone_number }} </p>
+          </td>
+          <td>
+            @if ($item->driver)
+            <p> {{ $item->driver->name }} </p>
+            <p> {{ $item->driver->phone }} </p>
+            @else
+            N\A
+            @endif
+          </td>
           <td> 
             <i class='bx bxs-circle {{ $item->status_color }}'></i>
             {{ $item->status_name }}
@@ -150,15 +175,16 @@
               <i class='bx bx-edit' style="font-size: 1.2rem"></i>
               @lang('Edit')
             </a>
-
+            @if ($item->status != 4)
             <button  class="btn btn-outline-danger btn-sm pl-1" onclick="deleteForm('deleteForm{{ $item->id }}')">
               <i class="bx bx-trash me-1"></i>
               @lang('Cancel')
               <form id="deleteForm{{ $item->id }}" action="{{ route('orders.destroy',$item->id) }}" method="POST">
                 @method("DELETE")
                 @csrf
-            </form>
-          </button>
+              </form>
+            </button>
+            @endif
 
            
           </td>
@@ -185,7 +211,7 @@
         </tr>
         @empty
         <tr class="no-data">
-          <td colspan="7"> <h2> @lang("Data not found") </h2> </td>
+          <td colspan="8"> <h2> @lang("Data not found") </h2> </td>
         </tr>
         @endforelse
       </tbody>

@@ -74,6 +74,25 @@ class ApiRoadController extends Controller
     */
     public function store(StoreRoadRequest $request)
     {
+        $orders = Order::whereIn('id',$request->orders_ids)->orderBy('visit_time')->get();
+
+        $times = $orders->pluck('visit_time');
+
+        $current_time = $times->first();
+
+        foreach ($times as $key => $item) {
+
+            if ($key == 0) {
+                continue;
+            }
+
+            if ($item->diffInMinutes($current_time) < 60) {
+                return $this->sendResponse(false,[],trans('You cannot add more than one order at the same hour in one route'),404);
+            }
+
+            $current_time = $item;
+        }
+
         $data = $request->validated();
 
         if ($request->isNotFilled('driver_id')) {
@@ -135,6 +154,25 @@ class ApiRoadController extends Controller
         $road->update($data);
 
         if ($request->filled('orders_ids')) {
+
+            $orders = Order::whereIn('id',$request->orders_ids)->orderBy('visit_time')->get();
+
+            $times = $orders->pluck('visit_time');
+    
+            $current_time = $times->first();
+    
+            foreach ($times as $key => $item) {
+    
+                if ($key == 0) {
+                    continue;
+                }
+    
+                if ($item->diffInMinutes($current_time) < 60) {
+                    return $this->sendResponse(false,[],trans('You cannot add more than one order at the same hour in one route'),404);
+                }
+    
+                $current_time = $item;
+            }
 
             $new_orders = $request->orders_ids;
 

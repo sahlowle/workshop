@@ -25,7 +25,10 @@
                 <tr>
                   <th>#</th>
                   <th> @lang("Refrence No") </th>
+                  <th> @lang("Maintenance Device") </th>
                   <th> @lang("Customer") </th>
+                  <th> @lang("Technician") </th>
+                  <th> @lang("Visit Time") </th>
                   <th> @lang("Status") </th>
                 </tr>
               </thead>
@@ -35,14 +38,33 @@
                     <td>
                       <input @checked($myOrders->contains($item->id)) class="form-check-input" type="checkbox" name="orders[]" value="{{ $item->id }}">
                     </td>
-                    <td>
-                      {{ $item->reference_no }}</td>
-                    <td> {{ $item->customer->name }} </td>
+  
                     <td> 
-                      <span >
-                        <i class='bx bxs-circle {{ $road->status_color }}'></i>
-                        {{ $road->status_name }}
-                    </span>
+                      <a href="{{ route('orders.show',$item->id) }}" class="link-primary">
+                        {{ $item->reference_no }}
+                      </a>
+                    </td>
+  
+                    <td> {{ $item->maintenance_device }}  </td>
+                    <td>
+                      <p> {{ $item->customer->name }} </p>
+                      <p> {{ $item->customer->phone ? $item->customer->phone : $item->customer->order_phone_number }} </p>
+                    </td>
+  
+                    <td>
+                      @if ($item->driver)
+                      <p> {{ $item->driver->name }} </p>
+                      <p> {{ $item->driver->phone }} </p>
+                      @else
+                      N\A
+                      @endif
+                    </td>
+  
+                    <td> {{ $item->visit_time->format('d.m.Y H:i') }}  </td>
+    
+                    <td>
+                        <i class='bx bxs-circle {{ $item->status_color }}'></i>
+                        {{ $item->status_name }}
                     </td>
                   </tr>
                 @endforeach

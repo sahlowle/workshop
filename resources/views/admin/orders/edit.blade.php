@@ -46,6 +46,7 @@
           $('#visit_time').datetimepicker({
             datepicker: false,
             format: 'H:i',
+            hours12:false,
             allowTimes: data.data,
             timepicker: timepicker,
           });

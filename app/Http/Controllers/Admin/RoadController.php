@@ -54,6 +54,10 @@ class RoadController extends Controller
                 ->whereDate('created_at', '<=', $date_to);
             }
         }
+        
+        if ($request->filled('status')) {
+            $query->whereStatus($request->status);
+        }
 
         $data['data'] = $query->with('driver')->latest('id')->paginate(10)->withQueryString();
 
@@ -102,6 +106,11 @@ class RoadController extends Controller
             }
         }
 
+        
+        if ($request->filled('status')) {
+            $query->whereStatus($request->status);
+        }
+
 
         $data['data'] = $query->with('driver')->latest('id')->paginate(10)->withQueryString();
 
@@ -119,7 +128,10 @@ class RoadController extends Controller
     {
         $data['title'] = trans('Add New Route');
 
-        $data['orders'] = Order::doesntHave('road')->has('activeCustomer')->latest('id')->get();
+        $data['orders'] = Order::doesntHave('road')
+        ->has('activeCustomer')
+        ->where('status',1)
+        ->latest('id')->get();
 
         $data['drivers'] = User::drivers()->select('name','id')->pluck('name','id');
 
@@ -142,6 +154,25 @@ class RoadController extends Controller
             'orders' => 'required|array',
         ]);
 
+        $orders = Order::whereIn('id',$request->orders)->orderBy('visit_time')->get();
+
+        $times = $orders->pluck('visit_time');
+
+        $current_time = $times->first();
+
+        foreach ($times as $key => $item) {
+
+            if ($key == 0) {
+                continue;
+            }
+
+            if ($item->diffInMinutes($current_time) < 60) {
+                return redirect()->back()->withErrors(trans('You cannot add more than one order at the same hour in one route'));
+            }
+
+            $current_time = $item;
+        }
+
         if ($request->isNotFilled('driver_id')) {
 
             $driver_id = getAvailableDrivers() ? getAvailableDrivers()->first(): null;
@@ -150,6 +181,8 @@ class RoadController extends Controller
         }
 
         $road = Road::create($validated);
+
+
 
         Order::whereIn('id',$request->orders)->update([
             'road_id' => $road->id,
@@ -177,7 +210,7 @@ class RoadController extends Controller
      */
     public function show($id)
     {
-        $data['road'] = Road::with(['driver','orders'])->findOrFail($id);
+        $data['road'] = Road::with(['driver','orders'=>['customer','driver']])->findOrFail($id);
 
         $data['title'] = trans('Routes Details');
 
@@ -196,12 +229,15 @@ class RoadController extends Controller
     {
         $data['road'] = Road::findOrFail($id);
 
+        abort_if($data['road']->status == 3,401);
+
         $myOrders = $data['road']->orders()->pluck('id');
 
         $data['myOrders'] = $myOrders;
 
         $data['orders'] = Order::doesntHave('road')
         ->has('activeCustomer')
+        ->where('status',1)
         ->orWhereIn('id',$myOrders)->latest('id')->get();
 
         $data['title'] = trans('Edit Route');
@@ -224,10 +260,31 @@ class RoadController extends Controller
     {
         $road = Road::findOrFail($id);
 
+        abort_if($road->status == 3,401);
+
         $validated = $request->validate([
             'driver_id' => 'nullable|exists:users,id',
             'orders' => 'required|array',
         ]);
+
+        $orders = Order::whereIn('id',$request->orders)->orderBy('visit_time')->get();
+
+        $times = $orders->pluck('visit_time');
+
+        $current_time = $times->first();
+
+        foreach ($times as $key => $item) {
+
+            if ($key == 0) {
+                continue;
+            }
+
+            if ($item->diffInMinutes($current_time) < 60) {
+                return redirect()->back()->withErrors(trans('You cannot add more than one order at the same hour in one route'));
+            }
+
+            $current_time = $item;
+        }
 
         $road->orders()->update(['road_id'=>null]);
 

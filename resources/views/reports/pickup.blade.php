@@ -23,19 +23,19 @@
     <article>
         <div class="check">
             <div class="check-group">
-                <input type="checkbox" id="1" onclick="selectOnlyThis(this.id)"  @checked($order->order_mode == 1) >
+                <input disabled type="checkbox" id="1" onclick="selectOnlyThis(this.id)"  @checked($order->order_mode == 1) >
                 <label for="1">Reparaturauftrag</label>
             </div>
             <div class="check-group">
-                <input type="checkbox" id="2" onclick="selectOnlyThis(this.id)"  @checked($order->order_mode == 2) >
+                <input disabled type="checkbox" id="2" onclick="selectOnlyThis(this.id)"  @checked($order->order_mode == 2) >
                 <label for="2">Rechnung</label>
             </div>
             <div class="check-group">
-                <input type="checkbox" id="3" onclick="selectOnlyThis(this.id)"  @checked($order->order_mode == 3) >
+                <input disabled type="checkbox" id="3" onclick="selectOnlyThis(this.id)"  @checked($order->order_mode == 3) >
                 <label for="3">Verkauf</label>
             </div>
             <div class="check-group">
-                <input type="checkbox" id="4" onclick="selectOnlyThis(this.id)"  @checked($order->order_mode == 4) >
+                <input disabled type="checkbox" id="4" onclick="selectOnlyThis(this.id)"  @checked($order->order_mode == 4) >
                 <label for="4">Ankauf</label>
             </div>
         </div>
@@ -48,7 +48,7 @@
                         <h4>Datum</h4>
                     </th>
                     <td>
-                        <span class="wordbr" contenteditable>  {{ $order->visit_time }} </span>
+                        <span class="wordbr" >  {{ $order->visit_time }} </span>
                     </td>
                 </tr>
             </table>
@@ -60,7 +60,7 @@
                     <span>Name</span>
                 </th>
                 <td>
-                    <span class="wordbr" contenteditable> {{ $order->customer->name }} </span>
+                    <span class="wordbr" > {{ $order->customer->name }} </span>
                 </td>
             </tr>
             <tr>
@@ -68,7 +68,7 @@
                     <span>Adresse</span>
                 </th>
                 <td>
-                    <span class="wordbr" contenteditable> {{ $order->address }} </span>
+                    <span class="wordbr" > {{ $order->address }} </span>
                 </td>
             </tr>
             
@@ -77,7 +77,7 @@
                     <span>Plz.</span>
                 </th>
                 <td>
-                    <span class="wordbr" contenteditable> {{ $order->postal_code }}  </span>
+                    <span class="wordbr" > {{ $order->postal_code }}  </span>
                 </td>
             </tr>
             <tr>
@@ -85,7 +85,7 @@
                     <span>Gbd.teil</span>
                 </th>
                 <td>
-                    <span class="wordbr" contenteditable> {{ $order->customer->part_of_building }} </span>
+                    <span class="wordbr" > {{ $order->customer->part_of_building }} </span>
                 </td>
             </tr>
             <tr>
@@ -93,7 +93,7 @@
                     <span>Telefon</span>
                 </th>
                 <td>
-                    <span class="wordbr" contenteditable>
+                    <span class="wordbr" >
                         {{ $order->customer->telephone }} 
                     </span>
                 </td>
@@ -103,7 +103,7 @@
                     <span>Mobil</span>
                 </th>
                 <td>
-                    <span class="wordbr" contenteditable> {{ $order->order_phone_number }}   </span>
+                    <span class="wordbr" > {{ $order->customer->phone }}   </span>
                 </td>
             </tr>
         </table>
@@ -111,10 +111,21 @@
         <table class="meta meta-right">
             <tr>
                 <th>
+                    <h4> Device</h4>
+                </th>
+                <td>
+                    <span class="wordbr" >  {{ $order->maintenance_device }} </span>
+                </td>
+            </tr>
+        </table>
+        
+        <table class="meta meta-right">
+            <tr>
+                <th>
                     <h4>Marke</h4>
                 </th>
                 <td>
-                    <span class="wordbr" contenteditable>  {{ $order->brand }} </span>
+                    <span class="wordbr" >  {{ $order->brand }} </span>
                 </td>
             </tr>
         </table>
@@ -124,7 +135,7 @@
 				   <div class="column">
 					@foreach ($group as $item)
 					<div class="check-group2">
-						<input type="checkbox" id="{{ $item->name }}" @checked($order->devices->contains('id',$item->id)) >
+						<input disabled type="checkbox" id="{{ $item->name }}" @checked($order->devices->contains('id',$item->id)) >
 						<label for="Waschmaschine">{{ $item->name }}</label>
 					</div>
 					@endforeach
@@ -135,7 +146,7 @@
         <div class="check">
             @foreach ($questions as $item)
 				<div class="check-group2">
-					<input type="checkbox" id="{{ $item->name }}"  @checked($order->questions->contains('id',$item->id))>
+					<input disabled type="checkbox" id="{{ $item->name }}"  @checked($order->questions->contains('id',$item->id))>
 					<label for="{{ $item->name }}"> {{ $item->name }} </label>
 				</div>
 				@endforeach
@@ -153,7 +164,7 @@
                         <tbody>
                             <tr>
                                 <td>
-                                    <span class="wordbr" contenteditable> {{ $order->information }}  </span>
+                                    <span class="wordbr" > {{ $order->information }}  </span>
                                 </td>
                             </tr>
                         </tbody>
@@ -163,7 +174,7 @@
                     <table class="meta meta-left" style=" width: 100%; margin: 55px 0px 0px 0px; ">
                         <tr>
                             <td style=" text-align: center;font-size: 20px; ">
-                                <span class="wordbr" contenteditable> 
+                                <span class="wordbr" > 
                                     {{ number_format($order->subtotal,2)}} €
                                 </span>
                             </td>
@@ -193,13 +204,13 @@
 									
 								<tr>
 									<td>
-										<span class="wordbr" contenteditable> {{ $item->title }} </span>
+										<span class="wordbr" > {{ $item->title }} </span>
 									</td>
 									<td>
-										<span class="wordbr" contenteditable> {{ $item->quantity }} </span>
+										<span class="wordbr" > {{ $item->quantity }} </span>
 									</td>
 									<td>
-										<span class="wordbr" contenteditable> {{ $item->price }} </span>
+										<span class="wordbr" > {{ $item->price }} </span>
 									</td>
 								</tr>
 
@@ -216,7 +227,7 @@
                                                 <span>Anzahlung in Höhe von: </span>
                                             </th>
                                             <td>
-                                                <span class="wordbr" contenteditable="">
+                                                <span class="wordbr" ="">
                                                     {{ number_format($order->paid_amount,2)}} €
                                                 </span>
                                             </td>
@@ -229,7 +240,7 @@
                                                 <span>Reparatur genehmigt bis: </span>
                                             </th>
                                             <td>
-                                                <span class="wordbr" contenteditable="">
+                                                <span class="wordbr" ="">
                                                     {{ number_format($order->max_maintenance_price,2)}} €
                                                 </span>
                                             </td>
@@ -254,7 +265,7 @@
                         <table class="meta meta-left" style=" width: 100%; margin: 19px 0px 0px 0px; ">
                             <tr>
                                 <td style=" text-align: center;font-size: 20px; ">
-										<span class="wordbr" contenteditable>
+										<span class="wordbr" >
                                            {{ number_format($order->vat,2)}} €
                                         </span>
                                 </td>
@@ -266,7 +277,7 @@
                         <table class="meta meta-left" style=" width: 100%; margin: 31px 0px 0px 0px; ">
                             <tr>
                                 <td style=" text-align: center;font-size: 20px; ">
-                                    <span class="wordbr" contenteditable>
+                                    <span class="wordbr" >
                                         {{ number_format($order->total,2)}} €
                                     </span>
                                 </td>
@@ -281,37 +292,37 @@
             </div>
             <div class="check2">
                 <div class="check-group3" style="margin-left: 10px;">
-                    <input type="checkbox" id="Bar" @checked($order->payment_way ==1) >
+                    <input disabled type="checkbox" id="Bar" @checked($order->payment_way ==1) >
                     <label for="Bar">Bar</label>
                 </div>
                 <div class="check-group3" style=" padding-left: 34px; ">
-                    <input type="checkbox" id="EC" @checked($order->payment_way ==2) >
+                    <input disabled type="checkbox" id="EC" @checked($order->payment_way ==2) >
                     <label for="EC">EC</label>
                 </div>
                 <div class="check-group3" style=" padding-left: 34px; ">
-                    <input type="checkbox" id="Überweisung" @checked($order->payment_way ==3) >
+                    <input disabled type="checkbox" id="Überweisung" @checked($order->payment_way ==3) >
                     <label for="Überweisung">Überweisung</label>
                 </div>
             </div>
             <div class="check2" style="justify-content: space-between;">
                 <div class="check-group4">
-                    <input type="checkbox" id="Betrag"  @checked($order->is_amount_received) >
+                    <input disabled type="checkbox" id="Betrag"  @checked($order->is_amount_received) >
                     <label for="Betrag">Betrag dankend erhalten</label>
                 </div>
                 <div class="check-group4">
-                    <input type="checkbox" id="Ware" @checked($order->is_customer_confirm)  >
+                    <input disabled type="checkbox" id="Ware" @checked($order->is_customer_confirm)  >
                     <label for="Ware">Ware in einwandfreiem Zustand erhalten. Richtigkeit aller Angaben. <br> Vom einwandfreien Funktionieren des Gerätes habe ich mich überzeugt </label>
                 </div>
             </div>
             <div class="row">
                 <div class="column2" style="  margin-left: 13px; ">
                     <div class="box1" style=" border-right: 0;">
-                        <span class="wordbr" contenteditable>Unterschrift desTechnikers</span>
+                        <span class="wordbr" >Unterschrift desTechnikers</span>
                     </div>
                 </div>
                 <div class="column2">
                     <div class="box1">
-                        <span class="wordbr" contenteditable>Unterschrift des Kunden: Ich bestätige die Richtigkeit der Angaben und erkenne die Rückseitig abgedruckten Allgemeinen Geschäftsbedingungen für Unterhaltungselektronik und Haushaltsgeräte Handwerk - Einzelhandel an.</span>
+                        <span class="wordbr" >Unterschrift des Kunden: Ich bestätige die Richtigkeit der Angaben und erkenne die Rückseitig abgedruckten Allgemeinen Geschäftsbedingungen für Unterhaltungselektronik und Haushaltsgeräte Handwerk - Einzelhandel an.</span>
                     </div>
                 </div>
             </div>

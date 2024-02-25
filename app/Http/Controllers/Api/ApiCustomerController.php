@@ -130,7 +130,6 @@ class ApiCustomerController extends Controller
         $message = trans('Successful Enabled');
 
         return $this->sendResponse(true,$user,$message,200);
-
     }
 
     /*

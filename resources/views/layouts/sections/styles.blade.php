@@ -84,6 +84,12 @@
         box-shadow: unset;
     }
 
+    .btn-outline-danger:focus{
+        color: #ff3e1d;
+    border-color: #ff3e1d;
+    background: transparent;
+    }
+
     input[type='number'] {
     -moz-appearance:textfield;
 }

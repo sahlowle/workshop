@@ -31,13 +31,13 @@ class StoreCustomerRequest extends FormRequest
             'part_of_building' => ['nullable', 'string','max:80'],
             'email' => ['required','email','unique:customers,email','string','max:120'],
             'phone' => ['required','unique:customers,phone','min:12','max:20'],
-            'telephone' => ['nullable','unique:customers,telephone','min:12','max:20'],
+            'telephone' => ['nullable','unique:customers,telephone','min:7'],
             'address' => ['required','string','max:190'],
             'zone_area' => ['nullable','string','max:30'],
-            'postal_code' => ['nullable','string','max:30'],
+            'postal_code' => ['required','numeric'],
             'city' => ['nullable','string','max:30'],
-            'lat' => ['nullable','max:100'],
-            'lng' => ['nullable','max:100'],
+            'lat' => ['required','max:100'],
+            'lng' => ['required','max:100'],
         ];
     }
 

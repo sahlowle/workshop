@@ -23,6 +23,10 @@ class ApiDriverController extends Controller
     {
         $query = User::query();
 
+        if ($request->isNotFilled('active')) {
+            $query->withTrashed();
+        }
+
         if ($request->filled('search_text')) {
             $search_text = $request->search_text;
             $columns = ['name','phone'];
@@ -139,6 +143,26 @@ class ApiDriverController extends Controller
 
         return $this->sendResponse(true,$user,$message,200);
 
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | re active driver item
+    |--------------------------------------------------------------------------
+    */
+    public function restore($id)
+    {
+        $user =  User::drivers()->withTrashed()->find($id);
+        
+        if (is_null($user)) {
+            return $this->sendResponse(false,[],trans('Not Found'),404);
+        }
+
+        $user->restore();
+    
+        $message = trans('Successful Enabled');
+
+        return $this->sendResponse(true,$user,$message,200);
     }
 
     /*

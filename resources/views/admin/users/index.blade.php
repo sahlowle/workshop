@@ -9,7 +9,7 @@
 
 <a class="btn btn-outline-primary m-2" href="{{ route('users.create') }}">
   <i class='bx bx-plus' style="font-size: 1.5rem"></i>
-  @lang("Add New") 
+  @lang("Add New Admin") 
 </a>
 
 <!-- Hoverable Table rows -->
@@ -71,13 +71,13 @@
             </a>
 
             @if ($item->is(auth()->user()))
-            <button class="btn btn-outline-danger btn-sm pl-1" >
+            {{-- <button class="btn btn-outline-danger btn-sm pl-1" >
               <i class="bx bx-trash me-1"></i>
               @lang('You cannot delete your account')
-            </button>
+            </button> --}}
               
             @else
-            <button class="btn btn-outline-danger btn-sm pl-1" onclick="deleteForm('deleteForm{{ $item->id }}')">
+            {{-- <button class="btn btn-outline-danger btn-sm pl-1" onclick="deleteForm('deleteForm{{ $item->id }}')">
               <i class="bx bx-trash me-1"></i>
               @lang('Delete')
                 <form id="deleteForm{{ $item->id }}"
@@ -85,7 +85,7 @@
                   @method("DELETE")
                   @csrf
                 </form>
-            </button>
+            </button> --}}
             @endif
 
             

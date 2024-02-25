@@ -35,9 +35,10 @@ Route::post('forget-password',[AuthController::class,'forgerPassword']);
 Route::middleware(['auth:sanctum','role:admin'])->group(function () {
     /* |------ admins routes ---------| */
     Route::apiResource('admins',ApiAdminController::class);
-
+    
     /* |------ drivers routes ---------| */
     Route::apiResource('drivers',ApiDriverController::class);
+    Route::post('drivers/active/{id}',[ApiDriverController::class,'restore']);
 
     /* |------ customers routes ---------| */
     Route::apiResource('customers',ApiCustomerController::class);

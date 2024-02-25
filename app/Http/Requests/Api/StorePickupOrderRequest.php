@@ -36,7 +36,7 @@ class StorePickupOrderRequest extends FormRequest
             'items' => ['nullable','array'], // Relation
             'max_maintenance_price' => ['nullable'],
             'paid_amount' => ['nullable'],
-            'payment_way' => ['nullable'],
+            'payment_way' => ['nullable','in:1,2,3'],
             'is_amount_received' => ['nullable'],
             'is_customer_confirm' => ['nullable'],
         ];

@@ -51,7 +51,7 @@ class Road extends Model
     
     public function driver()
     {
-        return $this->belongsTo(User::class, 'driver_id');
+        return $this->belongsTo(User::class, 'driver_id')->withTrashed();
     }
 
     protected static function booted()
@@ -65,13 +65,16 @@ class Road extends Model
                 $road->status = 2; // on progress
 
                 $user = User::find($road->driver_id);
-                $token = $user->fcm_token;
                 
-
-                FirebaseService::sendNotification(trans('You have a new route',[], $user->lang),[
-                    'id' => $road->id,
-                    'type' => 'New Route',
-                ],collect([$token]));
+                if (!is_null($user)) {
+                    $token = $user->fcm_token;
+                    
+                    FirebaseService::sendNotification(trans('You have a new route',[], $user->lang),[
+                        'id' => $road->id,
+                        'type' => 'New Route',
+                    ],collect([$token]));
+                }
+                
 
                 // $road->orders()->update([ 'driver_id' => $road->driver_id]);
 
@@ -86,12 +89,15 @@ class Road extends Model
                 $road->status = 2; // on progress
 
                 $user = User::find($road->driver_id);
+
+                if (!is_null($user)) {
                 $token = $user->fcm_token;
 
                 FirebaseService::sendNotification(trans('You have a new route'.$road->id,[], $user->lang),[
                     'id' => $road->id,
                     'type' => trans('New Route'),
                 ],collect([$token]));
+            }
 
                 // $road->orders()->update([ 'driver_id' => $road->driver_id]);
 
@@ -105,8 +111,9 @@ class Road extends Model
                 $road->status = 2; // on progress
                 
                 $road->orders()->update([ 'driver_id' => $road->driver_id]);
-
-                $token = User::find($road->driver_id)->fcm_token;
+                $user =User::find($road->driver_id);
+                if (!is_null($user)) {
+                $token = $user->fcm_token;
 
                 FirebaseService::sendNotification(trans('You have a new route'),
                 [
@@ -114,19 +121,26 @@ class Road extends Model
                     'type' => 'New Route',
                 ],
                 collect([$token]) );
+            }
                 
             } elseif ($road->driver_id != $road->getOriginal('driver_id')) {
-                $token = User::find($road->driver_id)->fcm_token;
+                $user =User::find($road->driver_id);
+                if (!is_null($user)) {
+                $token = $user->fcm_token;
 
-                FirebaseService::sendNotification(trans('You have a new route'),[
+                FirebaseService::sendNotification(trans('You have a new route'),
+                [
                     'id' => $road->id,
                     'type' => 'New Route',
-                ],collect([$token]));
+                ],
+                collect([$token]) );
+            }
             }
 
             if ($status == 3) {
                 $tokens = User::admins()->pluck('fcm_token');
-
+                
+                if($tokens->isNotEmpty())
                 FirebaseService::sendNotification(trans('You have a finished route'),[
                     'id' => $road->id,
                     'type' => 'Route Number '.$road->reference_no.' has finished',
