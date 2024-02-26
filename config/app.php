@@ -15,7 +15,7 @@ return [
     |
     */
 
-  'name' => env('Smart Intercom', 'Smart Intercom'), 
+  'name' => env('APP_NAME', 'Smart Intercom'), 
 
   /*
     |--------------------------------------------------------------------------
@@ -181,6 +181,8 @@ return [
     App\Providers\RouteServiceProvider::class,
         App\Providers\TelescopeServiceProvider::class,
     App\Providers\MenuServiceProvider::class,
+    Intervention\Image\ImageServiceProvider::class
+
 
   ],
 
@@ -197,6 +199,7 @@ return [
 
   'aliases' => Facade::defaultAliases()->merge([
     // ...
+    'Image' => Intervention\Image\Facades\Image::class
   ])->toArray(),
 
 ];
