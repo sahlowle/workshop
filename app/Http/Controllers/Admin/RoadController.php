@@ -149,7 +149,6 @@ class RoadController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-      
             'driver_id' => 'nullable|exists:users,id',
             'orders' => 'required|array',
         ]);

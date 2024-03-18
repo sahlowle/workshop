@@ -602,7 +602,7 @@ class OrderController extends Controller
 
         $items = $order->items()->get();
 
-        $subtotal = $items->sum('price');
+        $subtotal = $items->sum('sub_total');
         $vat = $subtotal * 0.19;
         $total = $subtotal + $vat;
 

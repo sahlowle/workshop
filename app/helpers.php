@@ -12,7 +12,7 @@ if (! function_exists('getAvailableDrivers')) {
         $drivers = User::drivers();
         
         $first_drivers =  $drivers->whereDoesntHave('roads', function (Builder $query) {
-            $query->where('status', '!=', 4);
+            $query->where('status', '!=', 3);
         })->get();
 
 
